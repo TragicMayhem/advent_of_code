@@ -8,22 +8,22 @@ print("Advent of Code 2020 - Day 2 part 1")
 
 valid_pwd = 0
 
-handle = open('test.txt', 'r')
-#handle = open('input.txt', 'r')
+#handle = open('test.txt', 'r')
+handle = open('input.txt', 'r')
 lines = handle.readlines()
 handle.close()
 
 for line in lines:
   chk = re.match(r"(\d+)-(\d+) ([a-z]): ([a-z]+)", line)
   lower, upper, letter, password = chk.group(1, 2, 3, 4)
-  print(lower, upper, letter, password)
+  # print(lower, upper, letter, password)
   lower = int(lower)
   upper = int(upper)
   occurances = password.count(letter)
   if (lower <= occurances <= upper):
       valid_pwd += 1
 
-print(valid_pwd)
+print("Number of valid passwords is ", valid_pwd)
 
   
 
