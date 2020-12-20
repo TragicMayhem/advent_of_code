@@ -1,7 +1,7 @@
 from itertools import combinations 
 
 # Input file is a list of numbers, one per line
-# three numbers add to 2020, then multiple to get the answer
+# Find the three numbers add to 2020, then multiple to get the answer
 
 print("Advent of Code 2020 - Day 1 - Part 2")
 

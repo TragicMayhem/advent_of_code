@@ -1,4 +1,4 @@
-print("Advent of Code 2020 - Day 1")
+print("Advent of Code 2020 - Day 1 part 1")
 
 # Input file is a list of numbers, one per line
 # Two of them add to 2020, that pair multiply together to get the answer
