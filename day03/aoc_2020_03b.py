@@ -1,4 +1,3 @@
-import re
 import sys
 
 print("Advent of Code 2020 - Day 3 part 2")
