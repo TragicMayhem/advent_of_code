@@ -1,15 +1,17 @@
 import re
+import sys
 
 print("Advent of Code 2020 - Day 2 part 1")
 
+dirpath = sys.path[0] + '\\'
 # Input file is a list of policy and passwords
 # n-m : passwordstring
 # How many on the input file are valid
 
 valid_pwd = 0
 
-#handle = open('test.txt', 'r')
-handle = open('input.txt', 'r')
+#handle = open(dirpath + 'test.txt', 'r')
+handle = open(dirpath + 'input.txt', 'r')
 lines = handle.readlines()
 handle.close()
 

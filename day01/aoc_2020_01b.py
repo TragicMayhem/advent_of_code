@@ -1,14 +1,16 @@
 from itertools import combinations 
+import sys
 
 # Input file is a list of numbers, one per line
 # Find the three numbers add to 2020, then multiple to get the answer
 
 print("Advent of Code 2020 - Day 1 - Part 2")
 
+dirpath = sys.path[0] + '\\'
 numbers = []
 
-# handle = open('test.txt', 'r')
-handle = open('input.txt', 'r')
+# handle = open(dirpath + 'test.txt', 'r')
+handle = open(dirpath + 'input.txt', 'r')
 lines_list = handle.readlines()
 handle.close()
 

@@ -1,4 +1,8 @@
+import sys
+
 print("Advent of Code 2020 - Day 1 part 1")
+
+dirpath = sys.path[0] + '\\'
 
 # Input file is a list of numbers, one per line
 # Two of them add to 2020, that pair multiply together to get the answer
@@ -7,9 +11,9 @@ count = 0
 num_dict = {}
 answers = []
 
-#handle = open('test.txt', 'r')
+#handle = open(dirpath + 'test.txt', 'r')
 
-handle = open('input.txt', 'r')
+handle = open(dirpath + 'input.txt', 'r')
 lines_list = handle.readlines()
 handle.close()
 
