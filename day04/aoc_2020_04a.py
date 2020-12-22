@@ -15,7 +15,6 @@ handle.close()
 # optional_passport_keys = ['cid']
 
 current = []
-passports_list = []
 passports = []
 valid_passport_count = 0
 
