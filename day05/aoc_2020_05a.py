@@ -13,46 +13,13 @@ handle.close()
 
 seats = []
 
-# def locate_row(row_string):
-#   '''
-#     7-character string of F(ront) and B(ack), 128 rows
-#     A letter indicates whether the seat is in the front (0 through 63) or the back (64 through 127)
-#     The next letter indicates which half of that region the seat is in, and so on until you're left with exactly one row.
-#   '''
-#   lower = 0
-#   upper = 127
-
-#   for x in row_string:
-#     gap = math.ceil((upper - lower) / 2)
-#     if x == 'F':
-#       upper = upper - gap
-#     else:
-#       lower = lower + gap
-
-#   return lower
-
-
-# def locate_col(cols_string):
-#   '''
-#     3-character string of L(eft) and R(ight), 8 columns
-#     The last three characters will be either L or R; 
-#     these specify exactly one of the 8 columns of seats on the plane (numbered 0 through 7). 
-#   '''
-#   lower = 0
-#   upper = 7
-
-#   for x in cols_string:
-#     gap = math.ceil((upper - lower) / 2)
-#     if x == 'L':
-#       upper = upper - gap
-#     else:
-#       lower = lower + gap
-
-#   return lower
 
 def locate(input_text, low_ind, high_ind, l_bound, u_bound):
   '''
-    Must be able to make that generic?
+    F(ront) and B(ack), 128 rows
+    3-character string of L(eft) and R(ight), 8 columns
+    A letter indicates whether the seat is in the front/left or the back/right
+    The next letter indicates which half of that region the seat is in, and so on until you're left with exactly one row.
   '''
   lower = l_bound
   upper = u_bound
