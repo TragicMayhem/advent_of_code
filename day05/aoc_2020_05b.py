@@ -1,7 +1,7 @@
 import sys
 import math
 
-print("Advent of Code 2020 - Day 5 part 1")
+print("Advent of Code 2020 - Day 5 part 2")
 
 dirpath = sys.path[0] + '\\'
 
@@ -40,4 +40,12 @@ for boarding_card in data:
   seats.append(row * 8 + col)
 
 print("Max seat ID: ", max(seats))
+
+seats = sorted(seats)
+
+for i in range(len(seats)):
+  if i == 0:
+    continue
+  if (seats[i] - seats[i-1] == 2):
+    print(f"Your seat: {seats[i] - 1}")
 
