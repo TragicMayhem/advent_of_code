@@ -23,7 +23,7 @@ with open(dirpath + filename, 'r') as file:
       tmp = []
     else:
       tmp = re.findall(r'(\d+) ([\w ]+) bag', x[1])
-      tmp = [(b, a) for (a,b) in tmp]
+      tmp = [(b, int(a)) for (a,b) in tmp]
     
     bag_rules[x[0]] = dict(tmp) if tmp else None
 
@@ -38,7 +38,7 @@ while bag_queue:
         print(k, "can contain search bag", search_bag)
         bag_queue.add(k)
         possible_bags.add(k)
-
-print(f"\n Total number of possible bags to hold '{search_bag}' is {len(possible_bags)}")
 print("Possible bags are:")
 pprint(possible_bags)
+print(f"\n Total number of possible bags to hold '{search_bag}' is {len(possible_bags)}")
+
