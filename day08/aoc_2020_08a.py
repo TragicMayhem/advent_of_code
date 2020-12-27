@@ -1,7 +1,7 @@
 import sys
 from pprint import pprint
 
-print("Advent of Code 2020 - Day X part 1")
+print("Advent of Code 2020 - Day 8 part 1")
 
 dirpath = sys.path[0] + '\\'
 
