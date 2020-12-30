@@ -28,6 +28,7 @@ def count_bags_new(bg, counts = {}):
       counts[sub_bag] = count_bags_new(sub_bag, counts)
       # Running total for the parent bag, is current sub_bags * qty, plus the number of this type
       running_total += (counts[sub_bag] * qty_of_sub_bag) + qty_of_sub_bag
+      return running_total
 
   # Dont need this as will default to store 0 (running total) 
   # if tmp == None: # Contains no bags, so store and return
