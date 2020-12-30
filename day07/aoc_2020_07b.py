@@ -50,6 +50,6 @@ with open(dirpath + filename, 'r') as file:
     
     bag_rules[x[0]] = dict(tmp) if tmp else None
 
-pprint(bag_rules)
+# pprint(bag_rules)
 print("")
 print(f"\n Total number of bags inside '{search_bag}' is {count_bags(search_bag)}")
