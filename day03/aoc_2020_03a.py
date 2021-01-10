@@ -16,16 +16,18 @@ handle.close()
 tree = "#"
 count_trees = 0
 pos_x = 0
-pattern_width = len(lines[0].rstrip()) - 1
+pattern_width = len(lines[0].rstrip()) - 1  # Width of the repeated pattern
 
-for pos_y in range(len(lines)):
+for pos_y in range(len(lines)):  
   lines[pos_y] = lines[pos_y].rstrip()
 
+  # check if the position is a tree ( >0 just to skip first iteration)
   if pos_y > 0 and lines[pos_y][pos_x] == tree:
     count_trees += 1      
 
-  pos_x += 3
+  pos_x += 3  # Move x position by 3
 
+  # if the x position is greater than the width of the pattern, reset appropriately to the left for the next line
   if pos_x > pattern_width:
     pos_x = pos_x - pattern_width - 1
 
