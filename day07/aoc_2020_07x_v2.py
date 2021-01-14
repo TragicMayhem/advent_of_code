@@ -36,7 +36,6 @@ def count_bags_new(bg, counts = None):
   running_total = 0
   
   if isinstance(tmp, dict):
-    pprint(tmp)
     for sub_bag, qty_of_sub_bag in tmp.items():
       counts[sub_bag] = count_bags_new(sub_bag, counts)  # Recursive call for sub_bag, store in counts (used by any recurcive call ny reference)
      
@@ -73,6 +72,5 @@ with open(dirpath + filename, 'r') as file:
 
 pprint(bag_rules)
 
-print("\n------------------------- NEW -------------------------\n")
-print("")
-print(f"\n Total number of bags inside '{search_bag}' is {count_bags_new(search_bag)}")
+print("\n------------------------------------------------")
+print(f"\n Total number of bags inside '{search_bag}' is {count_bags_new(search_bag)}\n")
