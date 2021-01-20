@@ -1,0 +1,5 @@
+_backup
+_tests
+.vscode/.ropeproject/objectdb
+.vscode/.ropeproject/config.py
+*.tmp
