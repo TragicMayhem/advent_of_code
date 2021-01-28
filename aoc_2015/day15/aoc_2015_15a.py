@@ -7,7 +7,7 @@ from pprint import pprint
 
 # https://adventofcode.com/2015/day/15
 
-print("Advent of Code 2015 - Day 15 part 1")
+print("Advent of Code 2015 - Day 15 part 1 and 2")
 print("....wait for it to run its computing a lot of permutations")
 dirpath = sys.path[0] + '\\'
 
