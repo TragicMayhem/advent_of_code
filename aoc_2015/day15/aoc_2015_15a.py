@@ -1,5 +1,4 @@
 import sys
-import re
 from collections import defaultdict
 import itertools 
 import math
