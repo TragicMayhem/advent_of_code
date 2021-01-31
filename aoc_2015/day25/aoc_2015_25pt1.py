@@ -49,7 +49,6 @@ with open(dirpath + filename, 'r') as file:
   r = 0 
   c = 0  
   previous_val = codes[0][0]
-  print("r, target_row, c, target_col", r, target_row, c, target_col)
 
   while r != target_row or c != target_col:
 
