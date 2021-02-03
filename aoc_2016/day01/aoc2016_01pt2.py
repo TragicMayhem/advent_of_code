@@ -16,6 +16,7 @@ visited_locations = []
 def calc_route(from_loc, dir, val):
   pos_ns, pos_ew = from_loc
   # print(from_loc, dir, val)
+  new_loc = None
   
   for p in range(val):
     if dir == 'N':  pos_ns += 1
@@ -24,7 +25,6 @@ def calc_route(from_loc, dir, val):
     if dir == 'W':  pos_ew -= 1
 
     # print(f'{(pos_ns, pos_ew)}')
-
     new_loc = (pos_ns, pos_ew)
         
     if new_loc in visited_locations:
