@@ -6,7 +6,13 @@ from pprint import pprint
 # https://adventofcode.com/2015/day/18
 
 print("Advent of Code 2015 - Day 18 part 1")
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 filename = 'test_part1.txt'  # 6*6 grid after 4 steps 4 lights on
 filename = 'input.txt'  # 821 lights on after 100 steps in a 100*100 grid

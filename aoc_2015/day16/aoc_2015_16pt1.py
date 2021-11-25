@@ -6,7 +6,13 @@ from collections import defaultdict
 # https://adventofcode.com/2015/day/16
 
 print("Advent of Code 2015 - Day 16 part 1")
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 dna_file = 'dna_target.txt'    # Best match part 1 = 213 (3 matches)
 filename = 'input.txt' 

@@ -6,7 +6,13 @@ from pprint import pprint
 
 print("Advent of Code 2015 - Day 9 part 1 and 2")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # filename = 'test.txt'  # London -> Dublin -> Belfast = 605
 filename = 'input.txt'  # Part 1 = 141 (Shortest)   Part 2 = 736 (Longest)

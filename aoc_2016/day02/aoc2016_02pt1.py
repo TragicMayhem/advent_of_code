@@ -4,7 +4,13 @@ import sys
 
 print("Advent of Code 2016 - Day 2 part 1")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 filename = 'test.txt'  # Code 1985
 filename = 'input.txt'  # Code 92435

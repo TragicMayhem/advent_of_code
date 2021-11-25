@@ -5,7 +5,13 @@ from pprint import pprint
 
 print("Advent of Code 2015 - Day 2 part 1")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # Test 2x3x4 - 2*6 + 2*12 + 2*8 = 52 plus 6 = 58
 # Test - 2*1 + 2*10 + 2*10 = 42 plus 1 = 43

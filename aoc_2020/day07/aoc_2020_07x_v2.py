@@ -7,7 +7,13 @@ print("Advent of Code 2020 - Day 7 part 2")
 # Second attempt at using recursion to solve this.
 # Works using a list to stop recursive calls there not needed. Improves execution time (I think)
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 filename = 'test.txt'  # 32   
 # filename = 'test2.txt'  # 126 

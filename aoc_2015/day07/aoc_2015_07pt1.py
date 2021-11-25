@@ -5,7 +5,13 @@ from pprint import pprint
 
 print("Advent of Code 2015 - Day 7 part 1")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # filename = 'test.txt'   #  d: 72 e: 507 f: 492 g: 114 h: 65412 i: 65079 x: 123 y: 456
 # filename = 'test0.txt'    #  a

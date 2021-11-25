@@ -7,7 +7,13 @@ from collections import defaultdict
 
 print("Advent of Code 2015 - Day 14 part 2")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # filename = 'test.txt'  # Dancer 689 points for 1000 seconds  (Comet 312)
 # race_time = 1000   # for test file

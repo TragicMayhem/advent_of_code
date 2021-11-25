@@ -3,7 +3,13 @@ from pprint import pprint
 
 print("Advent of Code 2015 - Day 23 part 1 and 2")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 filename = 'test.txt'    # a=2, b=0
 filename = 'input.txt'   # a=1 b=307

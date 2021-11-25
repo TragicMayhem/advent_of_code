@@ -6,7 +6,13 @@ from pprint import pprint
 
 print("Advent of Code 2015 - Day 6 part 2")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # filename = 'test.txt'  # 1,001,996 Though not a good test set of data
 # filename = 'test2.txt'  # 3,001,993 = 1m + 2k - 4 + 1 + 2m - 4 = 3m + 2k -7 

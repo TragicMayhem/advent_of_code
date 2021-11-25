@@ -5,7 +5,13 @@ from pprint import pprint
 
 print("Advent of Code 2015 - Day 7 part 2")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # Now, take the signal you got on wire a (46065), override wire b to that signal, and reset the other wires (including wire a). 
 # What new signal is ultimately provided to wire a?

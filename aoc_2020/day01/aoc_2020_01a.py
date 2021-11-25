@@ -2,7 +2,13 @@ import sys
 
 print("Advent of Code 2020 - Day 1 part 1")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # Input file is a list of numbers, one per line
 # Two of them add to 2020, that pair multiply together to get the answer

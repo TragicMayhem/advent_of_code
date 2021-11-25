@@ -2,7 +2,13 @@ import sys
 
 print("Advent of Code 2020 - Day 3 part 2")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # Input pattern of trees(#) and space(.)
 # This repeats to the the right indefinately

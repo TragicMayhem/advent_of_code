@@ -6,7 +6,13 @@ from pprint import pprint
 print("Advent of Code 2015 - Day 25 part 1")
 print(".....takes a few seconds to work out the grid of numbers....")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # filename = 'test.txt'  # row 1, column 2   = 18749137   result: 18749137
 # filename = 'test2.txt'  # row 2, column 4  = 7726640    result: 7726640

@@ -6,7 +6,13 @@ from itertools import combinations, permutations
 # https://adventofcode.com/2015/day/17
 
 print("Advent of Code 2015 - Day 17 part 1")
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 test = ['test.txt', 25]   # 3
 puzzle = ['input.txt', 150]  # 18 (ways to use 4 containers)

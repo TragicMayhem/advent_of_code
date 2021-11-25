@@ -9,7 +9,13 @@ print("Advent of Code 2015 - Day 24 part 1&2")
 print(".......patient, its running. some comments left in to show where it is up to.")
 print(".......it is A LOT of combinations and inefficient code.... but it got the right answer")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 filename = 'test.txt'  # Num parcels 10 with total weight of 60 Group target weight is 20.0  > 99
 filename = 'input.txt'  # 

@@ -9,7 +9,13 @@ import timeit
 
 print("Advent of Code 2015 - Day 15 part 1 and 2")
 print("....wait for it to run its computing a lot of permutations (approx 30-40s)")
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # input sample line: "Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8"
 

@@ -3,7 +3,13 @@ from pprint import pprint
 
 print("Advent of Code 2020 - Day 9 part 1")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # filename = 'test_5num_preamble.txt'  # 127
 filename = 'input.txt'   # 393911906 

@@ -3,7 +3,13 @@ import math
 
 print("Advent of Code 2020 - Day 5 part 2")
 
-dirpath = sys.path[0] + '\\'
+if sys.platform == "linux" or sys.platform == "linux2":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "darwin":
+  dirpath = sys.path[0] + "/"
+elif sys.platform == "win32":
+  dirpath = sys.path[0] + "\\\\"
+
 
 # handle = open(dirpath + 'test.txt', 'r')
 handle = open(dirpath + 'input.txt', 'r')
