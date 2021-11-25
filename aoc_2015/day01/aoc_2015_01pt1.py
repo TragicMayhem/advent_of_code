@@ -4,7 +4,16 @@ import sys
 
 print("Advent of Code 2015 - Day 1 part 1")
 
-dirpath = sys.path[0] + '\\'
+dir_separator = ''
+
+if sys.platform == "linux" or sys.platform == "linux2":
+  dir_separator = "/"
+elif sys.platform == "darwin":
+  dir_separator = "/"
+elif sys.platform == "win32":
+  dir_separator = "\\\\"
+
+dirpath = sys.path[0] + dir_separator
 
 # filename = 'test.txt'  # 3
 filename = 'input.txt'  # 74
