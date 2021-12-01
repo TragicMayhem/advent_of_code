@@ -12,8 +12,8 @@ elif sys.platform == "win32":
   dirpath = sys.path[0] + "\\\\"
 
 
-filename = 'test2.txt'  # 4
-filename = 'input.txt'  #
+#filename = 'test2.txt'  # 4
+filename = 'input.txt'  # 182
 
 directions = ['N', 'E', 'S', 'W']
 visited_locations = []
