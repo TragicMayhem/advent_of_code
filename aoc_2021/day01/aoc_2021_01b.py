@@ -1,5 +1,4 @@
 import sys
-from pprint import pprint
 
 # https://adventofcode.com/2021/day/1
 
