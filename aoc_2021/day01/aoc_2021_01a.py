@@ -1,7 +1,6 @@
-import sys
 # https://adventofcode.com/2021/day/1
 
-print("Advent of Code 2021 - Day 1a")
+import sys
 
 if sys.platform == "linux" or sys.platform == "linux2":
   dirpath = sys.path[0] + "/"
@@ -10,6 +9,7 @@ elif sys.platform == "darwin":
 elif sys.platform == "win32":
   dirpath = sys.path[0] + "\\\\"
 
+print("Advent of Code 2021 - Day 1a")
 
 filename = 'test.txt'  # 7 
 filename = 'input.txt'  # 1195 
