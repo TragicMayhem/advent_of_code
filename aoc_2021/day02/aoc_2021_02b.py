@@ -32,6 +32,5 @@ with open(dirpath + filename, 'r') as file:
     elif direction=='D':
       aim += int(l[1])
 
-print(instr)
 print(pos_h,pos_d)
 print("Total increase is", pos_d*pos_h)  
