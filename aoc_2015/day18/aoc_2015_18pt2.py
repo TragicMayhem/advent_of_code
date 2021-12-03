@@ -5,13 +5,17 @@ from pprint import pprint
 
 # https://adventofcode.com/2015/day/18
 
-print("Advent of Code 2015 - Day 18 part 1")
+print("Advent of Code 2015 - Day 18 part 2")
+
 if sys.platform == "linux" or sys.platform == "linux2":
   dirpath = sys.path[0] + "/"
 elif sys.platform == "darwin":
   dirpath = sys.path[0] + "/"
 elif sys.platform == "win32":
   dirpath = sys.path[0] + "\\\\"
+
+# InCOmPleTE DOESNT WORK - WHERE I STOPPED.......
+
 
 
 # filename = 'test_part2.txt'  # 6*6 grid after 5 steps 17 lights on - when the corners dont turn off

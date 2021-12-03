@@ -1,6 +1,10 @@
 # https://adventofcode.com/2021/day/1
 
+
+import pathlib
 import sys
+
+script_path = pathlib.Path(__file__).parent
 
 if sys.platform == "linux" or sys.platform == "linux2":
   dirpath = sys.path[0] + "/"
@@ -9,7 +13,7 @@ elif sys.platform == "darwin":
 elif sys.platform == "win32":
   dirpath = sys.path[0] + "\\\\"
 
-print("Advent of Code 2021 - Day 1b")
+print("Advent of Code 2021 - Day 1")
 
 input_test = 'test.txt'  # 5 
 input = 'input.txt'  #  
@@ -30,16 +34,11 @@ def part1(data):
 
     total = 0
     prev = 0
-
-    with open(dirpath + filename, 'r') as file:
-      lst = file.read().split('\n')   #  Read each line (split \n) and form a list of strings
-      lst = [int(n) for n in lst]
-
-      for x in lst[1:]:
-        total = total +1 if (x > prev) else total 
-        prev = x
+    for x in data[1:]:
+      total = total +1 if (x > prev) else total 
+      prev = x
       
-    print("Total increase is", total)  
+    return total
 
 
 def part2(data):
@@ -48,17 +47,13 @@ def part2(data):
     total = 0
     prev = 0
 
-    with open(dirpath + filename, 'r') as file:
-      lst = file.read().split('\n')   #  Read each line (split \n) and form a list of strings
-      lst = [int(n) for n in lst]
+    for i, x in enumerate(data[:-3]):
+      next = sum(data[i:i+3])
+      total = total + 1 if (next > prev) else total
+      prev = next
 
-      for i, x in enumerate(lst[:-3]):
-        next = sum(lst[i:i+3])
-        total = total + 1 if (next > prev) else total
-        prev = next
-
-    print("Total increase is", total)  
-
+    return total
+ 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
@@ -71,6 +66,29 @@ def solve(puzzle_input):
 
 if __name__ == "__main__":
     print ('main')
-    puzzle_input = dirpath + filename
-    solutions = solve(puzzle_input)
+
+    in_file_1 = pathlib.Path.cwd() / "in" / "input.xlsx"
+    out_file_1 = pathlib.Path.cwd() / "out" / "output.xlsx"
+    parts = ["in", "input.xlsx"]
+    in_file_3 = pathlib.Path.cwd().joinpath(*parts)
+
+    print(in_file_1)
+    print(type(in_file_1))
+    
+    print('__file__:    ', __file__)
+
+    print(script_path)
+    print(pathlib.Path.cwd())
+    # file_in = pathlib.Path.cwd() / "aoc_2021" / "day01" / "input_test.txt"
+    # file_in = script_path / "input.txt"
+    file_in = script_path / "input_test.txt"
+    print(file_in)
+    puzzle_input = pathlib.Path(file_in).read_text().strip()
+    print(puzzle_input)
+    print()
+
+    print(parse(file_in))
+
+    solutions = solve(file_in)
+
     print("\n".join(str(solution) for solution in solutions))

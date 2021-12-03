@@ -10,7 +10,7 @@ elif sys.platform == "win32":
   dirpath = sys.path[0] + "\\\\"
 
 
-print("Advent of Code 2021 - Day XXa")
+print("Advent of Code 2021 - Day 4a")
 
 filename = 'test.txt'  # 
 #filename = 'input.txt'  #  
