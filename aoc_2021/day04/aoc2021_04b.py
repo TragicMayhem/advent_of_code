@@ -10,11 +10,11 @@ elif sys.platform == "win32":
   dirpath = sys.path[0] + "\\\\"
 
 
-print("Advent of Code 2021 - Day 4a")
+print("Advent of Code 2021 - Day 4b")
 
-filename = 'test.txt'  # 4512 = 188 * 24
-# filename = 'test2.txt'  # 2607 - testing column win
-# filename = 'input.txt'  #  39984
+filename = 'test.txt'  # 148 * 13 = 1924
+filename = 'test2.txt'  # 2192?
+filename = 'input.txt'  #  8468
 
 
 def parse(puzzle_input):
@@ -70,6 +70,7 @@ def check_win(grid):
   return  win_col or win_row
 
 
+
 with open(dirpath + filename, 'r') as file:
   input=[line.split() for line in file]
 
@@ -81,23 +82,28 @@ with open(dirpath + filename, 'r') as file:
   winning_grid_id = 0
   last_ball = 0
 
-  for b in balls:
-    checked.append(b)
-    # print('\n<<<<< BALL >>>>>>>', b)
+  win_grid_ids = []
+  win_combis = []
 
+  while len(balls) > 0 and len(grids) > len(win_grid_ids):
+    b = balls.pop(0)
+    checked.append(b)
+
+    # print('\n<<<<< BALL >>>>>>>', b, 'WC', win_combis, '/', win_grid_ids)
+    
     for i in range(len(grids)):
 
-      for row in grids[i]:
+      if i not in win_grid_ids:
+        for row in grids[i]:
           search_and_mark(row, b)
-      
-      win_status = check_win(grids[i])
-      if win_status: break
+        win_status = check_win(grids[i])
 
-    if win_status:
-      winning_grid_id = i
-      last_ball = int(b)
-      break
+        if win_status: 
+          win_grid_ids.append(i)
+          win_combis.append([i, int(b)])
+          last_ball = int(b)
 
+winning_grid_id = win_grid_ids[-1]
 print('------------------')
 print('grid', winning_grid_id, 'ball', last_ball)
 print(grids[winning_grid_id])
