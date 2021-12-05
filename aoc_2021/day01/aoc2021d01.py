@@ -1,22 +1,12 @@
 # https://adventofcode.com/2021/day/1
 
-
 import pathlib
-import sys
 
 script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt'  # 5 
+input = script_path / 'input.txt'  #  
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
-
-print("Advent of Code 2021 - Day 1")
-
-input_test = 'test.txt'  # 5 
-input = 'input.txt'  #  
+file_in = input_test
 
 
 def parse(puzzle_input):
@@ -65,30 +55,11 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    print ('main')
 
-    in_file_1 = pathlib.Path.cwd() / "in" / "input.xlsx"
-    out_file_1 = pathlib.Path.cwd() / "out" / "output.xlsx"
-    parts = ["in", "input.xlsx"]
-    in_file_3 = pathlib.Path.cwd().joinpath(*parts)
-
-    print(in_file_1)
-    print(type(in_file_1))
-    
-    print('__file__:    ', __file__)
-
-    print(script_path)
-    print(pathlib.Path.cwd())
-    # file_in = pathlib.Path.cwd() / "aoc_2021" / "day01" / "input_test.txt"
-    # file_in = script_path / "input.txt"
-    file_in = script_path / "input_test.txt"
-    print(file_in)
-    puzzle_input = pathlib.Path(file_in).read_text().strip()
-    print(puzzle_input)
-    print()
-
-    print(parse(file_in))
+    # print(parse(file_in))
+    # print()
 
     solutions = solve(file_in)
 
+    print("Solutions")
     print("\n".join(str(solution) for solution in solutions))

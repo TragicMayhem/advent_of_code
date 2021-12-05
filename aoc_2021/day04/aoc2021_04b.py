@@ -1,32 +1,13 @@
-# https://adventofcode.com/2021/day/XX
+# https://adventofcode.com/2021/day/4
 
-import sys
+import pathlib
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
+script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt'  # 148 * 13 = 1924
+input_test2 = script_path / 'test.txt'  # 2192?
+input = script_path / 'input.txt'  #  8468
 
-
-print("Advent of Code 2021 - Day 4b")
-
-filename = 'test.txt'  # 148 * 13 = 1924
-filename = 'test2.txt'  # 2192?
-filename = 'input.txt'  #  8468
-
-
-def parse(puzzle_input):
-    """Parse input"""
-
-    with open(puzzle_input, 'r') as file:
-      lst = file.read().split('\n')   #  Read each line (split \n) and form a list of strings
-      input=[line.split() for line in file]
-      balls = [ball for line in input[0] for ball in line.split(',')]
-      del input[0]
-
-    return 1
+file_in = input #_test
 
 
 def make_grids(data):
@@ -70,8 +51,7 @@ def check_win(grid):
   return  win_col or win_row
 
 
-
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   input=[line.split() for line in file]
 
   balls = [ball for line in input[0] for ball in line.split(',')]
