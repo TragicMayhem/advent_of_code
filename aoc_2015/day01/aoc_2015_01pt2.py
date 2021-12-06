@@ -1,24 +1,20 @@
-import sys
-
 # https://adventofcode.com/2015/day/1
 
-print("Advent of Code 2015 - Day 1 part 2")
+import pathlib
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
+script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt' 
+input = script_path / 'input.txt'  
+ 
+file_in = input #_test
 
-# filename = 'test2.txt'  # 5
-filename = 'input.txt'  # 1795
-
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   lst = file.read()
 
   for x in range(len(lst)):
-    instructions_sofar = lst[:x+1]  # Use string slicing to take string upto and including current position
+    # Use string slicing to take string upto and including current position
+    instructions_sofar = lst[:x+1]  
+    
     up_sofar = instructions_sofar.count('(')
     down_sofar = instructions_sofar.count(')')
 

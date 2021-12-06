@@ -1,19 +1,16 @@
-import sys
-from pprint import pprint
-
 # https://adventofcode.com/2015/day/3
 
-print("Advent of Code 2015 - Day 3 part 2")
+from pprint import pprint
+import pathlib
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
+script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt' 
+input_test2 = script_path / 'test2.txt' 
+input = script_path / 'input.txt'  
+ 
+file_in = input#_test
 
-
-filename = 'test.txt'  # 11
+# filename = 'test.txt'  # 11
 # filename = 'test2.txt'  # 3
 # filename = 'input.txt'  # 2360
 
@@ -30,7 +27,7 @@ locations = {'0,0': 1}
 
 santas_move = True
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   directions = list(file.read())  
   for dir in directions:
     if santas_move:

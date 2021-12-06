@@ -1,21 +1,15 @@
-import sys
-from pprint import pprint
-
 # https://adventofcode.com/2015/day/2
 
-print("Advent of Code 2015 - Day 2 part 2")
+from pprint import pprint
+import pathlib
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
-
+script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt' 
+input = script_path / 'input.txt'  
+ 
+file_in = input_test
 
 # filename = 'test.txt'  # 34 and 14
-filename = 'input.txt'  # 
-
 
 #  Ribbon calculation is 
 #    the shortest distance around its sides, or the smallest perimeter of any one face
@@ -27,7 +21,7 @@ filename = 'input.txt'  #
 
 total = 0
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   lst = file.read().split('\n')   #  Read each line (split \n) and form a list of strings
   lst = [x.replace('x', ' ').split() for x in lst]  # Split on 'x' in each string ('1x2x3')
   
