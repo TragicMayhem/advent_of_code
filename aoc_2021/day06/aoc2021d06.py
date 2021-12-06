@@ -14,8 +14,7 @@ def model_fish(intial_fish, model_days):
   On day 0, new fish added (day 8) and that parent fish is rest to (dy 6)
   '''
   newfish=0
-
-  dict_fish_days = {"0":0, "1":0, "2":0, "3":0, "4":0, "5":0, "6":0, "7":0, "8":0}
+  dict_fish_days = {}
     
   for d_count in range(8):
     dict_fish_days[str(d_count)] = +intial_fish.count(d_count)
