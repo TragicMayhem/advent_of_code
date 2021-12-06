@@ -1,18 +1,19 @@
 # https://adventofcode.com/2021/day/1
 
-import sys
+import pathlib
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
+script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt'  # 5 
+input = script_path / 'input.txt'  #  
 
+<<<<<<< HEAD
 print("Advent of Code 2021 - Day 1")
 
 input_test = 'test.txt'  # 5 
 input = 'input.txt'  #  
+=======
+file_in = input_test
+>>>>>>> 80a36bdbe4ea494a78d875a4e5391776379c75b9
 
 
 def parse(puzzle_input):
@@ -30,16 +31,11 @@ def part1(data):
 
     total = 0
     prev = 0
-
-    with open(dirpath + filename, 'r') as file:
-      lst = file.read().split('\n')   #  Read each line (split \n) and form a list of strings
-      lst = [int(n) for n in lst]
-
-      for x in lst[1:]:
-        total = total +1 if (x > prev) else total 
-        prev = x
+    for x in data[1:]:
+      total = total +1 if (x > prev) else total 
+      prev = x
       
-    print("Total increase is", total)  
+    return total
 
 
 def part2(data):
@@ -48,17 +44,13 @@ def part2(data):
     total = 0
     prev = 0
 
-    with open(dirpath + filename, 'r') as file:
-      lst = file.read().split('\n')   #  Read each line (split \n) and form a list of strings
-      lst = [int(n) for n in lst]
+    for i, x in enumerate(data[:-3]):
+      next = sum(data[i:i+3])
+      total = total + 1 if (next > prev) else total
+      prev = next
 
-      for i, x in enumerate(lst[:-3]):
-        next = sum(lst[i:i+3])
-        total = total + 1 if (next > prev) else total
-        prev = next
-
-    print("Total increase is", total)  
-
+    return total
+ 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
@@ -70,7 +62,11 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":
-    print ('main')
-    puzzle_input = dirpath + filename
-    solutions = solve(puzzle_input)
+
+    # print(parse(file_in))
+    # print()
+
+    solutions = solve(file_in)
+
+    print("Solutions")
     print("\n".join(str(solution) for solution in solutions))
