@@ -8,7 +8,7 @@ input = script_path / 'input.txt'  #  390011 for 80d   1746710169834 for 256d
 
 file_in = input #_test
 
-def model_fish(intial_fish, model_days):
+def model_fish(initial_fish, model_days):
   '''
   Take in the initial list of fish and use dictionaries to count the number of fish for the model_days
   On day 0, new fish added (day 8) and that parent fish is rest to (dy 6)
@@ -17,7 +17,7 @@ def model_fish(intial_fish, model_days):
   dict_fish_days = {}
     
   for d_count in range(8):
-    dict_fish_days[str(d_count)] = +intial_fish.count(d_count)
+    dict_fish_days[str(d_count)] = +initial_fish.count(d_count)
 
   for d in range(model_days):
     for k,v in dict_fish_days.items():
