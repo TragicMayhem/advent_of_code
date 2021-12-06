@@ -72,3 +72,6 @@ for i in range(grid_size):
       tally += 1
 
 print("Tally:", tally)
+
+# Use List comprehension to the same as above
+print("Tally v2:", len([x for a in grid for x in a if x > 1]))
