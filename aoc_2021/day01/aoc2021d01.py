@@ -1,6 +1,7 @@
 # https://adventofcode.com/2021/day/1
 
 import pathlib
+import time
 
 script_path = pathlib.Path(__file__).parent
 input_test = script_path / 'test.txt'  # 5 
@@ -47,19 +48,22 @@ def part2(data):
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
+    times=[]
+
     data = parse(puzzle_input)
+    
+    times.append(time.perf_counter())
     solution1 = part1(data)
+    times.append(time.perf_counter())
     solution2 = part2(data)
+    times.append(time.perf_counter())
+    
+    return solution1, solution2, times
 
-    return solution1, solution2
-
-
-if __name__ == "__main__":
-
-    # print(parse(file_in))
-    # print()
+if __name__ == "__main__":    # print()
 
     solutions = solve(file_in)
-
-    print("Solutions")
-    print("\n".join(str(solution) for solution in solutions))
+    print()
+    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
+    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
+    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

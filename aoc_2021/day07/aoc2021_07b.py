@@ -39,7 +39,8 @@ if __name__ == "__main__":
         answers[str(i)] += (t*(t+1))/2
   
   # print(answers)
-  print("Least fuel:",min(answers.values()))
+  print(f"Least fuel: {min(answers.values()):.0f}")
+  print(f"Least fuel: {min(answers.values()):,.0f}")
 
   t2 = time.perf_counter()
-  print("Time", t2-t1)
+  print(f"Execution: {t2-t1:.4f} seconds")
