@@ -4,8 +4,8 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt'  
-input = script_path / 'input.txt'  #  
+input_test = script_path / 'test.txt'  # 168
+input = script_path / 'input.txt'  #  92881128
 
 file_in = input #_test
 
@@ -13,7 +13,7 @@ file_in = input #_test
 # input - using list of range and sum
 # Least fuel: 92881128 Time 26.4 
 # input - using n(n+1)/2
-# Least fuel: 331067 Time 0.97
+# Least fuel: 331067 Time 0.97 on ubuntu laptop / 2s on mac
 
 answers = {}
 
@@ -22,7 +22,7 @@ if __name__ == "__main__":
   with open(file_in, 'r') as file:
     data=[[int(x) for x in row] for row in [line.split(',') for line in file]]
     data=data.pop()
-    print(data)
+    # print(data)
 
     t1 = time.perf_counter()
 
@@ -36,8 +36,8 @@ if __name__ == "__main__":
         # Slower version using range and lists
         # gap = list(range(1, abs(crabpos - i)+1))
         t=abs(crabpos - i)
-        answers[str(i)] += t
-
+        answers[str(i)] += (t*(t+1))/2
+  
   # print(answers)
   print("Least fuel:",min(answers.values()))
 
