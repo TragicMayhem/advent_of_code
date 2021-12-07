@@ -1,12 +1,19 @@
 # https://adventofcode.com/2021/day/7
 
 import pathlib
+import time
 
 script_path = pathlib.Path(__file__).parent
 input_test = script_path / 'test.txt'  
 input = script_path / 'input.txt'  #  
 
 file_in = input #_test
+
+# TIME TESTS
+# input - using list of range and sum
+# Least fuel: 92881128 Time 26.4 
+# input - using n(n+1)/2
+# Least fuel: 331067 Time 0.97
 
 answers = {}
 
@@ -17,16 +24,22 @@ if __name__ == "__main__":
     data=data.pop()
     print(data)
 
+    t1 = time.perf_counter()
+
     min_pos=min(data)
     max_pos=max(data)
 
-    for i in range(min_pos+1,max_pos+1):
-      print(i)
+    for i in range(min_pos+1, max_pos+1):
       answers[str(i)] = 0
+
       for crabpos in data:
-        crab_fuel = abs(crabpos - i)
-        answers[str(i)] += crab_fuel
+        # Slower version using range and lists
+        # gap = list(range(1, abs(crabpos - i)+1))
+        t=abs(crabpos - i)
+        answers[str(i)] += t
 
-  print(answers)
-
+  # print(answers)
   print("Least fuel:",min(answers.values()))
+
+  t2 = time.perf_counter()
+  print("Time", t2-t1)
