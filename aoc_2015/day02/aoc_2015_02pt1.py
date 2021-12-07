@@ -1,30 +1,24 @@
-import sys
-from pprint import pprint
-
 # https://adventofcode.com/2015/day/2
 
-print("Advent of Code 2015 - Day 2 part 1")
+from pprint import pprint
+import pathlib
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
-
+script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt' 
+input = script_path / 'input.txt'  
+ 
+file_in = input_test
 
 # Test 2x3x4 - 2*6 + 2*12 + 2*8 = 52 plus 6 = 58
 # Test - 2*1 + 2*10 + 2*10 = 42 plus 1 = 43
-# filename = 'test.txt'  # 58 and 43
-
-filename = 'input.txt'  # 1588178
-
+# filename = 'test.txt'  # 58 and 43 = 101
+# 'input.txt'  # 1588178
 
 # Calculation is 2*l*w + 2*w*h + 2*h*l plus area of smallest side
 
 total = 0
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   lst = file.read().split('\n')   #  Read each line (split \n) and form a list of strings
   lst = [x.replace('x', ' ').split() for x in lst]  # Split on 'x' in each string ('1x2x3')
   

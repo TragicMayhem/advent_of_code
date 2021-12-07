@@ -1,21 +1,18 @@
-import sys
-from pprint import pprint
-
 # https://adventofcode.com/2015/day/3
 
-print("Advent of Code 2015 - Day 3 part 1")
+from pprint import pprint
+import pathlib
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
-
+script_path = pathlib.Path(__file__).parent
+input_test = script_path / 'test.txt' 
+input_test2 = script_path / 'test2.txt' 
+input = script_path / 'input.txt'  
+ 
+file_in = input#_test
 
 # filename = 'test.txt'  # 2 
 # filename = 'test2.txt'  # 4
-filename = 'input.txt'  # 2592
+# filename = 'input.txt'  # 2592
 
 # Begins by delivering a present to the house at his starting location
 # Moves are always exactly one house to the north (^), south (v), east (>), or west (<). 
@@ -25,7 +22,7 @@ x_pos = y_pos = 0
 
 locations = {'0,0': 1}
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   directions = list(file.read())  
   for dir in directions:
     if dir == '^': y_pos += 1

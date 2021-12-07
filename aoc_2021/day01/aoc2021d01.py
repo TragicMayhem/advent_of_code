@@ -5,15 +5,8 @@ import pathlib
 script_path = pathlib.Path(__file__).parent
 input_test = script_path / 'test.txt'  # 5 
 input = script_path / 'input.txt'  #  
-
-<<<<<<< HEAD
-print("Advent of Code 2021 - Day 1")
-
-input_test = 'test.txt'  # 5 
-input = 'input.txt'  #  
-=======
+ 
 file_in = input_test
->>>>>>> 80a36bdbe4ea494a78d875a4e5391776379c75b9
 
 
 def parse(puzzle_input):
