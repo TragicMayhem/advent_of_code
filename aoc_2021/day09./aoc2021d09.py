@@ -1,36 +1,37 @@
-# https://adventofcode.com/2021/day/8
+# https://adventofcode.com/2021/day/9
 
 import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt'  # 5 
-input = script_path / 'input.txt'  #  
+input_test = script_path / 'test.txt'  # 
+input = script_path / 'input.txt'  # 
  
-file_in = input_test
+file_in = input #_test
 
 
 def parse(puzzle_input):
-    """Parse input"""
+    """Parse input - each line of 10 number signals then 4-digit number
+    """
 
     with open(puzzle_input, 'r') as file:
-      lst = file.read().split('\n')   
+      data = file.read().split('\n')
+    #   data = [d.split(' | ') for d in file.read().split('\n')]
 
-    return lst #[int(n) for n in lst]
-
+    return data
 
 
 def part1(data):
     """Solve part 1""" 
-
-      
+                  
     return 1
 
 
 def part2(data):
     """Solve part 2"""   
-
-
+   
+    print("PART 2")
+     
     return 1
  
 
