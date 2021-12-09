@@ -1,21 +1,19 @@
-import sys
-from pprint import pprint
-
 # https://adventofcode.com/2015/day/7
 
-print("Advent of Code 2015 - Day 7 part 1")
+import pathlib
+import re
+from pprint import pprint
 
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
+script_path = pathlib.Path(__file__).parent
+input = script_path / 'input.txt'  
+input_test = script_path / 'test.txt' 
+input_test2 = script_path / 'test2.txt' 
 
+file_in = input#_test
 
 # filename = 'test.txt'   #  d: 72 e: 507 f: 492 g: 114 h: 65412 i: 65079 x: 123 y: 456
 # filename = 'test0.txt'    #  a
-filename = 'input.txt'  # a = 46065
+# filename = 'input.txt'  # a = 46065
 
 # Input pattern  
 #    {change} -> {target wire}
@@ -81,7 +79,7 @@ def complete_wire(name, wires = None):
   return wires[name]
 
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   lst = file.read().split('\n')
   lst = [x.replace('->', '').split() for x in lst]  # Split on 'x' in each string ('1x2x3')
 

@@ -1,21 +1,18 @@
-import sys
+# https://adventofcode.com/2015/day/6
+
+import pathlib
 import re
 from pprint import pprint
 
-# https://adventofcode.com/2015/day/6
+script_path = pathlib.Path(__file__).parent
+input = script_path / 'input.txt'  
+input_test = script_path / 'test.txt' 
+input_test2 = script_path / 'test2.txt' 
 
-print("Advent of Code 2015 - Day 6 part 1")
-
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
-
+file_in = input#_test
 
 # filename = 'test.txt'  # 1,000,000 - 1,000 - 4 = 998,996
-filename = 'input.txt'  # 400,410  (Runs slowly!)
+# filename = 'input.txt'  # 400,410  (Runs slowly!)
 
 # Grid = 0,0 to 999,999
 # Input: (turn on|turn off|togggle) x1,y1 through x2,y2
@@ -40,7 +37,7 @@ def update_lights(change, st, en):
   return counter
 
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   lst = file.read().split('\n')
 
   for item in lst:

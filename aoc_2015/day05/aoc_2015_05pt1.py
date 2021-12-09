@@ -1,21 +1,17 @@
-import sys
+# https://adventofcode.com/2015/day/5
+
+import pathlib
 import re
 from pprint import pprint
 
-# https://adventofcode.com/2015/day/5
+script_path = pathlib.Path(__file__).parent
+input = script_path / 'input.txt'  
+input_test = script_path / 'test.txt' 
+input_test2 = script_path / 'test2.txt' 
 
-print("Advent of Code 2015 - Day 5 part 1")
-
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
-
-
-filename = 'test.txt'  # nice, nice, naughty, naughty, naughty = 2 nice
-filename = 'input.txt'  # 238
+file_in = input#_test
+# filename = 'test.txt'  # nice, nice, naughty, naughty, naughty = 2 nice
+# filename = 'input.txt'  # 238
 
 # A nice string is one with all of the following properties:
 # It contains at least three vowels (aeiou only), like aei, xazegov, or aeiouaeiouaeiou.
@@ -25,7 +21,7 @@ filename = 'input.txt'  # 238
 anti_list = ['ab', 'cd', 'pq', 'xy']
 total_nice = 0
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   lst = file.read().split('\n')   
   
 for current_string in lst:

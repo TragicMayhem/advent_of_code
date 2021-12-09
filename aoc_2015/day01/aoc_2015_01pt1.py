@@ -3,8 +3,9 @@
 import pathlib
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt' 
 input = script_path / 'input.txt'  
+input_test = script_path / 'test.txt' 
+ 
  
 file_in = input_test
 

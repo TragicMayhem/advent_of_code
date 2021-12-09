@@ -1,21 +1,18 @@
-import sys
+# https://adventofcode.com/2015/day/5
+
+import pathlib
 import re
 from pprint import pprint
 
-# https://adventofcode.com/2015/day/5
-
-print("Advent of Code 2015 - Day 5 part 3")
-
-if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
-elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
-
-
+script_path = pathlib.Path(__file__).parent
+input = script_path / 'input.txt'
+input_test = script_path / 'test.txt' 
+input_test2 = script_path / 'test2.txt' 
+  
+ 
+file_in = input#_test
 # filename = 'test2.txt'  # nice, nice, naughty, naughty = 2 nice
-filename = 'input.txt'  # 69
+# filename = 'input.txt'  # 69
 
 # A nice string is one with all of the following properties:
 # It contains a pair of any two letters that appears at least twice in the string without overlapping, like xyxy (xy) or aabcdefgaa (aa), but not like aaa (aa, but it overlaps).
@@ -23,7 +20,7 @@ filename = 'input.txt'  # 69
 
 total_nice = 0
 
-with open(dirpath + filename, 'r') as file:
+with open(file_in, 'r') as file:
   lst = file.read().split('\n')   
   
 for current_string in lst:

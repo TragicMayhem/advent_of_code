@@ -4,9 +4,9 @@ from pprint import pprint
 import pathlib
 
 script_path = pathlib.Path(__file__).parent
+input = script_path / 'input.txt'  
 input_test = script_path / 'test.txt' 
 input_test2 = script_path / 'test2.txt' 
-input = script_path / 'input.txt'  
  
 file_in = input#_test
 
@@ -52,7 +52,7 @@ with open(file_in, 'r') as file:
 
     santas_move = not santas_move
     
-pprint(locations)
+# pprint(locations)
 
 print(f'\nTotal houses visited at least once = {len(locations)}\n')
 
