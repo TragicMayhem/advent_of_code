@@ -16,6 +16,7 @@ def parse(puzzle_input):
 
     with open(puzzle_input, 'r') as file:
         data = file.read().split('\n')
+        print(data)
     return data
 
 
@@ -29,9 +30,10 @@ def part1(data):
 
     seq = []
     points = []
+    print(len(data))
 
     for d in data:
-        # print("\n",d)
+        print("\n",d)
         
         found = True
         check = d
@@ -41,7 +43,7 @@ def part1(data):
             else:
                 found = False
         
-        # print("Check",check)
+        print("Check",check)
 
         #add all, then filter out and then sort in one statement?
         closing = dict()
@@ -54,12 +56,12 @@ def part1(data):
         if check.find('>') > 0:
             closing[">"] = check.find('>')
 
-        # print(closing)
+        print(closing)
 
         lowest = None
         error_char = ''
         for k, v in closing.items():
-            # print(k,v)
+            print(k,v)
             if lowest == None or v < lowest:
                 lowest = v
                 error_char = k
@@ -72,10 +74,10 @@ def part1(data):
             points.append(1197)
         elif error_char == '>': 
             points.append(25137)
-        # print("answer",lowest, error_char,"points",points)
+        print("answer",lowest, error_char,"points",points)
 
         
-    # print(points)   
+    print(points)   
 
     return sum(points)
 
@@ -83,60 +85,9 @@ def part1(data):
 def part2(data):
     """Solve part 2"""   
    
-    closing_seq = []
-    scores = []
-
-    for d in data:
-        found = True
-        check = d
-        while found:
-            if '()' in check or '[]' in check or '{}' in check or '<>' in check:
-                check = check.replace('()','').replace('[]','').replace('{}','').replace('<>','')
-            else:
-                found = False
-
-        #add all, then filter out and then sort in one statement?
-        if check.find(')') > 0 or check.find(']') > 0 or check.find('}') > 0 or check.find('>') > 0:
-            pass
-        else:
-            # print(check)
-            # fix_list.append(check)
-            closing_seq.append(check.replace('(',')').replace('[',']').replace('{','}').replace('<','>')[::-1])
-
-    # print("FIX\n", closing_seq)
- 
-    # for f in fix_list:
-    #     closing = f.replace('(',')').replace('[',']').replace('{','}').replace('<','>')[::-1]
-    #     print(closing)
-
-    # scores
-
-    for i, line in enumerate(closing_seq):
-        # print(i,line)
-        score = 0
-        for c, char in enumerate(line):
-
-            score *= 5
-            if char == ')':
-                score += 1
-                continue
-            if char == ']':
-                score += 2
-                continue
-            if char == '}':
-                score += 3
-                continue
-            if char == '>':
-                score += 4
-                continue 
-        scores.append(score)
-
-        # print(scores)
-    
-    scores.sort()
-    ans = scores[int(len(scores)/2)]
- 
-    return ans
+    print("PART 2")
+     
+    return 1
  
 
 def solve(puzzle_input):
