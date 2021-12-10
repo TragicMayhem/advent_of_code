@@ -4,10 +4,10 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt'  # 5 
-input = script_path / 'input.txt'  #  
+input = script_path / 'input.txt'  #  1195 / 1235
+input_test = script_path / 'test.txt'  # 7 / 5 
  
-file_in = input_test
+file_in = input#_test
 
 
 def parse(puzzle_input):
