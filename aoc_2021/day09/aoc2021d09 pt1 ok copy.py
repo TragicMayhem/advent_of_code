@@ -4,8 +4,8 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt'  # 
-input = script_path / 'input.txt'  # 
+input = script_path / 'input.txt'  # 550
+input_test = script_path / 'test.txt'  # 15 / 
  
 file_in = input_test
 

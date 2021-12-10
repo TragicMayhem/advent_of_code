@@ -4,20 +4,18 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
+input = script_path / 'input.txt'  # Answers: 245 / 983026
 input_test = script_path / 'test.txt'  # 10 lines: 26 / 61229
 input_test2 = script_path / 'test2.txt'  # 3 lines: 5 / 23528
-input = script_path / 'input.txt'  # Answers: 245 / 983026
  
 file_in = input #_test
 
 
 def parse(puzzle_input):
-    """Parse input - each line of 10 number signals then 4-digit number
-    """
+    """Parse input - each line of 10 number signals then 4-digit number"""
 
     with open(puzzle_input, 'r') as file:
       data = [d.split(' | ') for d in file.read().split('\n')]
-
     return data
 
 

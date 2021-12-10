@@ -4,15 +4,14 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt'  # 
-input = script_path / 'input.txt'  # 
+input = script_path / 'input.txt'  # 316851 / 2182912364
+input_test = script_path / 'test.txt'  # 26397 / 288957
  
 file_in = input #_test
 
 
 def parse(puzzle_input):
-    """Parse input - each line of 10 number signals then 4-digit number
-    """
+    """Parse input"""
 
     with open(puzzle_input, 'r') as file:
         data = file.read().split('\n')
@@ -23,16 +22,13 @@ def part1(data):
     """Solve part 1""" 
 
     # ( ) [] <>  {}
-    SCORES = {')': 3, ']': 57, '}': 1197, '>': 25137}
-    open_seq = ['(','[','{','<']
-    close_seq = [')',']','}','>']
-
+    # SCORES = {')': 3, ']': 57, '}': 1197, '>': 25137}
+    # open_seq = ['(','[','{','<']
+    # close_seq = [')',']','}','>']
     seq = []
     points = []
 
     for d in data:
-        # print("\n",d)
-        
         found = True
         check = d
         while found:
@@ -41,8 +37,6 @@ def part1(data):
             else:
                 found = False
         
-        # print("Check",check)
-
         #add all, then filter out and then sort in one statement?
         closing = dict()
         if check.find(')') > 0:
@@ -54,12 +48,9 @@ def part1(data):
         if check.find('>') > 0:
             closing[">"] = check.find('>')
 
-        # print(closing)
-
         lowest = None
         error_char = ''
         for k, v in closing.items():
-            # print(k,v)
             if lowest == None or v < lowest:
                 lowest = v
                 error_char = k
@@ -72,10 +63,6 @@ def part1(data):
             points.append(1197)
         elif error_char == '>': 
             points.append(25137)
-        # print("answer",lowest, error_char,"points",points)
-
-        
-    # print(points)   
 
     return sum(points)
 
@@ -99,20 +86,9 @@ def part2(data):
         if check.find(')') > 0 or check.find(']') > 0 or check.find('}') > 0 or check.find('>') > 0:
             pass
         else:
-            # print(check)
-            # fix_list.append(check)
             closing_seq.append(check.replace('(',')').replace('[',']').replace('{','}').replace('<','>')[::-1])
 
-    # print("FIX\n", closing_seq)
- 
-    # for f in fix_list:
-    #     closing = f.replace('(',')').replace('[',']').replace('{','}').replace('<','>')[::-1]
-    #     print(closing)
-
-    # scores
-
     for i, line in enumerate(closing_seq):
-        # print(i,line)
         score = 0
         for c, char in enumerate(line):
 
@@ -131,8 +107,6 @@ def part2(data):
                 continue 
         scores.append(score)
 
-        # print(scores)
-    
     scores.sort()
     ans = scores[int(len(scores)/2)]
  

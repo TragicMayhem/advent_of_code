@@ -1,12 +1,21 @@
 # https://adventofcode.com/2021/day/6
 
 import pathlib
+import time
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt'  # 5934 for 80d   26984457539 for 256d
-input = script_path / 'input.txt'  #  390011 for 80d   1746710169834 for 256d 
+input = script_path / 'input.txt' # 390011 for 80d   1746710169834 for 256d 
+input_test = script_path / 'test.txt' # 5934 for 80d   26984457539 for 256d 
+ 
+file_in = input#_test
 
-file_in = input #_test
+def parse(puzzle_input):
+    """Parse input"""
+    with open(puzzle_input, 'r') as file:
+      input=[[int(x) for x in row] for row in [line.split(',') for line in file]]
+      input=input[0]
+    return input
+
 
 def model_fish(initial_fish, model_days):
   '''
@@ -32,11 +41,24 @@ def model_fish(initial_fish, model_days):
   return sum(dict_fish_days.values())
 
 
-if __name__ == "__main__":
+def solve(puzzle_input):
+    """Solve the puzzle for the given input"""
+    times=[]
 
-  with open(file_in, 'r') as file:
-    data=[[int(x) for x in row] for row in [line.split(',') for line in file]]
-    lanternfish=data[0]
+    data = parse(puzzle_input)
+    
+    times.append(time.perf_counter())
+    solution1 = model_fish(data, 80) #part1(data)
+    times.append(time.perf_counter())
+    solution2 = model_fish(data, 256) #part2(data)
+    times.append(time.perf_counter())
+    
+    return solution1, solution2, times
 
-  print("Part 1 -  80 days", model_fish(lanternfish, 80))
-  print("Part 2 - 256 days", model_fish(lanternfish, 256))
+if __name__ == "__main__":    # print()
+
+    solutions = solve(file_in)
+    print()
+    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
+    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
+    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

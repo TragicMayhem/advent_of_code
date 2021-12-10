@@ -5,10 +5,10 @@ import time
 from collections import deque
 
 script_path = pathlib.Path(__file__).parent
-input_test = script_path / 'test.txt'  # 
-input = script_path / 'input.txt'  # 
+input = script_path / 'input.txt'  # 550 / 1100682
+input_test = script_path / 'test.txt'  # 15 /1134
  
-file_in = input #_test
+file_in = input_test
 
 grid_size_rows = 0
 grid_size_cols = 0
@@ -32,27 +32,29 @@ def get_cardinals(r, c, h, w):
 
 
 def path_search(grid, r, c, h, w):
-    values_to_check = deque([(r, c)])
+    
+    values_to_check = deque([(r, c)])  # Start queue off with initial coords
     visited = set()  # use set :doh: because unique, manages duplicate
 
-    # while there are cells to visit
+    # while there are cells to visit (checks queue automatically)
     while values_to_check:
         
-        # get the first one in the queue and visit it
+        # get the first one in the queue (popleft) and check if we have seen before (visited means skip)
         rc = values_to_check.popleft()
         if rc in visited:
             continue
 
+        # If haven't visited then add to list, then check the valid cardinal cells. 
+        # Reminder *rc is same as sending r,c (unpacks)
         visited.add(rc)
-
-        # check the cardinal cells
         for nr, nc in get_cardinals(*rc, h, w):
-            # check its not 9 (edge) and it is new > add to queue
+            # check its not 9 (high point of basin) and it is new > add to queue to check
             if grid[nr][nc] != 9 and (nr, nc) not in visited:
                 values_to_check.append((nr, nc))
 
-    print(visited)
+    # print(visited)
     return visited
+
 
 def part1(data):
     grid = data[:]
@@ -74,7 +76,7 @@ def part1(data):
 
             if low_point:
                 total += val + 1
-                print("val+1", val+1,"tot", total)
+                # print("val+1", val+1,"tot", total)
     
     # Python way
     # for r, row in enumerate(grid):
@@ -89,9 +91,7 @@ def part2(data):
 
     grid = data[:]
     sizes=[]
-
     h, w  = len(grid), len(grid[0])
-    print("\nPart2:",w, h, grid)
 
     # path_search(grid, 0, 0, h, w)
     visited_coords = set()
@@ -99,7 +99,8 @@ def part2(data):
         for c in range(w):
             if grid[r][c] != 9 and (r, c) not in visited_coords:
                 current_coords = path_search(grid, r, c, h, w)
-                # Use sets to compare and store in visited_coords.  Same as visited_coords = visited or current_coords
+                # Use sets to compare and store in visited_coords.  
+                # Same as visited_coords = visited_coords or current_coords
                 visited_coords |= current_coords
                 sizes.append(len(current_coords))
 
@@ -129,50 +130,3 @@ if __name__ == "__main__":    # print()
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
     print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
-
-
-
-
-
-# def part1_old(data):
-#     """Solve part 1""" 
-
-#     risk=[]
-#     grid = data[:]
-#     grid_size_rows = len(grid)
-#     grid_size_cols = len(grid[0])
-
-#     print(grid_size_cols, grid_size_rows, grid)
-
-#     for r in range(grid_size_rows):
-#         for c in range(grid_size_cols):
-#             value=grid[r][c]
-#             # print("main",r,c, "value",value,"max", grid_size_rows,grid_size_cols)
-
-#             xposstart = 0 if r == 0 else r-1
-#             yposstart = 0 if c == 0 else c-1
-#             xposend = grid_size_rows if r+2 > grid_size_rows else r+2
-#             yposend = grid_size_cols if c+2 > grid_size_cols else c+2
-
-#             # print(xposstart,xposend,yposstart,yposend)
-#             tally=0    
-#             count=0
-#             for x in range(xposstart,xposend):
-#                 for y in range(yposstart,yposend):
-#                     # print(x,y,"value", value, "grid[x][y]",grid[x][y])
-#                     count+=1
-#                     if (x, y) == (r, c):
-#                         continue
-#                     else:
-#                         if int(value)<int(grid[x][y]):
-#                             tally+=1
-            
-#             # print("tally", r,c,":", tally)
-            
-#             if tally == count-1:
-#                 risk.append(int(value)+1)
-
-#         # print(risk)
-#         # print(sum(risk))
-
-#     return sum(risk)
