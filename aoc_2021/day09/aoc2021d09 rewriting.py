@@ -34,7 +34,7 @@ def get_cardinals(r, c, h, w):
 def path_search(grid, r, c, h, w):
     
     values_to_check = deque([(r, c)])  # Start queue off with initial coords
-    visited = set()  # use set :doh: because unique, manages duplicate
+    visited = set()  
 
     # while there are cells to visit (checks queue automatically)
     while values_to_check:

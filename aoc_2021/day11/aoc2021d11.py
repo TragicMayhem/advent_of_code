@@ -5,17 +5,19 @@ import time
 from collections import deque
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 
-input_test = script_path / 'test.txt'  # 
+input = script_path / 'input.txt'  # 1673 (100 steps) / 
+input_test = script_path / 'test.txt'  # 1656 (100 steps)
+input_test2 = script_path / 'test2.txt'  #
  
-file_in = input #_test
+file_in = input#_test
 
+steps = 100
 
-def get_cardinals(r, c, h, w):
-    for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-        rr, cc = (r + delta_r, c + delta_c)
-        if 0 <= rr < h and 0 <= cc < w:
-            yield (rr, cc)
+# def get_cardinals(r, c, h, w):
+#     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+#         rr, cc = (r + delta_r, c + delta_c)
+#         if 0 <= rr < h and 0 <= cc < w:
+#             yield (rr, cc)
 
 
 def get_all_neighbours(r, c, h, w):
@@ -25,90 +27,47 @@ def get_all_neighbours(r, c, h, w):
             yield (rr, cc)
 
 
+# def flash_cascade(grid, r, c, h, w, flashed = None):
+#     '''
+#         This is called when the value at (r,c) is a 9 (flash)
+#         So need to add +1 to all neighbours
+#         Then if the neighbour is now 9, call again with new parameters
+#         Return the count back to calling function
+#     '''
 
-def flash(i, j, queue = None):
-    '''
-    Take the name of wire and recursively workout the set value.
-    # '''
-    # print("\n-----\n:")
-    # if coords == None: coords = dict()
+#     if flashed == None: flashed = set()
+#     # print(" >> called",r,c,flashed)
 
-    # id = i+'-'+j
+#     if (r,c) in flashed:
+#         print("already flashed",r,c)
+#         return
 
-    # if id in coords.keys(): return coords.get(id)
- 
-    # get neighbours
-    # if 9 add to queue or recurse call
-    # when not 9 return
-
+#     flashed.add((r,c))
     
+#     for i, j in get_all_neighbours(r, c, h, w):     
+#         grid[i][j] += 1
 
-#   values = instructions[name]
-
-#   if len(values) == 1:  # SET
-#     # print("<1>", values)
-#     tmp = convert_int(values[0])
-#     wires[name] = tmp if isinstance(tmp, int) else complete_wire(tmp, wires)
-       
-#   elif len(values) == 2:  # NOT
-#     # print("<2>", values)
-#     tmp = convert_int(values[1])
-#     wires[name] = ~ tmp & 0xFFFF if isinstance(tmp, int) else ~ complete_wire(tmp, wires) & 0xFFFF
-
-#   elif len(values) == 3:  # AND, OR, LSHIFT, RSHIFT
-#     # print("<3>", values)
-#     left_op = convert_int(values[0])
-#     right_op = convert_int(values[2]) 
-
-#     if not isinstance(left_op, int):
-#       left_op = complete_wire(left_op, wires)
-
-#     if not isinstance(right_op, int):
-#       right_op = complete_wire(right_op, wires)
-      
-#     if isinstance(left_op, int) and isinstance(right_op, int):
-#       if "AND" in values: wires[name] = left_op & right_op
-#       if "OR" in values: wires[name] = left_op | right_op
-#       if "LSHIFT" in values: wires[name] = left_op << right_op
-#       if "RSHIFT" in values: wires[name] = left_op >> right_op
-  
-#   # print("END:", wires)
-
-    return 1
-
-
-
-def count_flash_cascade(grid, r, c, h, w):
+#         if grid[i][j] > 9:
+#             print("  >>> ",i,j)
+#             flash_cascade(grid, i, j, h, w, flashed)
+#             print("  <<< ",i,j)
     
-    # values_to_check = deque([(r, c)])  # Start queue off with initial coords
-    # visited = set()  # use set :doh: because unique, manages duplicate
+#     return len(flashed)
 
-    total = 0
 
-    # tovisit = get_all_neighbours(r,c,h,w)
+def set_flashes(grid, r, c, h, w):
+    
+    #Need to ignore ones that wont flash ()was setting all to -1 on each loop!
+    if grid[r][c] <= 9:
+        return
 
-    # # while there are cells to visit (checks queue automatically)
-    # while values_to_check:
-        
-    #     # get the first one in the queue (popleft) and check if we have seen before (visited means skip)
-    #     rc = values_to_check.popleft()
-    #     if rc in visited:
-    #         continue
-
-    #     # If haven't visited then add to list, then check the valid cardinal cells. 
-    #     # Reminder *rc is same as sending r,c (unpacks)
-    #     visited.add(rc)
+    grid[r][c] = -1
 
     for nr, nc in get_all_neighbours(r, c, h, w):
-        # check its not 9 (high point of basin) and it is new > add to queue to check
+        if grid[nr][nc] != -1:
+            grid[nr][nc] += 1
+            set_flashes(grid, nr, nc, h, w)
 
-        if grid[nr][nc] == 9:# and (nr, nc) not in visited:
-            # get_all_neighbours ==== count flashs
-
-            # add 1 to all neight then check again
-            return flash_cascade(grid, nr,nc,h,w)
-
-    return 0
 
 
 def parse(puzzle_input):
@@ -124,41 +83,73 @@ def parse(puzzle_input):
 def part1(data):
     """Solve part 1""" 
 
-    # print(list(get_all_neighbours(3,3,5,5)))
-
     grid = data[:] 
     h, w  = len(grid), len(grid[0])
-    flashes=0
-    print(grid,"\n",h,w)
-
-    # how to do in list comprehension?
-    for r, row in enumerate(grid):
-        print(row)
-        for c, vl in enumerate(row):    
-            grid[r][c] += 1
-
     flash_tally = 0
-    for r, row in enumerate(grid):
-        print(row)
-        for c, vl in enumerate(row):    
 
-            if vl == 9:
-                for nr,nc in get_all_neighbours(r,c,h,w):
-                    if grid[nr][nc] == 9:
-                        flash_tally += flash_cascade(grid,r,c,h,w)
-                        # cll again with this pos
+    for step in range(1, steps+1):
+        # print("Step", step)
+        # print("before", grid)
+        # how to do in list comprehension?
+        for r, row in enumerate(grid):
+            for c, vl in enumerate(row):    
+                grid[r][c] += 1
+         
+        for r, row in enumerate(grid):
+            for c, vl in enumerate(row):   
+                if vl > 9:
+                    set_flashes(grid, r, c, h, w)
 
+        # print("after",grid)
+        for r, row in enumerate(grid):
+            for c, vl in enumerate(row):   
+                if vl == -1:
+                    grid[r][c] = 0
+                    flash_tally += 1
+        # print("end",grid)
+    # print("end",grid)
 
-
-
-
-    return 1
+    return flash_tally
 
 
 def part2(data):
     """Solve part 2"""   
    
-    return 1
+    grid = data[:] 
+    h, w  = len(grid), len(grid[0])
+
+    # ARGH: Lesson - The copy of data is shallow copy, its references
+    # Because its a list of lists, the changes in part 1 changed the input data
+    # So Part 2 is starting from end of Part 1
+    # So the step counter should start from 100
+
+    for step in range(100, 100000):
+        # print("Step", step)
+        # print("before", grid)
+        # how to do in list comprehension?
+        flash_tally = 0
+        for r, row in enumerate(grid):
+            for c, vl in enumerate(row):    
+                grid[r][c] += 1
+         
+        for r, row in enumerate(grid):
+            for c, vl in enumerate(row):   
+                if vl > 9:
+                    set_flashes(grid, r, c, h, w)
+
+        # print("after",grid)
+        for r, row in enumerate(grid):
+            for c, vl in enumerate(row):   
+                if vl == -1:
+                    grid[r][c] = 0
+                    flash_tally += 1
+        # print("end",grid)
+
+        print("Flash tally at",step," is",flash_tally)
+        if flash_tally == h * w:
+            break
+
+    return step+1
  
 
 def solve(puzzle_input):
