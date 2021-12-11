@@ -44,7 +44,7 @@ def count_bags(bg):
       # print("  current k,v :", k, v)
       how_many_of_this_type = v
       sub_bags = count_bags(k)  # RECURSION - call to calculate sub_bag(s)
-
+  
       running_total = running_total + (sub_bags * how_many_of_this_type) + how_many_of_this_type
       # print("  > after sub_bags:", sub_bags, " how_many_of_this_type:", how_many_of_this_type, " val:", running_total)
     
