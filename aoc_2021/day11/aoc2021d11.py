@@ -26,7 +26,7 @@ def get_all_neighbours(r, c, h, w):
         if 0 <= rr < h and 0 <= cc < w:
             yield (rr, cc)
 
-
+# Tried recursion and counting and cant understand! Come back to it?
 # def flash_cascade(grid, r, c, h, w, flashed = None):
 #     '''
 #         This is called when the value at (r,c) is a 9 (flash)
@@ -56,8 +56,7 @@ def get_all_neighbours(r, c, h, w):
 
 
 def set_flashes(grid, r, c, h, w):
-    
-    #Need to ignore ones that wont flash ()was setting all to -1 on each loop!
+    #Need to ignore ones that wont flash. Without this sets all to -1 on each loop! Boom.
     if grid[r][c] <= 9:
         return
 
