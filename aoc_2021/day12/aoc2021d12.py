@@ -87,7 +87,7 @@ def navigate_extend_rules(routes, starting_cave, target):
 
             # Cant set the variable and then add to the queue. 
             # think its because of the passing as reference to objects. Not value. 
-            # Not sure what I did there, took a lot of print statements to figure out that!
+            # Not sure what I did, or why doesnt work. more investigation and some learning/research. Took a lot of print statements to figure out that!
             # If I use 
             #   visited_small_cave_twice = True
             #   cave_q.append((next, path_options, visited_small_cave_twice))
@@ -138,7 +138,7 @@ if __name__ == "__main__":    # print()
     runAllTests()
 
     solutions = solve(input)
-    print()
+    print('\nAOC')
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
     print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

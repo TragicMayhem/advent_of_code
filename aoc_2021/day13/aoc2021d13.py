@@ -1,4 +1,4 @@
-# https://adventofcode.com/2021/day/x
+# https://adventofcode.com/2021/day/13
 
 import pathlib
 import time
@@ -7,8 +7,6 @@ script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 
 input_test = script_path / 'test.txt'  # 
  
-file_in = input #_test
-
 
 def parse(puzzle_input):
     """Parse input """
@@ -47,19 +45,23 @@ def solve(puzzle_input):
     return solution1, solution2, times
 
 
-def runTests():
-    
-    data = parse(input_test)
-    solution1a = part1(data)
-    solution1b = part2(data)
+def runTest(test_file):
+    data = parse(test_file)
+    test_solution1 = part1(data)
+    test_solution2 = part2(data)
+    return test_solution1, test_solution2
+
+
+def runAllTests():
     
     print("Tests")
-    print(f'Test1.  Part1 {solution1a} Part 2 {solution1b}')
-    
+    a, b  = runTest(input_test)
+    print(f'Test1.  Part1: {a} Part 2: {b}')
+
 
 if __name__ == "__main__":    # print()
 
-    runTests()
+    runAllTests()
 
     solutions = solve(input)
     print('\nAOC')
