@@ -35,7 +35,7 @@ def part1(data):
             else:
                 found = False
         
-        #add all, then filter out and then sort in one statement?
+        #add all, then filter out and then sort in one statement? how?
         closing = dict()
         if check.find(')') > 0:
             closing[")"]=  check.find(')')
