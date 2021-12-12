@@ -1,34 +1,35 @@
 # https://adventofcode.com/2021/day/12
 
-from os import path
 import pathlib
 import time
 from collections import defaultdict
 from collections import deque
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 5178
-input_test = script_path / 'test.txt'  # 10 / 36
+input = script_path / 'input.txt'  # Right answers: 5178 / 130094   (~but test 2 gives wrong answer!)  LUCK?  WHY?
+input_test = script_path / 'test.txt'  # 10 / 36 matches
 input_test2 = script_path / 'test2.txt'  #  19 / 103
-input_test3 = script_path / 'test3.txt'  #  226 / 3509
- 
-file_in = input_test
+input_test3 = script_path / 'test3.txt'  #  226 / 3509 matches
 
 
 def parse(puzzle_input):
     """Parse input """
-    instr = defaultdict(list)
+    instructions = defaultdict(list)
     with open(puzzle_input, 'r') as file:
         data = [d.split('-') for d in file.read().split('\n')]
-        print(data)
-
-        for d in data:
-            instr[d[0]].append(d[1])
-            if d[0] != 'start':
-                instr[d[1]].append(d[0])
         
-        print(instr)
-    return instr    
+        # Process each instrcution both ways and check to not add start inside the list values
+        # But keep start as one of they keys to allow it to be processed as starting cave
+        for d in data:
+            posStart, posEnd = d
+
+            if posStart != 'start': 
+                instructions[posEnd].append(posStart)
+
+            if posEnd != 'start': 
+                instructions[posStart].append(posEnd)
+            
+    return instructions    
 
 
 def navigate(routes, cave, target):
@@ -63,65 +64,39 @@ def navigate(routes, cave, target):
     return running_total
 
 
-def navigate_extend(routes, cave, target):
-    small_cave_twice = False
-    cave_q = deque([(cave,{cave}, small_cave_twice)])
+def navigate_extend_rules(routes, starting_cave, target):
 
-    print(cave_q)
+    visited_small_cave_twice = False
+    cave_q = deque([(starting_cave,{starting_cave}, visited_small_cave_twice)])
     running_total = 0
 
     while cave_q:
+        current_cave, path_options, visited_small_cave_twice = cave_q.pop()
 
-        # Get the next one and list of path options and if we have already visited 2 small caves
-        current, path_opts, small_cave_twice = cave_q.pop()
-
-        print('  Next:',current,'/', path_opts, ' tot ', running_total, ' twice?', small_cave_twice)
-
-        # if the current point is the target (end) then new path so count and restart
-        if current == target:
-            print("  ++ at end add to path count")
+        if current_cave == target:
             running_total+=1
             continue
 
-        # if already done the point and its lower then need to skip
-        for c in routes[current]:
-            # print('loop', c)
-
-            # This time do the opposite, if not in list or cap then can go there, so add and then loop again
-            if c not in path_opts or c.isupper():
-                cave_q.append((c, path_opts | {c}, small_cave_twice ))
+        for next in routes[current_cave]:
+            if next not in path_options or next.isupper():
+                cave_q.append((next, path_options.union({next}), visited_small_cave_twice))
                 continue
 
-            if small_cave_twice:  # Means its not a new path, and we have already seen small cave twice, so need to skip
+            if visited_small_cave_twice:  
                 continue
 
-            #if here, then know its already been visited (small), and we havent broken the rule.
-            # so we can just add to the stack the same list (because it has the small cave in it)
-            # but set the small cave tracker to True to say we have now visited one small cave twice.
-            small_cave_twice = True
-            cave_q.append((c, path_opts, small_cave_twice))
+            # Cant set the variable and then add to the queue. 
+            # think its because of the passing as reference to objects. Not value. 
+            # Not sure what I did there, took a lot of print statements to figure out that!
+            # If I use 
+            #   visited_small_cave_twice = True
+            #   cave_q.append((next, path_options, visited_small_cave_twice))
+            # then it gives answer 27 instead of 36 (for test 1 - answer from AOC)
+            # Setting to True works, and for others tests.
+            cave_q.append((next, path_options, True))
             
     return running_total
 
-
-def part1(data):
-    """Solve part 1""" 
-    # Notes: 
-    # 'a' small visit 1 only. 'A' big caves visit multiple.  
-    # dont want CAP-CAP edge or infinite. Can we filter out edge conditions?
-
-    answer = navigate(data, 'start', 'end')
-
-    return answer
-
-
-def part2(data):
-    """Solve part 2"""   
-   
-    answer = navigate_extend(data, 'start', 'end')
-    print(answer)
-    return answer
- 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
@@ -130,30 +105,39 @@ def solve(puzzle_input):
     data = parse(puzzle_input)
     
     times.append(time.perf_counter())
-    solution1 = part1(data)
+    solution1 = navigate(data, 'start', 'end')
+
     times.append(time.perf_counter())
-    solution2 = part2(data)
+
+    solution2 = navigate_extend_rules(data, 'start', 'end')
     times.append(time.perf_counter())
     
     return solution1, solution2, times
 
 
-def test1s():
-    data = parse(input_test)
-    solution1 = part1(data)
-    data = parse(input_test2)
-    solution2 = part1(data)
-    data = parse(input_test3)
-    solution3 = part1(data)
-    
-    print(solution1)
-    print(solution2)
-    print(solution3)
+def runTest(test_file):
+    data = parse(test_file)
+    test_solution1 = navigate(data, 'start', 'end')
+    test_solution2 = navigate_extend_rules(data, 'start', 'end')
+    return test_solution1, test_solution2
 
+
+def runAllTests():
+    
+    print("Tests")
+    a, b  = runTest(input_test)
+    print(f'Test1.  Part1: {a} Part 2: {b}')
+    a, b  = runTest(input_test2)
+    print(f'Test3.  Part1: {a} Part 2: {b}')
+    a, b  = runTest(input_test3)
+    print(f'Test4.  Part1: {a} Part 2: {b}')
+    
 
 if __name__ == "__main__":    # print()
 
-    solutions = solve(file_in)
+    runAllTests()
+
+    solutions = solve(input)
     print()
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")

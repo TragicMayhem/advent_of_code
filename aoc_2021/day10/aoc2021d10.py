@@ -6,8 +6,6 @@ import time
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 316851 / 2182912364
 input_test = script_path / 'test.txt'  # 26397 / 288957
- 
-file_in = input #_test
 
 
 def parse(puzzle_input):
@@ -127,10 +125,27 @@ def solve(puzzle_input):
     
     return solution1, solution2, times
 
+
+def runTest(test_file):
+    data = parse(test_file)
+    test_solution1 = part1(data)
+    test_solution2 = part2(data)
+    return test_solution1, test_solution2
+
+
+def runAllTests():
+    
+    print("Tests")
+    a, b  = runTest(input_test)
+    print(f'Test1.  Part1: {a} Part 2: {b}')
+    
+
 if __name__ == "__main__":    # print()
 
-    solutions = solve(file_in)
-    print()
+    runAllTests()
+
+    solutions = solve(input)
+    print('\nAOC')
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
     print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

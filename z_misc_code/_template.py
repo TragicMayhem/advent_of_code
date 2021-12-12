@@ -46,10 +46,23 @@ def solve(puzzle_input):
     
     return solution1, solution2, times
 
+
+def runTests():
+    
+    data = parse(input_test)
+    solution1a = part1(data)
+    solution1b = part2(data)
+    
+    print("Tests")
+    print(f'Test1.  Part1 {solution1a} Part 2 {solution1b}')
+    
+
 if __name__ == "__main__":    # print()
 
-    solutions = solve(file_in)
-    print()
+    runTests()
+
+    solutions = solve(input)
+    print('\nAOC')
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
     print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

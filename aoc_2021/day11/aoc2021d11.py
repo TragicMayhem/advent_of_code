@@ -8,10 +8,9 @@ script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 1673 (100 steps) / 
 input_test = script_path / 'test.txt'  # 1656 (100 steps)
 input_test2 = script_path / 'test2.txt'  #
- 
-file_in = input#_test
 
 steps = 100
+
 
 def get_coords_cardinals(r, c, h, w):
     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):

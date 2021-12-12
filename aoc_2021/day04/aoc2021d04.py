@@ -6,9 +6,7 @@ import time
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  #  39984 / 8468
 input_test = script_path / 'test.txt'  # 4512 / 1924 
-input_test2 = script_path / 'test.txt'  # 2607 - testing column win
- 
-file_in = input_test
+input_test2 = script_path / 'test2.txt'  # 2607 - testing column win pt1 / 2192
 
 
 def make_grids(data):
@@ -165,10 +163,27 @@ def solve(puzzle_input):
     return solution1, solution2, times
 
 
+def runTest(test_file):
+    balls, data = parse(test_file)
+    test_solution1 = part1(balls, data)
+    test_solution2 = part2(balls, data)
+    return test_solution1, test_solution2
+
+
+def runAllTests():
+    
+    print("Tests")
+    a, b  = runTest(input_test)
+    print(f'Test1.  Part1: {a} Part 2: {b}')
+    a, b  = runTest(input_test2)
+    print(f'Test2.  Part1: {a} Part 2: {b}')
+
 if __name__ == "__main__":    # print()
 
-    solutions = solve(file_in)
-    print()
+    runAllTests()
+
+    solutions = solve(input)
+    print('\nAOC')
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
     print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

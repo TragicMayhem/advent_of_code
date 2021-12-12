@@ -87,45 +87,6 @@ def part2(data):
 
     '''
 
-    sizes=[]
-    grid = data[:]
-
-    h, w  = len(grid), len(grid[0])
-    print(w, h, grid)
-
-    current_basin = []
-    #check numbesr still there
-    
-    for r in range(h):
-        print("r", grid[r])
-        ix = 0  
-
-        #if grid r 0 is 9 then stop tally and restart
-        # if r is empty then skip to next
-        # if grid empty stop
-
-        if int(grid[r][0]) == 9:
-            # stop counting, end of basin, reset
-            basin_total = len(current_basin)
-            sizes.append(basin_total)
-            print("Total", basin_total)
-            # break
-
-        while ix < len(grid[r]):
-            print("ix",ix,len(grid[r]),grid[r][ix])
-            if int(grid[r][ix]) == 9:
-                break
-            
-            current_basin.append(int(grid[r].pop(0)))
-        
-        print("Current Basin", current_basin, "len", len(current_basin))
-        print("row now", grid[r])
-
-        ## setup for non 9s and next loop
-
-
-    print("Sizes",sizes)
-
     return 1
  
 
