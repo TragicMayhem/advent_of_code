@@ -1,0 +1,5 @@
+2021-12-12 21:25:47,308: DEBUG - Test debug message
+2021-12-12 21:25:47,308: INFO - Test info message
+2021-12-12 21:25:47,308: WARNING - Test warning message
+2021-12-12 21:25:47,308: ERROR - Test error message
+2021-12-12 21:25:47,309: CRITICAL - Test critical message
