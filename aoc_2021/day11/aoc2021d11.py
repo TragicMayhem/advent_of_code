@@ -13,14 +13,14 @@ file_in = input#_test
 
 steps = 100
 
-# def get_cardinals(r, c, h, w):
-#     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-#         rr, cc = (r + delta_r, c + delta_c)
-#         if 0 <= rr < h and 0 <= cc < w:
-#             yield (rr, cc)
+def get_coords_cardinals(r, c, h, w):
+    for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+        rr, cc = (r + delta_r, c + delta_c)
+        if 0 <= rr < h and 0 <= cc < w:
+            yield (rr, cc)
 
 
-def get_all_neighbours(r, c, h, w):
+def get_coords_around_all(r, c, h, w):
     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)):
         rr, cc = (r + delta_r, c + delta_c)
         if 0 <= rr < h and 0 <= cc < w:
@@ -62,7 +62,7 @@ def set_flashes(grid, r, c, h, w):
 
     grid[r][c] = -1
 
-    for nr, nc in get_all_neighbours(r, c, h, w):
+    for nr, nc in get_coords_around_all(r, c, h, w):
         if grid[nr][nc] != -1:
             grid[nr][nc] += 1
             set_flashes(grid, nr, nc, h, w)
