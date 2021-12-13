@@ -7,4 +7,4 @@ Includes
 - practice with python code as I learn
 - functions written that testing out
 - useful examples to help with AOC future problems (maybe)
-- experiments
+- experiment

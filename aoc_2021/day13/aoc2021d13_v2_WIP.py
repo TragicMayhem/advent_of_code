@@ -25,10 +25,27 @@ def parse(puzzle_input):
                 continue
             data.add((int(l[0]),int(l[1])))
 
-        # print(folds)
+        print(folds)
         # print(data)
 
     return data, folds
+
+
+def parseV2(puzzle_input):
+    """Parse input """
+    # data = set()   # not list, to deal with unique values where dots overlap
+    folds =  []
+
+    with open(puzzle_input, 'r') as file:
+        # This will look for the blank line in the file that separates the points and the fold instructions.
+        coords, foldinstr = file.read().split('\n\n')
+
+        # 1-line build set from tuples of each line of 'x,y' in the file (thats in coords list)
+        data = set(tuple(int(x) for x in pair.split(',')) for pair in coords.split('\n'))      
+        folds = list(list(x for x in instr[instr.index('=')-1:].split('=')) for instr in foldinstr.split('\n'))
+
+    return data, folds
+
 
 
 def isVertical(axis):
@@ -70,15 +87,9 @@ def part1(d, f):
 def showGrid(d):
     print()
     grid=list(d)
-    
-    size_x = -1
-    size_y =-1
 
-    for x, y in d:
-        if x>size_x:
-            size_x = x
-        if y>size_y:
-            size_y = y
+    size_x = max([position[0] for position in grid])
+    size_y = max([position[1] for position in grid]) + 1
 
     print('Grid', size_x, 'by', size_y)
 
@@ -136,6 +147,8 @@ def runAllTests():
 
 
 if __name__ == "__main__":    # print()
+
+    parseV2(input_test)
 
     runAllTests()
      
