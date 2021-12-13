@@ -2,6 +2,7 @@
 
 import pathlib
 import time
+from types import CoroutineType
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 655 / 
@@ -27,6 +28,36 @@ def parse(puzzle_input):
 
         # print(folds)
         # print(data)
+
+    return data, folds
+
+
+def parseV2(puzzle_input):
+    """Parse input """
+    data = set()   # not list, to deal with unique values where dots overlap
+    folds =  []
+
+    with open(puzzle_input, 'r') as file:
+        # This will look for the blank line in the file that separates the points and the fold instructions.
+        coords, folds = file.read().split('\n\n')
+        print(coords)
+        print(folds)
+        # lines = [d.split(',') for d in file.read().split('\n')]
+
+        for c in coords.split('\n'):
+            print(c)
+            print(c.split(','))
+            x = [int(x) for x in [x for x in c.split(',')]]
+            print(x)
+
+            # posx, posy =  int(x), int(y) for x,y in c.split(',')
+            # data.add(pos)
+
+        for f in folds:
+            folds.append(f[0][f[0].index('=')-1:].split('='))
+
+        print(folds)
+        print(data)
 
     return data, folds
 
@@ -136,6 +167,8 @@ def runAllTests():
 
 
 if __name__ == "__main__":    # print()
+
+    parseV2(input_test)
 
     runAllTests()
      
