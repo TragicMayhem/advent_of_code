@@ -40,21 +40,22 @@ def parseV2(puzzle_input):
     with open(puzzle_input, 'r') as file:
         # This will look for the blank line in the file that separates the points and the fold instructions.
         coords, folds = file.read().split('\n\n')
-        print(coords)
-        print(folds)
+        print("coords\n",coords)
+        print("folds\n",folds)
         # lines = [d.split(',') for d in file.read().split('\n')]
 
         for c in coords.split('\n'):
-            print(c)
+
             print(c.split(','))
+            # x = [int(x) for x in [x for x in c.split(',')]]
             x = [int(x) for x in [x for x in c.split(',')]]
-            print(x)
+            print("x",x)
 
             # posx, posy =  int(x), int(y) for x,y in c.split(',')
             # data.add(pos)
 
-        for f in folds:
-            folds.append(f[0][f[0].index('=')-1:].split('='))
+        # for f in folds:
+        #     folds.append(f[0][f[0].index('=')-1:].split('='))
 
         print(folds)
         print(data)
