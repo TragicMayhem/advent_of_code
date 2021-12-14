@@ -15,7 +15,7 @@ elif sys.platform == "win32":
 
 
 filename = 'test_part1.txt'  # 6*6 grid after 4 steps 4 lights on
-filename = 'input.txt'  # 821 lights on after 100 steps in a 100*100 grid
+# filename = 'input.txt'  # 821 lights on after 100 steps in a 100*100 grid
 
 steps = 100
 

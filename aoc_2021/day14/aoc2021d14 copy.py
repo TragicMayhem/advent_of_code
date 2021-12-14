@@ -7,7 +7,7 @@ from collections import Counter
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 2447 / 
-input_test = script_path / 'test.txt'  # 1588
+input_test = script_path / 'test.txt'  # 
 
 
 def parse(puzzle_input):
@@ -20,8 +20,8 @@ def parse(puzzle_input):
         for l,r in tmp:
             rules[l] = r
 
-        # print(polymer)
-        # print(rules)
+        print(polymer)
+        print(rules)
 
     return polymer, rules
 
@@ -54,64 +54,19 @@ def part1(polymer, insertion_rules, steps=10):
 
         # print(current_polymer,' > ', next_polymer)
         current_polymer = next_polymer
-        # print('\nstep end',i,len(current_polymer))   
+        # print('\nstep end',c,len(current_polymer))   
 
         char_count = Counter(current_polymer)
-        # print(char_count)
+        print(char_count)
 
         answer = max(char_count.values())- min(char_count.values())
 
     return answer
 
 
-def part2(polymer, insertion_rules,steps=10):
+def part2(polymer, insertion_rules):
     """Solve part 2"""   
    
-
-    current_polymer = polymer
-    print(insertion_rules)
-
-    for i in range(steps):
-        # print("Polymer = ",current_polymer)
-        next_polymer = ''
-
-        for c in range(len(current_polymer)-1):
-            check=current_polymer[c]+current_polymer[c+1]
-            # print('\n',c, current_polymer, check)    
-
-            if check in insertion_rules.keys():
-                insertion = check[0] + insertion_rules[check] #+ check[1]
-            else:
-                insertion_rules = check[0]
-
-            next_polymer = next_polymer + insertion
-
-            # print(next_polymer)
-        next_polymer = next_polymer + current_polymer[-1]
-
-        # print(current_polymer,' > ', next_polymer)
-        current_polymer = next_polymer
-        # print('\nstep end',i,len(current_polymer))   
-
-        char_count = Counter(current_polymer)
-        # print(char_count)
-
-        answer = max(char_count.values())- min(char_count.values())
-
-    return answer
-
-
-
-
-
-
-
-
-
-
-
-
-
     return 1
  
 
