@@ -144,3 +144,5 @@ if __name__ == "__main__":    # print()
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
     print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+# 
+# def corner(x, y): return (x,y) in [(0,0),(0,99),(99,0),(99,99)]
