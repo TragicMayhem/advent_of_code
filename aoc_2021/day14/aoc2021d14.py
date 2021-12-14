@@ -115,19 +115,12 @@ def part2(polymer, insertion_rules, steps=10):
 
         polymerCounts = nextPolymerCounts
 
-
-    # TODO: dont double count chars as pairs - think about last one?
     char_count = defaultdict(int)
     for k, n in polymerCounts.items():
         char_count[k[0]] += n
 
     char_count[last_char] += 1
     # print(char_count)
-
-
-    # most_freq_char = msg_char_counter.most_common()[0][0]
-    # least_freq_char = msg_char_counter.most_common()[-1][0]
-
     answer = max(char_count.values())- min(char_count.values())
 
     return answer
