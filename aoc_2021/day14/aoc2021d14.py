@@ -70,15 +70,13 @@ def next2Char(polymer):
 
 def part2(polymer, insertion_rules, steps=10):
     """Solve part 2"""   
-    current_polymer = polymer
 
-    last_char = current_polymer[-1]
+    last_char = polymer[-1]
     polyCombis = defaultdict()
 
     # dict with the new insertion pair combinations rather than mapping
     for k,v in insertion_rules.items():
         polyCombis[k] = (k[0] + v, v + k[1])
-    
     # print(polyCombis) # defaultdict(None, {'CH': ('CB', 'BH'), 'HH': ('HN', 'NH'),
     
     # a = ("John", "Charles", "Mike")
@@ -86,10 +84,8 @@ def part2(polymer, insertion_rules, steps=10):
     # ('John', 'Charles'), ('Charles', 'Mike'))
 
     polymerCounts = defaultdict(int)
-
     for pair in next2Char(polymer):
-        polymerCounts[pair] += 1
-       
+        polymerCounts[pair] += 1   
     # print(polymerCounts) # defaultdict(<class 'int'>, {'NN': 1, 'NC': 1, 'CB': 1})
 
     for i in range(steps):
@@ -99,18 +95,17 @@ def part2(polymer, insertion_rules, steps=10):
 
         for pPair in polymerCounts:
             newCombi = polyCombis.get(pPair)
-            # print('pPair',pPair
-            # print('newCombi',newCombi)
+            # print('pPair',pPair) # eg pPair NN
+            # print('newCombi',newCombi)  #newCombi ('KN', 'NH')
 
             if newCombi:
+                # increase each of the combinations that will now be added
                 count = polymerCounts[pPair]
-                # print(pPair, newCombi, count)
-
                 nextPolymerCounts[newCombi[0]] += count
                 nextPolymerCounts[newCombi[1]] += count
             else:
+                # With combinations then increment the pPair counter only
                 nextPolymerCounts[pPair] = polyCombis[pPair]
-            
             # print(nextPolymerCounts)
 
         polymerCounts = nextPolymerCounts
