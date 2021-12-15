@@ -14,8 +14,18 @@ input_test2 = script_path / 'test_part2.txt'  #
 
 def parse(puzzle_input):
     """Parse input """
+
     with open(puzzle_input, 'r') as file:
         lights_grid = [list(map(lambda ele: True if ele == '#' else False, d)) for d in file.read().split('\n')]
+
+        # Original:
+        # data = file.read().split('\n')
+        # data = [list(d) for d in data]   # list of lists of characters for each line        
+        # lights_grid = []
+        # for d in data:
+        #     res = list(map(lambda ele: True if ele == '#' else False, d))
+        #     lights_grid.append(res)
+
     return lights_grid
 
 
@@ -28,8 +38,16 @@ def lockCorners():
     return 1
 
 
+
 def get_coords8d(r, c, h, w):
     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)):
+        rr, cc = (r + delta_r, c + delta_c)
+        if 0 <= rr < h and 0 <= cc < w:
+            yield (rr, cc)
+
+
+def get_coords4d(r, c, h, w):
+    for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
         rr, cc = (r + delta_r, c + delta_c)
         if 0 <= rr < h and 0 <= cc < w:
             yield (rr, cc)
@@ -71,18 +89,16 @@ def part1(lights, steps=100):
     # print("START lights on:", sum([sum(d) for d in lights]))
 
     for step in range(steps):
-        new_state_grid = []
-
+        new_state_grid = [None] * grid_size
         for i in range(grid_size):
             tmp = []
             for j in range(grid_size):
                 tmp.append(next_state(lights, grid_size, i, j)) 
-            
-            new_state_grid.append(tmp)
+            new_state_grid[i] = tmp
+        # pprint(new_state_grid)
 
         # print(f"State {step+1} has {sum([sum(d) for d in new_state_grid])} lights on")
-        # lights = copy.deepcopy(new_state_grid)
-        lights = new_state_grid
+        lights = copy.deepcopy(new_state_grid)
 
     answer = sum([sum(d) for d in lights])
 
