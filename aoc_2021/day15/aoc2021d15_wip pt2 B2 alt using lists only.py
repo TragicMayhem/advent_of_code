@@ -41,20 +41,6 @@ def expand_grid(data, from_size):
             newline = list((x+1) if x < 9 else 1 for x in line)
             expanded_grid.append(newline)
 
-    # tilew = len(data)
-    # tileh = len(data[0])
-
-    # for _ in range(4):
-    #     for row in data:
-    #         tail = row[-tilew:]
-    #         row.extend((x + 1) if x < 9 else 1 for x in tail)
-
-    # for _ in range(4):
-    #     for row in data[-tileh:]:
-    #         row = [(x + 1) if x < 9 else 1 for x in row]
-    #         data.append(row)
-
-
     size = len(expanded_grid)
 
     return expanded_grid, size
@@ -107,51 +93,6 @@ def grid_search(grid, size):
             if newrisk < risks[cardinal]:
                 risks[cardinal] = newrisk
                 heapq.heappush(frontier, (newrisk, cardinal))
-
-    return INFINITY  #404
-
-
-
-def grid_searchV2(grid):
-
-    h, w = len(grid), len(grid[0])
-
-    startNode = (0,0)
-    goalNode = (h-1, w-1)
-
-    print(startNode, goalNode)
-
-    frontier = [(startNode, 0)]
-    risks = defaultdict(lambda: INFINITY) #, {startNode: 0})
-    risks[startNode] = 0
-    came_from = set()
-
-    # Construct a map of all possible paths for the startNode across the map
-    while frontier:
-        current, risk = heapq.heappop(frontier)
-        # print('curr:',current, risk, 'cost', grid.get(current))
-
-        if current == goalNode:
-            # print(len(risks),risks)
-            return risk
-
-        if current in came_from:
-            continue
-
-        came_from.add(current)
-        x,y = current
-
-        for cardinal in get_coords_cardinals(x,y, h, w):
-            # print('cardinal cost',cardinal, grid.get(cardinal))
-            if cardinal in came_from:
-                continue
-
-            x,y = cardinal
-            newrisk = risk + grid[x][y]
-
-            if newrisk < risks[cardinal]:
-                risks[cardinal] = newrisk
-                heapq.heappush(frontier, (cardinal, newrisk))
 
     return INFINITY  #404
 
