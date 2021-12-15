@@ -4,6 +4,7 @@ import pathlib
 import time
 import heapq
 from collections import defaultdict
+from math import inf as INFINITY
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 
@@ -39,42 +40,40 @@ def get_coords_cardinals(r, c, h, w):
 def grid_search(grid, size):
 
     startNode = (0,0)
-    goalNode = (size-1,size-1)
+    goalNode = (size-1, size-1)
 
     frontier = [(startNode, 0)]
-    visited = set()
-    risks = defaultdict(int)
+    came_from = set()
+    risks = defaultdict(lambda: INFINITY, {startNode: 0})
     risks[startNode] = 0
 
     # Construct a map of all possible paths for the startNode across the map
     while frontier:
         current, risk = heapq.heappop(frontier)
-        print('curr:',current,risk, 'cost',grid.get(current))
+        # print('curr:',current,risk, 'cost', grid.get(current))
 
         if current == goalNode:
             return risk
 
-        if current in visited:
+        if current in came_from:
             continue
 
-        visited.add(current)
-        print(visited)
+        came_from.add(current)
+        # print(came_from)
         x,y = current
 
         for cardinal in get_coords_cardinals(x,y, size, size):
-            print('cardinal cost',cardinal, grid.get(cardinal))
+            # print('cardinal cost',cardinal, grid.get(cardinal))
             
-            if cardinal in visited:
+            if cardinal in came_from:
                 continue
 
             xx, yy  = cardinal
-            print(xx,yy)
             newrisk = risk + grid.get(cardinal)  #[xx][yy]
-            print(newrisk)
+
             if newrisk < risks[cardinal]:
                 risks[cardinal] = newrisk
                 heapq.heappush(frontier, (cardinal, newrisk))
-            print(frontier)
 
     return 404
 
@@ -129,8 +128,8 @@ if __name__ == "__main__":    # print()
 
     #not 584 too low
 
-    # solutions = solve(input)
-    # print('\nAOC')
-    # print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    # print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    # print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+    solutions = solve(input)
+    print('\nAOC')
+    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
+    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
+    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
