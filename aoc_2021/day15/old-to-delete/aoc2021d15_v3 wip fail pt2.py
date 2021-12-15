@@ -1,5 +1,17 @@
 # https://adventofcode.com/2021/day/15
 
+'''
+Reference https://www.redblobgames.com/pathfinding/a-star/introduction.html
+
+Version 4
+- Mashup of code/ideas
+
+Problems?
+- matches the examples!
+- fail pt2 ans too high (2905)? queue order wrong?
+
+'''
+
 import pathlib
 import time
 import heapq
@@ -7,7 +19,7 @@ from collections import defaultdict
 from math import inf as INFINITY   ## NEW: I was missing this for the risk checking default value
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 592 / 2897
+input = script_path / 'input.txt'  # 592 / 
 input_test = script_path / 'test.txt'  # 40 / 315
 
 

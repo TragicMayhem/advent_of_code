@@ -256,15 +256,15 @@ if __name__ == "__main__":    # print()
 
     tmpcheck()
 
-    runAllTests()
+    # runAllTests()
 
 # \ not 3330 to high  
 # \ not 2905
 
 # think 2897 answer
 
-    solutions = solve(input)
-    print('\nAOC')
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+    # solutions = solve(input)
+    # print('\nAOC')
+    # print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
+    # print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
+    # print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

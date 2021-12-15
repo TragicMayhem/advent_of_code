@@ -1,10 +1,17 @@
 # https://adventofcode.com/2021/day/15
 
+'''
+Reference https://www.redblobgames.com/pathfinding/a-star/introduction.html
+
+Version 2
+- Part 1 works for test not input - too low (584)
+
+'''
 import pathlib
 import time
-import heapq
+import queue
+
 from collections import defaultdict
-from math import inf as INFINITY
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 
@@ -39,43 +46,55 @@ def get_coords_cardinals(r, c, h, w):
 
 def grid_search(grid, size):
 
-    startNode = (0,0)
-    goalNode = (size-1, size-1)
+    # print(grid)
 
-    frontier = [(startNode, 0)]
-    came_from = set()
-    risks = defaultdict(lambda: INFINITY, {startNode: 0})
-    risks[startNode] = 0
+    startNode = (0,0)
+    goalNode = (size-1,size-1)
+
+    frontier = queue.PriorityQueue()
+    frontier.put(startNode, 0)
+    came_from = {}
+    cost_so_far = {}
+    came_from[startNode] = None #Python version of "null"
+    cost_so_far[startNode] = 0
 
     # Construct a map of all possible paths for the startNode across the map
-    while frontier:
-        current, risk = heapq.heappop(frontier)
-        # print('curr:',current,risk, 'cost', grid.get(current))
+    while not frontier.empty():
+        current = frontier.get() # Get instead of peek, dequeues the item
+        # print('curr:',current,grid.get(current))
 
-        if current == goalNode:
-            return risk
+        for neighbour in get_coords_cardinals(*current, size, size):
+            # print('neighbour cost',neighbour, grid.get(neighbour))
 
-        if current in came_from:
-            continue
+            new_cost = cost_so_far[current] + grid.get(neighbour)
 
-        came_from.add(current)
-        # print(came_from)
-        x,y = current
+            if neighbour not in cost_so_far or new_cost < cost_so_far[neighbour]:
+                cost_so_far[neighbour] = new_cost
+                priority = new_cost
+                frontier.put(neighbour, priority)
+                came_from[neighbour] = current
 
-        for cardinal in get_coords_cardinals(x,y, size, size):
-            # print('cardinal cost',cardinal, grid.get(cardinal))
-            
-            if cardinal in came_from:
-                continue
+    # print('came from\n',came_from)
+    # Create the path between the startNode and goalNode
+    risk=0
+    risks=[]
+    currentNode = goalNode
+    path = [currentNode]
+    while currentNode != startNode:
+        currentNode = came_from[currentNode]
+        path.append(currentNode)
+        risks.append(grid[currentNode])
+        risk+=grid[currentNode]
 
-            xx, yy  = cardinal
-            newrisk = risk + grid.get(cardinal)  #[xx][yy]
 
-            if newrisk < risks[cardinal]:
-                risks[cardinal] = newrisk
-                heapq.heappush(frontier, (cardinal, newrisk))
+    risks.reverse()
+    print()
+    print(path)
+    print(len(path))
+    print(risks)
+    print(risk)
 
-    return 404
+    return risk
 
 
 def part1(grid, size):

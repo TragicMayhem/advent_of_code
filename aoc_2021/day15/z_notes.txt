@@ -1,14 +1,6 @@
 https://www.redblobgames.com/pathfinding/a-star/introduction.html
 
-https://www.redblobgames.com/pathfinding/a-star/introduction.html
-
 https://docs.python.org/3/library/heapq.html
 
 https://github.com/lukemerrett/PathFindingInPython/blob/master/BreadthFirstWithCost.py
 
-
-Python heapq is an implementation of a priority queue.  I.e. "priority queue" is an abstract concept.  The Python heapq always pops the smallest item. Thus, priority is given by smallest value.
-
-So, you could treat risk as the priority, or you could do what I did, and add the risk score to the Manhattan distance between where you and the goal.  This is what turns it into an A* rather than a Dijkstra. (Manhattan distance is the sum of (abs(x coords diff) + abs(y coords diff))
-
-But if you do something like (10*distance) to make it much more significant, you get to the goal much quicker!  I.e. basically in a straight line, as it basically ignores the risk.  So, this is all quite interesting, and quite obvious really.  Not sure why I even wrote this!!

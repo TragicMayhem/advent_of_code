@@ -1,5 +1,18 @@
 # https://adventofcode.com/2021/day/15
 
+'''
+Reference https://www.redblobgames.com/pathfinding/a-star/introduction.html
+
+Version 4
+- Mashup of code/ideas
+- Converts list integers in to a dictionary for lookup
+
+Problems?
+- matches the examples!
+- expands grid (check that is correct) so the search must be wrong
+
+'''
+
 import pathlib
 import time
 import heapq
@@ -7,7 +20,7 @@ from collections import defaultdict
 from math import inf as INFINITY   ## NEW: I was missing this for the risk checking default value
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 592 / 
+input = script_path / 'input.txt'  # 592 /   (target is 2897)
 input_test = script_path / 'test.txt'  # 40 / 315
 
 
@@ -17,12 +30,21 @@ def parse(puzzle_input):
     with open(puzzle_input, 'r') as file:
         data = file.read().split('\n')
         data=[[int(x) for x in row] for row in data]
+    return data
 
+
+def build_grid(data):
+    grid=defaultdict(   int)
+    for r, row in enumerate(data):
+        for c, cell in enumerate(row):
+            grid[(r,c)] = cell
+    
     size = len(data)
-    return data, size
+    return grid, size
 
 
 def expand_grid(data, from_size):
+    grid=defaultdict(int)
     
     expanded_grid = data[:]
 
@@ -32,8 +54,8 @@ def expand_grid(data, from_size):
     # go across
     for _ in range(extra_grids):
         for line in data:
-            cells = line[-w:]
-            line.extend((x+1) if x < 9 else 1 for x in cells)
+            risks = line[-w:]
+            line.extend((x+1) if x < 9 else 1 for x in risks)
 
     # go down
     for _ in range(extra_grids):
@@ -41,23 +63,14 @@ def expand_grid(data, from_size):
             newline = list((x+1) if x < 9 else 1 for x in line)
             expanded_grid.append(newline)
 
-    # tilew = len(data)
-    # tileh = len(data[0])
-
-    # for _ in range(4):
-    #     for row in data:
-    #         tail = row[-tilew:]
-    #         row.extend((x + 1) if x < 9 else 1 for x in tail)
-
-    # for _ in range(4):
-    #     for row in data[-tileh:]:
-    #         row = [(x + 1) if x < 9 else 1 for x in row]
-    #         data.append(row)
-
+    for r, row in enumerate(expanded_grid):
+        for c, cell in enumerate(row):
+            grid[(r,c)] = cell
 
     size = len(expanded_grid)
 
-    return expanded_grid, size
+    return grid, size
+
 
 
 def get_coords_cardinals(r, c, h, w):
@@ -72,88 +85,42 @@ def grid_search(grid, size):
     startNode = (0,0)
     goalNode = (size-1, size-1)
 
-    print(startNode, goalNode)
-
-    # frontier = [(startNode, 0)]
     frontier = [(0, startNode)]
-    risks = defaultdict(lambda: INFINITY) #, {startNode: 0})
-    risks[startNode] = 0
     came_from = set()
+    risks = defaultdict(lambda: INFINITY, {startNode: 0})
+    risks[startNode] = 0
 
     # Construct a map of all possible paths for the startNode across the map
     while frontier:
         risk, current = heapq.heappop(frontier)
-        # current, risk = heapq.heappop(frontier)
-        # print('curr:',current, risk)
+        # print('curr:',current,risk, 'cost', grid.get(current))
 
         if current == goalNode:
-            # print(len(risks),risks)
             return risk
 
         if current in came_from:
             continue
 
         came_from.add(current)
+        # print(came_from)
         x,y = current
 
         for cardinal in get_coords_cardinals(x,y, size, size):
             # print('cardinal cost',cardinal, grid.get(cardinal))
+            
             if cardinal in came_from:
                 continue
 
-            x,y = cardinal
-            newrisk = risk + grid[x][y]
+            xx, yy  = cardinal
+            newrisk = risk + grid.get(cardinal) 
 
             if newrisk < risks[cardinal]:
                 risks[cardinal] = newrisk
                 heapq.heappush(frontier, (newrisk, cardinal))
 
-    return INFINITY  #404
+            # print(frontier)
 
-
-
-def grid_searchV2(grid):
-
-    h, w = len(grid), len(grid[0])
-
-    startNode = (0,0)
-    goalNode = (h-1, w-1)
-
-    print(startNode, goalNode)
-
-    frontier = [(startNode, 0)]
-    risks = defaultdict(lambda: INFINITY) #, {startNode: 0})
-    risks[startNode] = 0
-    came_from = set()
-
-    # Construct a map of all possible paths for the startNode across the map
-    while frontier:
-        current, risk = heapq.heappop(frontier)
-        # print('curr:',current, risk, 'cost', grid.get(current))
-
-        if current == goalNode:
-            # print(len(risks),risks)
-            return risk
-
-        if current in came_from:
-            continue
-
-        came_from.add(current)
-        x,y = current
-
-        for cardinal in get_coords_cardinals(x,y, h, w):
-            # print('cardinal cost',cardinal, grid.get(cardinal))
-            if cardinal in came_from:
-                continue
-
-            x,y = cardinal
-            newrisk = risk + grid[x][y]
-
-            if newrisk < risks[cardinal]:
-                risks[cardinal] = newrisk
-                heapq.heappush(frontier, (cardinal, newrisk))
-
-    return INFINITY  #404
+    return 404
 
 
 def part1(grid, size):
@@ -176,16 +143,18 @@ def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     times=[]
 
-    data, size_sm = parse(puzzle_input)
+    data = parse(puzzle_input)
+    initial_size = len(data)
 
     times.append(time.perf_counter())
 
-    solution1 = part1(data, size_sm)
+    grid, size = build_grid(data)
+    solution1 = part1(grid, size)
     
     times.append(time.perf_counter())
 
-    data, size_lg = expand_grid(data, size_sm)
-    solution2 = part2(data, size_lg)
+    grid, size = expand_grid(data, initial_size)
+    solution2 = part2(grid, size)
     
     times.append(time.perf_counter())
     
@@ -193,12 +162,13 @@ def solve(puzzle_input):
 
 
 def runTest(test_file):
-    data, size_sm = parse(test_file)
+    data = parse(test_file)
 
-    test_solution1 = part1( data, size_sm)
+    grid, initial_size = build_grid(data)
+    test_solution1 = part1(grid, initial_size)
 
-    data, size_lg = expand_grid(data, size_sm)
-    test_solution2 = part2(data, size_lg )
+    grid, size = expand_grid(data, initial_size)
+    test_solution2 = part2(grid, size)
 
     return test_solution1, test_solution2
 
@@ -216,8 +186,6 @@ if __name__ == "__main__":    # print()
 
 # \ not 3330 to high  
 # \ not 2905
-
-# think 2897 answer
 
     solutions = solve(input)
     print('\nAOC')
