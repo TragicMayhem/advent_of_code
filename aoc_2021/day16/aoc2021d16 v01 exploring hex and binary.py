@@ -18,102 +18,12 @@ D = 1101
 E = 1110
 F = 1111
 '''
-from os import getenv
 import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 
 input_test = script_path / 'test.txt'  # 
-
-
-
-class packets:
-    def __init__(self, data) -> None:
-        self.data = data
-        self.location = 0 # used to locate where the parsing is currently
-    
-    # def getData(self):
-    #     return self.data
-
-    # def getLocation(self):
-    #     return self.location
-        
-    # def getPacketVersion(self):
-    #     return int(self.data[0:3],2)
-
-    # def getPacketType(self):
-    #     return int(self.data[3:6],2)
-
-    def getNumber(self, numbits):
-        # replaced hard coded values to use the current position, the move along once processed
-        answer = int(self.data[self.location:self.location+numbits], 2)
-        self.location += numbits
-        return answer
-
-    def returnSinglePacket(self):
-        # replaced hard coded values to use the current position, the move along once processed
-        packet_version = self.getNumber(3)
-        packet_type = self.getNumber(3)
-        
-        # needs to change to get sub packet informaton
-        packet_data = self.data[self.location:]
-
-        return (packet_version, packet_type, packet_data)
-
-    def increaseLocation(self, amount):
-        self.location += amount
-
-    def processPacketValue(self):
-        # For Type 4 its a 5 bit integer
-        msg = []
-
-        # loop until end of group, but need to get the value and move the bit counters
-        # 0 is the end of the group
-
-        # TODO learn bitwise comparators to get bits need
-
-        for i in range(0, len(self.data), 5):
-            next = packet_data[i:i+5]
-            if len(next) < 5:
-                break
-            msg.append(next[1:])
-
-        print(msg)
-        num = ''.join(msg)
-        print(int(num,2))
-
-        val = self.getNumber(5) 
-
-        if packet_type == 4:
-            for i in range(0, len(binary_input), 5):
-                print(i)
-                next = packet_data[i:i+5]
-                print(next)
-                if len(next) < 5:
-                    break
-                msg.append(next[1:])
-
-        print(msg)
-        num = ''.join(msg)
-        print(int(num,2))
-
-        return ''
-
-    def readNumberOfPackets(self, howMany):
-        # ok replaced code with generator that calls other methods howMay times           
-        return [self.returnSinglePacket() for _ in range(howMany)]
-
-    def processOperator(self):
-        length_type = self.getNumber(1)
-
-        if length_type == 1:
-            pack_len = 15
-        else:
-            pack_len = 11
-
-        return ''
-
 
 def parse(puzzle_input):
     """Parse input """
@@ -148,10 +58,15 @@ def returnPacketInfo(binary_input):
     return (packet_version, packet_type, data)
 
 
+def processInstructions(data):
+
+    return ''
+
+
 def part1(data):
     """Solve part 1""" 
-    data='D2FE28'
-    # data='38006F45291200'
+    # data='D2FE28'
+    data='38006F45291200'
     # data='EE00D40C823060' 
     print(data)
 
@@ -167,12 +82,7 @@ def part1(data):
 
     # remaining = binary_input[6:]
     # print('rem',remaining)
-    print('-------')
-    inputData = packets(binary_input)
-    print('class',inputData.getData())
-    print(inputData.returnPacketInfo())
 
-    print('-------')
     processed = False
     msg = []
 
