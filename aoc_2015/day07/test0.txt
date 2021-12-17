@@ -1,7 +1,0 @@
-lx -> a
-lw OR lv -> lx
-lc LSHIFT 1 -> lw
-1 AND lu -> lv
-NOT e -> lu
-465 -> lc
-123 -> e
