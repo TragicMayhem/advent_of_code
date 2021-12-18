@@ -16,10 +16,10 @@ elif sys.platform == "win32":
 
 
 filename = 'test.txt'  # Comet 1120 for 1000 seconds
-filename = 'input.txt'  # Rudolph 2640 in 2503 seconds
+# filename = 'input.txt'  # Rudolph 2640 in 2503 seconds
 
-# race_time = 1000   # 1000 for test file
-race_time = 2503
+race_time = 1000   # 1000 for test file
+# race_time = 2503
 
 # psuedo
 # dict reindeer

@@ -12,11 +12,11 @@ def parse(puzzle_input):
 
     return lines
 
+
 ##### PATTERNS #####
 two_digits_pattern = re.compile('(\d{2})')
-find_digit = re.compile(r'(\d+)')
-find_last_digit = re.compile(r'(\d+)(?!.*\d)')
-find_digit_pair = re.compile(r'(\d+)[, ]+(\d+)')
+find_digit = re.compile(r'(\d)')
+find_last_digit = re.compile(r'(\d)(?!.*\d)')
 
 
 def make_new_split(big_number):
@@ -26,18 +26,15 @@ def make_new_split(big_number):
     return new
 
     
+
 def explode_node(data_in, current_pos):
     # need to find number left (or start of string)
     # need to find number right
     # add and replace those numbers at those positions
     # replace this one with 0
 
-    # num_explode_to_left = data_in[current_pos]
-    # num_explode_to_right = data_in[current_pos+2]
-
-    pair = find_digit_pair.search(data_in[current_pos:])
-    if pair:
-        num_explode_to_left, num_explode_to_right = pair.groups()
+    num_explode_to_left = data_in[current_pos]
+    num_explode_to_right = data_in[current_pos+2]
     print("\nexploding at pos",current_pos, 'nums', num_explode_to_left, num_explode_to_right)
 
     to_the_left = data_in[:current_pos]
@@ -113,9 +110,6 @@ def reduce_input(data_in):
                 answer = tmp_answer
             c+=1
         
-        print('end',i,' ', answer)
-    print()
-    print('ANSWER\n')  
     print(answer)
 
 input_data = parse(input_test)
@@ -126,14 +120,6 @@ reduce_input(input_data)
 print('########## AD HOC ###########')
 test1 = '[[1, 2], [[1, 2], 3], [9, [8, 7]], [[1, 9], [8, 5]], [[[[1, 2], [3, 4]], [[5, 6], [7, 8]]], 9]]'
 test2 = '[[1, 2], [[1, 12], 3], [9, [8, 7]], [[1, 19], [8, 15]], [[[[1, 2], [13, 4]], [[5, 6], [7, 8]]], 9]]'
-
-# print(test2)
-# tmp = find_digit_pair.search(test2)
-# if tmp:
-#     print(tmp.span())
-#     print(tmp.group(0))
-#     print(tmp.groups())
-
 
 # print(test2)
 # output = test2
