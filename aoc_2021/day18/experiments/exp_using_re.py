@@ -38,10 +38,16 @@ def explode_node(data_in, current_pos):
     pair = find_digit_pair.search(data_in[current_pos:])
     if pair:
         num_explode_to_left, num_explode_to_right = pair.groups()
-    print("\nexploding at pos",current_pos, 'nums', num_explode_to_left, num_explode_to_right)
+        start, end = pair.span()
+    print("  exploding at pos",current_pos, 'nums', num_explode_to_left, num_explode_to_right, 'pos',start,end)
+
+    # to_the_left = data_in[:current_pos] if int(num_explode_to_left) < 10 else data_in[current_pos-1:]
+    # to_the_right = data_in[current_pos+3:] if int(num_explode_to_right) < 10 else data_in[current_pos+4:]
+
+    # len(left number) +','
 
     to_the_left = data_in[:current_pos]
-    to_the_right = data_in[current_pos+3:]
+    to_the_right = data_in[current_pos+end:]
 
     next_left_num_pos = find_last_digit.search(to_the_left)
     next_right_num_pos = find_digit.search(to_the_right)
@@ -89,7 +95,8 @@ def collapse_next(data_in):
     if big_numbers:
         # start, end = big_numbers.span()
         # data_out = re.sub(r'(\d{2})', make_new_split(big_numbers.group(0)), data_out, count=1)
-        return re.sub(r'(\d{2})', make_new_split(int(big_numbers.group(0))), data_in, count=1)
+        print('  splitting',big_numbers.group(0))
+        return re.sub(two_digits_pattern, make_new_split(int(big_numbers.group(0))), data_in, count=1)
 
     return False
 
@@ -103,17 +110,20 @@ def reduce_input(data_in):
 
         c = 0
 
-        while True and c < 10:
+        while True and c < 20:
             print('\nprocess', answer)
             tmp_answer = collapse_next(answer)
             print(tmp_answer)
+
             if tmp_answer == False:
+                print("breaking")
                 break
             else:
                 answer = tmp_answer
             c+=1
         
-        print('end',i,' ', answer)
+        print(' >>>> end',i,' ', answer)
+        break
     print()
     print('ANSWER\n')  
     print(answer)
