@@ -25,10 +25,6 @@ for l in lis:
 print(list)
 '''
 
-
-
-
-
 def parse(puzzle_input):
     """Parse input """
 
@@ -44,7 +40,14 @@ def parse(puzzle_input):
         print(data)
 
     return data
-    
+
+def parse2(puzzle_input):
+    with open(puzzle_input, 'r') as file:
+        data = file.read()
+#       Scary stuff! vvvv
+        homework = tuple(map(eval,data.splitlines()))
+    print(homework)
+
 def parse_keepstr(puzzle_input):
     """Parse input """
 
