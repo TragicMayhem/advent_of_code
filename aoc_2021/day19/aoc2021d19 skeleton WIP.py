@@ -3,18 +3,44 @@
 import pathlib
 import time
 from collections import defaultdict
+import math
+import re
+import numpy as np
+import scipy as sp
+import itertools as its
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 
 input_test = script_path / 'test.txt'  # 
 
 
-# class scanner:
-#     def __init__(self, id):
-#         self.id = None
-#         self. = None
-#         self.data = data
+# class Scanner:
+#     class Beacon:
+#         """
+#         Represents a point in space.
+#         """
+#         def __init__( self, x, y, z ):
+#             self.x, self.y, self.z = x, y, z
 
+#         def distFrom( self, x, y, z ):
+#             return math.sqrt( (self.x-x)**2 + (self.y-y)**2 + (self.z-z)**2 )
+
+#     def __init__(self, id):
+#         self.id = id
+#         self.data = []
+
+#     def addBeacon(self, x, y, z):
+#         self.data.append(self.Beacon(x,y,z))
+
+
+#     def beacon_map_distances(self):
+       
+#         for b in self.data:
+#             print(b)
+
+
+#     def __repr__(self) -> str:
+#         return "Scanner: " + str(self.id) + " with " + str(len(self.data)) + " beacons"
 
 
 def parse(puzzle_input):
@@ -25,24 +51,6 @@ def parse(puzzle_input):
     with open(puzzle_input, 'r') as file:
         lines = file.read().split('\n')
         
-        beacons = []
-        for l in lines:
-            print(l)
-            if l == '':
-                scannerdata[scanner_id] = beacons
-                beacons = ()
-                continue
-            
-            if l.find('---'):
-                parts = l.split(' ')
-                scanner_id = parts[2]
-                scannerdata[scanner_id] = defaultdict(tuple)
-                continue
-
-            parts = l.split(',')
-            beacons.append((int(parts[0]),int(parts[1]),(int(parts[3]))))
-
-    print(scannerdata)
 
     return 1
 
