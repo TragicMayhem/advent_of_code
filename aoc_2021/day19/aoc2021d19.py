@@ -2,20 +2,49 @@
 
 import pathlib
 import time
+from collections import defaultdict
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 
 input_test = script_path / 'test.txt'  # 
 
 
+# class scanner:
+#     def __init__(self, id):
+#         self.id = None
+#         self. = None
+#         self.data = data
+
+
+
 def parse(puzzle_input):
     """Parse input """
 
-    with open(puzzle_input, 'r') as file:
-      data = file.read().split('\n')
-    #   data = [d.split(' | ') for d in file.read().split('\n')]
+    scannerdata = defaultdict()
 
-    return data
+    with open(puzzle_input, 'r') as file:
+        lines = file.read().split('\n')
+        
+        beacons = []
+        for l in lines:
+            print(l)
+            if l == '':
+                scannerdata[scanner_id] = beacons
+                beacons = ()
+                continue
+            
+            if l.find('---'):
+                parts = l.split(' ')
+                scanner_id = parts[2]
+                scannerdata[scanner_id] = defaultdict(tuple)
+                continue
+
+            parts = l.split(',')
+            beacons.append((int(parts[0]),int(parts[1]),(int(parts[3]))))
+
+    print(scannerdata)
+
+    return 1
 
 
 def part1(data):
@@ -63,8 +92,8 @@ if __name__ == "__main__":    # print()
 
     runAllTests()
 
-    solutions = solve(input)
-    print('\nAOC')
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+    # solutions = solve(input)
+    # print('\nAOC')
+    # print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
+    # print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
+    # print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
