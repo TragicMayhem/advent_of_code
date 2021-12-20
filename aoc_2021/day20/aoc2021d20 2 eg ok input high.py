@@ -31,7 +31,7 @@ def parse(puzzle_input):
         # print(new_converted_image)
         starter_image=np.array([np.array(xi) for xi in new_converted_image])
         # Make image one bigger
-        # starter_image = np.pad(starter_image, ((2,2),(2,2)), mode='constant', constant_values=0)
+        starter_image = np.pad(starter_image, ((2,2),(2,2)), mode='constant', constant_values=0)
         # print(starter_image)
 
     return starter_image, enhancements
@@ -54,45 +54,32 @@ def part1(data, enhancements):
     print(len(enhancements))
     print(data)
     print(len(data))
+
     print(type(data))
-    print(np.sum(data))
-    print('='*50)
+
 
     # need to loop x times, copy on each ones
     for count in range(2):
-        data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
         next_image = data.copy()
-        print(np.sum(next_image))
-
-        print('argmax',np.argmax(data, axis=0))
-        print('argmax',np.argmax(data, axis=1))
-
         print(next_image)
-        for ix, iy in np.ndindex(data.shape):
+        for iy, ix in np.ndindex(data.shape):
             if iy == 0 or iy == len(data)-1: continue
             if ix == 0 or ix == len(data)-1: continue
-            # if iy == 0 or iy == len(data)-1: continue
-            # if ix == 0 or ix == len(data)-1: continue
-            # print(ix,iy,'data',data[iy, ix])
+            print(ix,iy,'data',data[iy, ix])
             tmp=''
             for i,j in get_9box(ix,iy):
                 # print(i,j,'d',str(data[i,j]))
                 tmp = tmp[:] + str(data[i,j])
-            
+            # print(tmp, getIntFromBin(tmp))
             enhance_pos = getIntFromBin(tmp)
             new_value = enhancements[enhance_pos]
             next_image[ix,iy] = new_value
 
-        # print(next_image)
-        print('sum next at end', np.sum(next_image), 'len', len(data))
+        print(next_image)
+        print(np.sum(next_image))
         data = next_image.copy()
+        data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
 
-        print('sum data.copy at end', np.sum(next_image), 'len', len(data))
-        # data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
-        print('sum data.pad at end', np.sum(data), 'len', len(data))
-        print(data)
-
-    print('-'*50)
     print(data)
     print(np.sum(data))
         
@@ -140,8 +127,8 @@ if __name__ == "__main__":    # print()
 
     runAllTests()
 
-    # solutions = solve(input)
-    # print('\nAOC')
-    # print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    # print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    # print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+    solutions = solve(input)
+    print('\nAOC')
+    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
+    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
+    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
