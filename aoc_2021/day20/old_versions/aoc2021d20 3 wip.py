@@ -62,12 +62,15 @@ def part1(data, enhancements):
     for count in range(2):
         data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
         next_image = data.copy()
+        print(next_image)
         print(np.sum(next_image))
 
         print('argmax',np.argmax(data, axis=0))
         print('argmax',np.argmax(data, axis=1))
 
-        print(next_image)
+        # need to resize the image to be the size not the padding. 
+        # The padding adds zeros, in the input that turns on lights
+
         for ix, iy in np.ndindex(data.shape):
             if iy == 0 or iy == len(data)-1: continue
             if ix == 0 or ix == len(data)-1: continue

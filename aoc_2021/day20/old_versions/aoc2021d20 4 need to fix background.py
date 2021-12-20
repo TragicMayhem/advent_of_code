@@ -5,8 +5,8 @@ import time
 import numpy as np
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 5301 / 
-input_test = script_path / 'test.txt'  # 35 / 3351
+input = script_path / 'input.txt'  # 
+input_test = script_path / 'test.txt'  # 
 
 # 5362 too high still zero adding!!!
 
@@ -53,7 +53,6 @@ def getIntFromBin(bin_string):
 def part1(data, enhancements):
     """Solve part 1""" 
     print('PART 1')
-    # print(enhancements)
     print(len(enhancements))
     print(data)
     print(len(data))
@@ -61,27 +60,9 @@ def part1(data, enhancements):
     print(np.sum(data))
     print('='*50)
 
-
-    background_flip = enhancements[0] == '1' and enhancements[-1] == '0'
-    background = 0
-    print(background_flip,background)
-
-
     # need to loop x times, copy on each ones
-    for count in range(50):
-        print('NEW', count)
-
-        if background_flip:
-            if count % 2 == 0:
-                background = 0
-            else:
-                background = 1
-
-        print(background_flip, background)
-
-        data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=background)
-
-        # data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
+    for count in range(2):
+        data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
         next_image = data.copy()
         print('\nnext image sum starts on', np.sum(next_image))
         print(next_image)
@@ -91,7 +72,6 @@ def part1(data, enhancements):
         # print('argmax',np.argmax(data, axis=1))
 
         for ix, iy in np.ndindex(data.shape):
-
             if iy == 0 or iy == len(data)-1: continue
             if ix == 0 or ix == len(data)-1: continue
 
@@ -106,21 +86,13 @@ def part1(data, enhancements):
             new_value = enhancements[enhance_pos]
             next_image[ix,iy] = new_value
         
-
-
-
-
-
         print('\nAfter loop')
         # print(next_image)
         # print('sum next at end', np.sum(next_image), 'len', len(next_image))
         
         # removing the rows and columns that are zero to get the image for next iteration
-        # next_image = next_image[~np.all(next_image == 0, axis=1)]
-        # idx = np.argwhere(np.all(next_image[..., :] == 0, axis=0))
-        # next_image = np.delete(next_image, idx, axis=1)
-        next_image = next_image[~np.all(next_image == background, axis=1)]
-        idx = np.argwhere(np.all(next_image[..., :] == background, axis=0))
+        next_image = next_image[~np.all(next_image == 0, axis=1)]
+        idx = np.argwhere(np.all(next_image[..., :] == 0, axis=0))
         next_image = np.delete(next_image, idx, axis=1)
       
         data = next_image.copy()

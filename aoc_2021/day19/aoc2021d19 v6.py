@@ -223,7 +223,8 @@ beacon_distances = calc_distances(scanners)
 
 # TODO Do I need to copy the lists because its passing references so all the same data/lists?
 # print(scanners)
-# Scanners is referenced so updates anyway, returning seems pointless!
+
+# Scanners is referenced so updates anyway, returning seems pointless!  so does sending as an argument
 new_scanners, scanner_coords = workout_all_scanners(scanners, beacon_distances)
 # print(scanners)
 # print(len(new_scanners))

@@ -1,7 +1,0 @@
-https://numpy.org/doc/stable/reference/generated/numpy.pad.html
-
-https://numpy.org/devdocs/reference/routines.array-manipulation.html
-https://numpy.org/doc/stable/reference/generated/numpy.expand_dims.html
-https://numpy.org/doc/stable/reference/generated/numpy.resize.html
-
-https://stackoverflow.com/questions/12668027/good-ways-to-expand-a-numpy-ndarray
