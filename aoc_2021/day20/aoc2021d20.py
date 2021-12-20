@@ -5,10 +5,10 @@ import time
 import numpy as np
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 5301 / 
+input = script_path / 'input.txt'  # 5301 / 19492
 input_test = script_path / 'test.txt'  # 35 / 3351
 
-# 5362 too high still zero adding!!!
+# 5362 too high still zero adding!!! background switching after looking at the hits on reddit
 
 enhancements=[]
 
@@ -20,21 +20,15 @@ def parse(puzzle_input):
     
         enhancements_converted = parts[0].replace('.','0').replace('#','1')
         enhancements = [char for char in enhancements_converted]
-
-        print(enhancements)
+        # print(enhancements)
 
         parts[1] = parts[1].replace('.','0').replace('#','1')
         image_list = [l for l in parts[1].split('\n')]
         new_converted_image = []
         for p in image_list:
-            # print(p)
             new_converted_image.append(list(map(int,[char for char in p])))
 
-        # print(new_converted_image)
         starter_image=np.array([np.array(xi) for xi in new_converted_image])
-        # Make image one bigger
-        # starter_image = np.pad(starter_image, ((2,2),(2,2)), mode='constant', constant_values=0)
-        # print(starter_image)
 
     return starter_image, enhancements
 
@@ -50,41 +44,31 @@ def getIntFromBin(bin_string):
     return int(bin_string,2)
 
 
-def part1(data, enhancements):
+def run_model(data, enhancements, iterations):
     """Solve part 1""" 
-    print('PART 1')
     # print(enhancements)
-    print(len(enhancements))
-    print(data)
-    print(len(data))
-    print(type(data))
-    print(np.sum(data))
-    print('='*50)
+    # print(len(enhancements))
+    # print(data)
+    # print(len(data))
+    # print(type(data))
+    # print(np.sum(data))
+    # print('='*50)
 
 
     background_flip = enhancements[0] == '1' and enhancements[-1] == '0'
     background = 0
-    print(background_flip,background)
-
 
     # need to loop x times, copy on each ones
-    for count in range(50):
-        print('NEW', count)
-
+    for count in range(iterations):
         if background_flip:
             if count % 2 == 0:
                 background = 0
             else:
                 background = 1
 
-        print(background_flip, background)
-
         data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=background)
-
-        # data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
         next_image = data.copy()
-        print('\nnext image sum starts on', np.sum(next_image))
-        print(next_image)
+        # print(next_image)
 
         # need to resize the image. padding is making zeros, that turn on in the main input. too high value
         # print('argmax',np.argmax(data, axis=0))
@@ -106,41 +90,21 @@ def part1(data, enhancements):
             new_value = enhancements[enhance_pos]
             next_image[ix,iy] = new_value
         
-
-
-
-
-
-        print('\nAfter loop')
-        # print(next_image)
-        # print('sum next at end', np.sum(next_image), 'len', len(next_image))
-        
         # removing the rows and columns that are zero to get the image for next iteration
-        # next_image = next_image[~np.all(next_image == 0, axis=1)]
-        # idx = np.argwhere(np.all(next_image[..., :] == 0, axis=0))
-        # next_image = np.delete(next_image, idx, axis=1)
         next_image = next_image[~np.all(next_image == background, axis=1)]
         idx = np.argwhere(np.all(next_image[..., :] == background, axis=0))
         next_image = np.delete(next_image, idx, axis=1)
       
         data = next_image.copy()
-        print('sum data.copy at end', np.sum(data), 'len', len(data))
-        # data = np.pad(data, ((2,2),(2,2)), mode='constant', constant_values=0)
-        # print('sum data.pad at end', np.sum(data), 'len', len(data))
-        print(data)
+        # print('sum data.copy at end', np.sum(data), 'len', len(data))
+        # print(data)
 
-    print('-'*50)
-    print(data)
-    print(np.sum(data))
+    # print('-'*50)
+    # print(data)
+    # print(np.sum(data))
         
-    return 1
+    return np.sum(data)
 
-
-def part2(data, enhancements):
-    """Solve part 2"""   
-   
-    return 1
- 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
@@ -149,9 +113,9 @@ def solve(puzzle_input):
     data, enhancements = parse(puzzle_input)
     
     times.append(time.perf_counter())
-    solution1 = part1(data, enhancements)
+    solution1 = run_model(data, enhancements,2)
     times.append(time.perf_counter())
-    solution2 = part2(data, enhancements)
+    solution2 = run_model(data, enhancements,50)
     times.append(time.perf_counter())
     
     return solution1, solution2, times
@@ -160,8 +124,8 @@ def solve(puzzle_input):
 def runTest(test_file):
 
     data, enhancements = parse(test_file)
-    test_solution1 = part1(data, enhancements)
-    test_solution2 = part2(data, enhancements)
+    test_solution1 = run_model(data, enhancements, 2)
+    test_solution2 = run_model(data, enhancements, 50)
     return test_solution1, test_solution2
 
 
@@ -170,8 +134,6 @@ def runAllTests():
     print("Tests")
     a, b  = runTest(input_test)
     print(f'Test1.  Part1: {a} Part 2: {b}')
-
-# 5782 too high
 
 if __name__ == "__main__":    # print()
 
