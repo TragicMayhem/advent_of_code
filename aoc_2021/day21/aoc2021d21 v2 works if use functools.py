@@ -7,8 +7,8 @@ from collections import Counter
 import functools
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 571032     / 49975322685009
-input_test = script_path / 'test.txt'  # 739785 / 444356092776315
+input = script_path / 'input.txt'  # 571032
+input_test = script_path / 'test.txt'  # 739785
 
 player_stats = {}
 
@@ -97,18 +97,16 @@ def part1(data):
 
     return answer
 
-###  PART 2 ###
 
 # combi = its.product([1,2,3],[1,2,3],[1,2,3]) 
 combi = its.product([1,2,3],repeat=3)  # this is a generator
 combi_list = list(combi)   # creates list of the combinations
-
 dice_rolls_combis = [sum(d) for d in combi_list]  # This sums the totals, because thats the way game rolls (3 dice rolls is the move)
-
 universe_dice_rolls = list(Counter(dice_rolls_combis).items())   # this counts the numbers universes with the same totals, so these can be used in calc wins
-# print(universe_dice_rolls)  # [(3, 1), (4, 3), (5, 6), (6, 7), (7, 6), (8, 3), (9, 1)] actually static list
 
-# first try 18900 21141 - too low, not calculating the actual universe combinations!! research and adjust code from others 
+print(universe_dice_rolls)  # [(3, 1), (4, 3), (5, 6), (6, 7), (7, 6), (8, 3), (9, 1)] actually static list
+
+# first try 18900 21141 - too low, not calculating the actual universe combinations.  
 # the numbers passed are the same for both next and other.  this is wrong.
 
 # @functools.lru_cache(maxsize=None)
@@ -126,7 +124,7 @@ def check_for_win(next_player_pos, other_player_pos, next_player_score, other_pl
     next_player_total_wins = 0 
     other_player_total_wins = 0 
 
-    # print("Checking...",next_player_pos, other_player_pos, next_player_score, other_player_score)
+    print("Checking...",next_player_pos, other_player_pos, next_player_score, other_player_score)
 
     # 1. check the sums and position IN THIS UNIVERSE  (omg was overwriting the position without thinking interdimensional)
 
@@ -153,13 +151,13 @@ def check_for_win(next_player_pos, other_player_pos, next_player_score, other_pl
             # here will have returned from recursive call.  That call will return two numbers, the wins per player, in the universe
             # that it was working out.  as you go through the recursion the totals for the universes get multiplied. Each combination makes
             # another set of possibilities (brain aches).  So using the simple counts of universe combinations for the dice rolls you can
-            # multiple the universe win totals by the number of times that combinations would happen (as would get the same result)
+            # multiple the univer win totals by the number of times that combinations would happen (as would get the same result)
             next_player_total_wins += next_player_tmp_wins * universe_count
             other_player_total_wins += other_player_tmp_wins * universe_count
 
         # 3. add up the new win
 
-    # print("first player", next_player_score, "second player", other_player_score)
+    print("first player", next_player_score, "second player", other_player_score)
     return next_player_total_wins, other_player_total_wins
 
 
@@ -184,9 +182,9 @@ def part2(pos1, pos2):
 
    
     a,b = check_for_win(pos1, pos2, 0, 0)
-    # print(a,b)
+    print(a,b)
 
-    return max(a,b)
+    return 1
  
 
 def solve(puzzle_input):
@@ -198,7 +196,7 @@ def solve(puzzle_input):
     times.append(time.perf_counter())
     solution1 = part1(data)
     times.append(time.perf_counter())
-    solution2 = part2(2,10)
+    solution2 = part2(4,8)
     times.append(time.perf_counter())
     
     return solution1, solution2, times
