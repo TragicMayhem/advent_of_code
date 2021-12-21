@@ -88,9 +88,9 @@ def part1(data):
 
             current_player = '2' if current_player == '1' else '1'
 
-        print(player_stats['1'])
-        print(player_stats['2'])
-        print('roll count', roll_count)
+        # print(player_stats['1'])
+        # print(player_stats['2'])
+        # print('roll count', roll_count)
 
         lowest_score = min(player_stats['1']['score'],player_stats['2']['score'])
         answer = lowest_score * roll_count
