@@ -2,8 +2,6 @@
 
 import pathlib
 import time
-import itertools as its
-from collections import defaultdict
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 571032
@@ -103,11 +101,6 @@ def part1(data):
 def part2(data):
     """Solve part 2"""   
    
-    # combi = its.product([1,2,3],[1,2,3],[1,2,3])
-    combi = its.product([1,2,3],repeat=3)
-    print(combi)
-
-
     return 1
  
 
