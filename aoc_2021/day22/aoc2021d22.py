@@ -16,7 +16,7 @@ AOC
 Solution 1: 583636 in 0.0104s
 Solution 2: 1294137045134837 in 36.2598s
 
-only running 1 copy (oops) takes 16.1s
+only running 1 copy (oops) takes 16.1s  (old laptop ubuntu)  10.1 on new Win11 PC
 '''
 
 
