@@ -12,7 +12,7 @@ def parse(puzzle_input):
     """Parse input """
 
     with open(puzzle_input, 'r') as file:
-      data = file.read().split('\n')
+        data = file.read().split('\n')
     #   data = [d.split(' | ') for d in file.read().split('\n')]
 
     return data
