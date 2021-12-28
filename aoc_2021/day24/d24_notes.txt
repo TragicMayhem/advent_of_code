@@ -1,0 +1,76 @@
+
+Multiple read through and working out, but finally got there.  
+Not sure I would without assistance in future!
+
+Sources: 
+Reddit for hints and AOC solutions/help
+PJ (swift) https://github.com/pjcook/Advent-of-Code/blob/master/AdventOfCode/Year2021/Day24.swift
+DD (python) https://github.com/derailed-dash/Advent-of-Code-2021/blob/master/src/d24_alu_cartesian_creating_input_digits/alu.py
+
+https://github.com/kemmel-dev/AdventOfCode2021/blob/master/day24/AoC%20Day%2024.pdf
+-----
+
+inp a
+add a b 
+mul a b 
+div a b
+mod a b 
+eql a b 
+
+a will always be the answer
+cautious 
+div 0
+mod a<0 b<=0
+
+
+sub model numbers are 14 digits
+1-9 NOT 0
+
+inp will always be 1-9
+
+valid if 0 in z
+any other number is invalid
+
+=====
+
+Not straight forward ALU processing, I find out, its about reverse engineering a 14 digit number
+
+Hints: 
+The pattern off the instructions is mis-leading as some are pointless.
+There are hints about push/pop  (so guess a queue)
+and three numbers are key. once you simplify the instructions
+
+inp w       input number         = w
+mul x 0     will always give 0  x = 0
+add x z     always matches z    x = z
+mod x 26    x mod 26            x = x % 26
+div z 1     always be z         z = z
+add x 14    x = x + 14          x = (x % 26) + 14 = (z % 26) +14
+eql x w     x = 0 or 1 (x=w)   
+eql x 0     x = 0 or 1 (x=0)
+mul y 0                         y = 0
+add y 25                        y = 25    
+mul y x     y will be 26 or 0   y = 25 or 0    
+add y 1                         y = 26 or 1
+mul z y     z = y * z           y = z*26 or z*1
+mul y 0                         y = 0   
+add y w     y = y + w           y = w
+add y 12    y = y + 12          y = y + 12 = w + 12
+mul y x     y = y * x           y = (w + 12) * x so (w + 12) or 0
+add z y                         z = z + y  so z + w + 12 or 0
+
+need z to have zero to be a valid number
+
+after #6  +14 then x will never eq w (1to9) so that will be 0 (#7)
+so #8 x will always be 0 so when it =0 x is set to 1  (from #9 onwards x=1)
+
+
+two types of blocks  (div z 1 and div z 26)
+others on reddit all talk about stacks (queues) with former pushing on and latter popping
+7 on and 7 off to work out digits of the number, and the difference being the checks.
+
+solve pairs of digits, in the 14 digit number.
+pairs mean one will be 9, other will be 9 -/+ diff
+
+
+
