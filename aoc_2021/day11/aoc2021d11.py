@@ -2,7 +2,7 @@
 
 import pathlib
 import time
-from collections import deque
+# from collections import deque
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 1673 (100 steps) / 
@@ -166,7 +166,7 @@ def solve(puzzle_input):
 
 if __name__ == "__main__":    # print()
 
-    solutions = solve(file_in)
+    solutions = solve(input)
     print()
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
