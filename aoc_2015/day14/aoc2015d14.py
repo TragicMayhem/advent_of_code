@@ -7,8 +7,8 @@ from pprint import pprint
 from collections import defaultdict
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # Rudolph 2640 in 2503 seconds
-input_test = script_path / 'test.txt'  # Comet 1120 for 1000 seconds
+input = script_path / 'input.txt'  # Rudolph 2640km in 2503 seconds /  1102 points
+input_test = script_path / 'test.txt'  # Comet 1120km in 1000 seconds  / Dancer on 689 points (Comet on 312)
 
 # race_time = 1000 for test file / race_time = 2503 for input
 
@@ -19,6 +19,22 @@ input_test = script_path / 'test.txt'  # Comet 1120 for 1000 seconds
 # loop counter = seconds until flytime max
 # on each check against each ren, if flying increment counter, if not leave. reset on change over
 
+## WARNING - Dictionary is referenced so Part 1 values were in the start of Part 2. Simple reset function to clear out
+
+'''
+TEST OUTPUT PART 1
+Comet travelled 1120 km in 1000 seconds
+Dancer travelled 1056 km in 1000 seconds
+The winner is 1120 km
+
+TEST OUTPUT PART 2
+Comet travelled 1120 km in 1000 seconds. Points 312
+Dancer travelled 1056 km in 1000 seconds. Points 689
+
+The winning is 1120 km
+The winning points 689
+'''
+
 
 def parse(puzzle_input):
     """Parse input """
@@ -26,14 +42,14 @@ def parse(puzzle_input):
     reindeer = defaultdict(dict)
 
     with open(puzzle_input, 'r') as file:
-     data = file.read().split('\n')
+        data = file.read().split('\n')
 
     for item in data:
         break_item = re.findall(r"^(\w*) can fly (\d+) km/s for (\d+) sec.* for (\d+) seconds\.$", item)  
         
         if break_item:
             reindeer_name, speed, fly_time, rest_time = break_item[0]
-        
+
             reindeer[reindeer_name].update({'fly_time': int(fly_time)})
             reindeer[reindeer_name].update({'speed': int(speed)})
             reindeer[reindeer_name].update({'rest_time': int(rest_time)})
@@ -46,17 +62,31 @@ def parse(puzzle_input):
     return reindeer
 
 
+def simple_reset_stats(data):
+    ''' Simple reset the counts in the sub dictionary so can re=use the data for Part 2
+    '''
+    for k in data:
+        data[k].update({'current_fly_time': 0})
+        data[k].update({'current_rest_time': 0})
+        data[k].update({'is_flying': True})
+        data[k].update({'distance': 0})
+        data[k].update({'points': 0})
+
+    return data
+
+
 def change_status(reindeer, name, info):
   '''
     Updates given reindeers flight information. Builds subkey from info and updates
     dictionary of Reindeer information
 
       Parameters:
-              names (str): name (key) for the reindeer to be updated
-              info (str): sub key 'fly_time' or 'rest_time'
+            reindeer: dictionary of reindeers stats. passed but its referenced so updates called rather than returns. bad practice
+            names (str): name (key) for the reindeer to be updated
+            info (str): sub key 'fly_time' or 'rest_time'
 
       Returns:
-              Nothing
+            Nothing
   '''
   current = 'current_' + info
 
@@ -67,7 +97,7 @@ def change_status(reindeer, name, info):
     reindeer[name]['is_flying'] = not reindeer[name]['is_flying']
 
 
-def part1(reindeer, race_time):
+def part1(reindeer, race_time=1000):
     """Solve part 1""" 
 
     for s in range(race_time):
@@ -95,12 +125,12 @@ def part1(reindeer, race_time):
         winning_dist = reindeer[k]['distance'] if reindeer[k]['distance'] > winning_dist else winning_dist
         print(f"{k} travelled {reindeer[k]['distance']} km in {race_time} seconds")
 
-    print(f"The winner is {winning_dist} km")        
+    print(f"The winning distance is {winning_dist} km")        
     
     return winning_dist
 
 
-def part2(reindeer, race_time):
+def part2(reindeer, race_time=1000):
     """Solve part 2"""   
     for s in range(race_time):
         # print('-------',s,'-------')
@@ -121,9 +151,9 @@ def part2(reindeer, race_time):
             elif reindeer[k]['distance'] == leading_distance:
                 leaders.append(k)
 
-    # check points
-    for l in leaders:
-        reindeer[l]['points'] += 1
+        # check points
+        for l in leaders:
+            reindeer[l]['points'] += 1
   
     # pprint(reindeer)
     winning_dist = winning_points = 0
@@ -133,48 +163,52 @@ def part2(reindeer, race_time):
         winning_points = reindeer[k]['points'] if reindeer[k]['points'] > winning_points else winning_points
         print(f"{k} travelled {reindeer[k]['distance']} km in {race_time} seconds. Points {reindeer[k]['points']}")
 
-    print()
-    print(f"The winning is {winning_dist} km")
+    print(f"The winning distance is {winning_dist} km")
     print(f"The winning points {winning_points}")
 
     return winning_points
  
 
-def solve(puzzle_input, race_time):
+def solve(puzzle_input, race_time=1000):
     """Solve the puzzle for the given input"""
     times=[]
 
     data = parse(puzzle_input)
+
+    times.append(time.perf_counter())
+    solution1 = part1(data, 2503)
     
     times.append(time.perf_counter())
-    solution1 = part1(data)
-    times.append(time.perf_counter())
-    solution2 = part2(data)
+    data = simple_reset_stats(data)
+    solution2 = part2(data, 2503)
+    
     times.append(time.perf_counter())
     
     return solution1, solution2, times
 
 
-def runSingleTestData(test_file, race_time):
-    data = parse(test_file)
-    test_solution1 = part1(data, race_time)
-    test_solution2 = part2(data, race_time)
-    return test_solution1, test_solution2
-
-
 def runAllTests(race_time):
+
+    def runSingleTestData(test_file, race_time):
+        data = parse(test_file)
+        test_solution1 = part1(data, race_time)
+
+        data = simple_reset_stats(data)
+        test_solution2 = part2(data, race_time)
+        return test_solution1, test_solution2
     
     print("Tests")
     a, b  = runSingleTestData(input_test, race_time)
     print(f'Test1.  Part1: {a} Part 2: {b}')
+    print()
 
 
 if __name__ == "__main__":    # print()
 
     runAllTests(1000)
 
-    # solutions = solve(input, 2503)
-    # print('\nAOC')
-    # print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    # print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    # print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+    solutions = solve(input, 2503)
+    print('\nAOC')
+    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
+    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
+    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

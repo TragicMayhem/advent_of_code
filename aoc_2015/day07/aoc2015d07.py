@@ -33,7 +33,6 @@ def parse(puzzle_input):
             instructions[l[-1]] = l[:-1]  # key is the last list item, value is the rest of the list      
 
 
-
 def convert_int(val):
   '''
     Check if can convert str to int, if not return the str (ref to another wire)
@@ -120,15 +119,14 @@ def solve(puzzle_input):
     return solution1, solution2, times
 
 
-def runSingleTestData(test_file):
-    data = parse(test_file)
-    test_solution1 = part1()
-    test_solution2 = part2()
-    return test_solution1, test_solution2
-
-
 def runAllTests():
-    
+
+    def runSingleTestData(test_file):
+        data = parse(test_file)
+        test_solution1 = part1()
+        test_solution2 = part2()
+        return test_solution1, test_solution2
+  
     print("Tests")
     a, b  = runSingleTestData(input_test)
     print(f'Test1.  Part1: {a} Part 2: {b}')

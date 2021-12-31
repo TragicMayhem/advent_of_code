@@ -29,6 +29,7 @@ def solve(puzzle_input, max_count):
 
     return len(latest_output)
 
+
 if __name__ == "__main__":    # print()
 
     times=[]

@@ -27,6 +27,7 @@ group3char = list()
 lower_char = ord('a')  # 97
 upper_char = ord('z')  # 122
 
+
 def inspect_pwd(pwd):
   '''
   Inspect password for invalid characters. 
@@ -110,16 +111,10 @@ def process_password(data):
     while not pwd_valid(current_pwd):
         current_pwd = change_pwd(current_pwd)
 
-    print('Current pwd     :', data)
-    print('Next valid pwd  :', current_pwd)         
+    # print('Current pwd     :', data)
+    # print('Next valid pwd  :', current_pwd)         
     return current_pwd
 
-
-def part2(data):
-    """Solve part 2"""   
-   
-    return 1
- 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""

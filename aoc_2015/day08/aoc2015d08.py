@@ -20,6 +20,7 @@ input_test2 = script_path / 'test2.txt' # 50 / 75
 # (\\\\)|(\\x[\w]{2})|(\\\")   - Match all but group each component pattern
 # (\\\\|\\x[\w]{2}|\\\")   - Match all but just each one separately, so get a single list
 
+
 def parse(puzzle_input):
     """Parse input """
 
@@ -78,15 +79,14 @@ def solve(puzzle_input):
     return solution1, solution2, times
 
 
-def runSingleTestData(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
 def runAllTests():
-    
+
+    def runSingleTestData(test_file):
+        data = parse(test_file)
+        test_solution1 = part1(data)
+        test_solution2 = part2(data)
+        return test_solution1, test_solution2
+   
     print("Tests")
     a, b  = runSingleTestData(input_test)
     print(f'Test1.  Part1: {a} Part 2: {b}')

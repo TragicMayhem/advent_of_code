@@ -73,20 +73,20 @@ def solve(puzzle_input):
     return solution1, solution2, times
 
 
-def runSingleTestData(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
 def runAllTests():
     
+    def runSingleTestData(test_file):
+        data = parse(test_file)
+        test_solution1 = part1(data)
+        test_solution2 = part2(data)
+        return test_solution1, test_solution2
+
     print("Tests")
     a, b  = runSingleTestData(input_test)
     print(f'Test1.  Part1: {a} Part 2: {b}')
     a, b  = runSingleTestData(input_test2)
     print(f'Test2.  Part1: {a} Part 2: {b}')
+
 
 if __name__ == "__main__":    # print()
 
