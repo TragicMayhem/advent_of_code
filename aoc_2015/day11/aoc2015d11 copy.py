@@ -120,32 +120,37 @@ def solve(puzzle_input):
     """Solve the puzzle for the given input"""
     times=[]
     times.append(time.perf_counter())
-    solution = process_password(puzzle_input)
+    test1 = process_password(input_test[0])
+    
     times.append(time.perf_counter())
-   
-    return solution, times
+    test4 = process_password(input_test[4])
 
+    times.append(time.perf_counter())
+    test5 = process_password(input_test[5])
 
-def runAllTests():
-    print("\nTests\n")
+    times.append(time.perf_counter())
+    
+    print(f"Test 1: {test1} in {times[1]-times[0]:.4f}s")
+    print(f"Test 4: {test4} in {times[2]-times[1]:.4f}s")
+    print(f"Test 5: {test5} in {times[3]-times[2]:.4f}s")
+    print(f"\nExecution total: {times[3]-times[0]:.4f} seconds")
 
-    a, t  = solve(input_test[0])
-    print(f'Test1 : {a} in {t[1]-t[0]:.4f}s')
+    times=[]
+    times.append(time.perf_counter())
+    solution1 = process_password(input_pt1)
 
-    a, t  = solve(input_test[4])
-    print(f'Test4 : {a} in {t[1]-t[0]:.4f}s')
+    times.append(time.perf_counter())
+    solution2 = process_password(input_pt2)
 
-    a, t  = solve(input_test[5])
-    print(f'Test5 : {a} in {t[1]-t[0]:.4f}s')
+    times.append(time.perf_counter())
+    
+    return solution1, solution2, times
 
 
 if __name__ == "__main__":    # print()
 
-    runAllTests()
-
-    sol1, times1 = solve(input_pt1)
-    sol2, times2 = solve(input_pt2)
+    sol1, sol2, times = solve(input)
     print('\nAOC')
-    print(f"Solution 1: {str(sol1)} in {times1[1]-times1[0]:.4f}s")
-    print(f"Solution 2: {str(sol2)} in {times2[1]-times2[0]:.4f}s")
-    print(f"\nExecution total: {times2[-1]-times1[0]:.4f} seconds")
+    print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
+    print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")

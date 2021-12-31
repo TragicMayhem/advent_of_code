@@ -80,26 +80,25 @@ def solve(puzzle_input):
 
 
 def runAllTests():
+    print("\nTests\n")
 
-    def runSingleTestData(test_file):
-        data = parse(test_file)
-        test_solution1 = part1(data)
-        test_solution2 = part2(data)
-        return test_solution1, test_solution2
-   
-    print("Tests")
-    a, b  = runSingleTestData(input_test)
-    print(f'Test1.  Part1: {a} Part 2: {b}')
-    a, b  = runSingleTestData(input_test2)
-    print(f'Test3.  Part1: {a} Part 2: {b}')
+    a, b, t  = solve(input_test)
+    print(f'Test1 Part 1: {a} in {t[1]-t[0]:.4f}s')
+    print(f'      Part 2: {b} in {t[2]-t[1]:.4f}s')
+    print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
+
+    a, b, t  = solve(input_test2)
+    print(f'Test2 Part 1: {a} in {t[1]-t[0]:.4f}s')
+    print(f'      Part 2: {b} in {t[2]-t[1]:.4f}s')
+    print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
 
 
 if __name__ == "__main__":    # print()
 
     runAllTests()
 
-    solutions = solve(input)
+    sol1, sol2, times = solve(input)
     print('\nAOC')
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+    print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
+    print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")

@@ -40,9 +40,9 @@ if __name__ == "__main__":    # print()
     ans1b = solve(input_test, 50)
     times.append(time.perf_counter())
     
-    print(f"Test 1: {ans1a} in {times[1]-times[0]:.4f}s")
-    print(f"Test 2: {ans1b} in {times[2]-times[1]:.4f}s")
-    print(f"\nExecution total: {times[2]-times[0]:.4f} seconds")
+    print(f'Test1 Part 1: {ans1a} in {times[1]-times[0]:.4f}s')
+    print(f'      Part 2: {ans1b} in {times[2]-times[1]:.4f}s')
+    print(f"      Execution total: {times[-1]-times[0]:.4f} seconds")
 
     times=[]
     times.append(time.perf_counter())
@@ -52,6 +52,6 @@ if __name__ == "__main__":    # print()
     times.append(time.perf_counter())
 
     print('\nAOC')
-    print(f"Solution 1: {ans2a} in {times[1]-times[0]:.4f}s")
-    print(f"Solution 2: {ans2b} in {times[2]-times[1]:.4f}s")
-    print(f"\nExecution total: {times[2]-times[0]:.4f} seconds")
+    print(f"Solution 1: {str(ans2a)} in {times[1]-times[0]:.4f}s")
+    print(f"Solution 2: {str(ans2b)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
