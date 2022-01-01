@@ -10,6 +10,7 @@ import time
 input = 29000000   # 665280 / 705600
 input_test = 130   # 8 / 6 
 
+
 def part1(target_num_presents):
     """Solve part 1""" 
 

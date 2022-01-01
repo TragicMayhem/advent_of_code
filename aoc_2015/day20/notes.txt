@@ -1,0 +1,23 @@
+
+
+
+
+# Each Elf delivers presents equal to ten times his or her number at each house.
+# elf 1 - every house      10 presents
+# elf 7 - 7th house        70 presents
+# elf 100 - 100th house    1000 presents
+
+
+can yeild a set of numbers for the given elf upto a limit?
+
+so elf 1 1,2,3,4,5,6,....
+so elf 2 2,4,6,8,10
+so elf 3 3,6,9
+n = n+1
+
+yield (n+1, (n+1)*presents)
+
+
+
+can create tuples of the houses and presents for each elf they are delivering too
+can we then subm all based on the first number in the tuple?
