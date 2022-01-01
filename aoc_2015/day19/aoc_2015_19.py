@@ -66,10 +66,11 @@ def part2(medicine, replacements):
     
     Mainly using because I could follow the logic and understand, and also cool use case to learn Re with functions for future problems
 
+    ONLY WORKS FOR input.txt not the tests (there for part 1 only)
+
     """   
 
-
-
+    # Used as parameter in the re.sub call
     def find_replacement(x):
         return reverse_replacements[x.group()]
 
