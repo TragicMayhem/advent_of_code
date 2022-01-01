@@ -30,24 +30,23 @@ def parse(puzzle_input):
                 replacements[tmp[0]] = []
             replacements.get(tmp[0]).append(tmp[1])
 
-        print("Input: Chain")   
-        print(chain)
-        print("\nInput: Replacements")   
-        print(replacements)
+        # print("Input: Chain")   
+        # print(chain)
+        # print("\nInput: Replacements")   
+        # print(replacements)
 
     return chain, replacements    
 
 
 def part1(chain, replacements):
     """Solve part 1""" 
+
     molecules = set()
 
     for key, combis in replacements.items():
         pattern = key
         for match in re.finditer(pattern, chain):
             s = match.start()
-            e = match.end()
-            # print( 'String match "%s" at %d:%d' % (chain[s:e], s, e))
             for m in combis:
                 tmp_molecule = chain[:s] + m + chain[s+len(key):]
                 molecules.add(tmp_molecule)
@@ -55,62 +54,52 @@ def part1(chain, replacements):
     return len(molecules)
 
 
-def apply_change(med, pos, source, target):
-    # take med upto pos, add in target, add rest of med after the pos+len(source)
-    return med[:pos] + target + med[pos+len(source):]
-
-
-def reverse_engineer(medicine, reverse_replacements):
-
-    current_molecule = medicine
-    results = []
-    more_to_do = True
-
-    # while more_to_do:
-    #     more_to_do = False
-
-    #     for target, source in reverse_replacements.items():
-    #         if source == 'e':
-    #             continue
-
-    #         matches = len(re.findall(target, current_molecule))
-    #         if matches > 0:
-    #             current_molecule = re.sub(target, source, current_molecule)
-    #             more_to_do = True
-    #             results.append([matches, current_molecule])
-    
-    # for target, source in reverse_replacements.items():
-    #     print(target,source)
-    #     if source != 'e':
-    #         continue
-
-    #     matches = len(re.findall(target, current_molecule))
-    #     if matches > 0:
-    #         current_molecule = re.sub(target, source, current_molecule))
-    #         results.append([matches, current_molecule])
-
-    # # print(results)
-    # print('-'*50)
-    # print(current_molecule)
-    # answer = sum(step[0] for step in results)
-    answer = 1
-    return answer
-
-
 def part2(medicine, replacements):
-    """Solve part 2"""   
-
-    reverse_replacements = defaultdict(list)
-    for k, v in replacements.items():
-        for target in v:
-            reverse_replacements[target] = k
+    """
+    Solve part 2
+    Tried: Loops to build up string
+    Tried: Recursion to build up string
+    Tried: Looking for substring from the right
     
-    print('target:',medicine)
-    print(reverse_replacements)
+    After researching hints and tips, learning some new python.  
+    This solutions reverses the target and replacements then using regular expressions to substitute
+    
+    Mainly using because I could follow the logic and understand, and also cool use case to learn Re with functions for future problems
 
-    answer = reverse_engineer(medicine, reverse_replacements)
+    """   
 
-    return answer
+
+
+    def find_replacement(x):
+        return reverse_replacements[x.group()]
+
+    reverse_medicine = medicine[::-1]
+
+    #Now the molecule is reversed ALL THE REPLACEMENTS HAVE TO BE TO.
+    reverse_replacements = defaultdict(list)
+
+    # Alternate ways to do this (after researching) e.g. using re.findall, and list comprehension. Look at alternates)
+    for k, v in replacements.items():
+        reversed_key = k[::-1]
+        for target in v:
+            reversed_value = target[::-1]
+            reverse_replacements[reversed_value] = reversed_key
+    
+    # print('Medicine:',reverse_medicine)
+    # print('Reversed replacements:', reverse_replacements)
+
+    # RegEx search string build from joining all the keys in the dictionary together (using or |)
+    search_pattern = '|'.join(reverse_replacements.keys())
+    # print(search_pattern)
+
+    count = 0
+    working_molecule = reverse_medicine
+
+    while working_molecule != 'e':
+        working_molecule = re.sub(search_pattern, find_replacement, working_molecule, 1)
+        count += 1
+
+    return count
  
 
 def solve(puzzle_input):
@@ -118,21 +107,15 @@ def solve(puzzle_input):
     times=[]
 
     chain, replacements = parse(puzzle_input)
-    
     times.append(time.perf_counter())
+    
     solution1 = part1(chain, replacements)
     times.append(time.perf_counter())
+
     solution2 = part2(chain, replacements)
     times.append(time.perf_counter())
     
     return solution1, solution2, times
-
-
-def runTest(test_file):
-    chain, replacements = parse(test_file)
-    test_solution1 = part1(chain, replacements)
-    test_solution2 = part2(chain, replacements)
-    return test_solution1, test_solution2
 
 
 def runAllTests():
@@ -151,7 +134,7 @@ def runAllTests():
 
 if __name__ == "__main__":
 
-    runAllTests()
+    # runAllTests()
 
     sol1, sol2, times = solve(input)
     print('\nAOC')
