@@ -15,25 +15,27 @@ input_test4 = script_path / 'input_test4pt2.txt'  # 7 distinct in 9 replacements
 
 
 def parse(puzzle_input):
-  """Parse input """
+    """Parse input """
 
-  replacements = {}
+    replacements = {}
 
-  with open(puzzle_input, 'r') as file:
-    data = file.read().split('\n')
-    chain = data.pop(-1)
+    with open(puzzle_input, 'r') as file:
+        data = file.read().split('\n')
+        chain = data.pop(-1)
 
-    for d in data:
-      if d == '': continue
-      tmp = d.split(' => ')
-      if replacements.get(tmp[0], None) == None:
-        replacements[tmp[0]] = []
-      replacements.get(tmp[0]).append(tmp[1])
+        for d in data:
+            if d == '': continue
+            tmp = d.split(' => ')
+            if replacements.get(tmp[0], None) == None:
+                replacements[tmp[0]] = []
+            replacements.get(tmp[0]).append(tmp[1])
 
-#   print(chain)
-#   print(replacements)
+        print("Input: Chain")   
+        print(chain)
+        print("\nInput: Replacements")   
+        print(replacements)
 
-  return chain, replacements    
+    return chain, replacements    
 
 
 def part1(chain, replacements):
@@ -41,21 +43,21 @@ def part1(chain, replacements):
     molecules = set()
 
     for key, combis in replacements.items():
-      pattern = key
-      for match in re.finditer(pattern, chain):
-        s = match.start()
-        e = match.end()
-        # print( 'String match "%s" at %d:%d' % (chain[s:e], s, e))
-        for m in combis:
-          tmp_molecule = chain[:s] + m + chain[s+len(key):]
-          molecules.add(tmp_molecule)
+        pattern = key
+        for match in re.finditer(pattern, chain):
+            s = match.start()
+            e = match.end()
+            # print( 'String match "%s" at %d:%d' % (chain[s:e], s, e))
+            for m in combis:
+                tmp_molecule = chain[:s] + m + chain[s+len(key):]
+                molecules.add(tmp_molecule)
      
     return len(molecules)
 
 
 def apply_change(med, pos, source, target):
-  # take med upto pos, add in target, add rest of med after the pos+len(source)
-  return med[:pos] + target + med[pos+len(source):]
+    # take med upto pos, add in target, add rest of med after the pos+len(source)
+    return med[:pos] + target + med[pos+len(source):]
 
 
 def reverse_engineer(medicine, reverse_replacements):
@@ -100,8 +102,8 @@ def part2(medicine, replacements):
 
     reverse_replacements = defaultdict(list)
     for k, v in replacements.items():
-      for target in v:
-        reverse_replacements[target] = k
+        for target in v:
+            reverse_replacements[target] = k
     
     print('target:',medicine)
     print(reverse_replacements)
@@ -135,22 +137,24 @@ def runTest(test_file):
 
 def runAllTests():
     
-    print("Tests")
-    a, b  = runTest(input_test)
-    print(f'Test1.  Part1: {a} Part 2: {b}')
-    a, b  = runTest(input_test2)
-    print(f'Test2.  Part1: {a} Part 2: {b}')
-    a, b  = runTest(input_test3)
-    print(f'Test3.  Part1: {a} Part 2: {b}')
-    a, b  = runTest(input_test4)
-    print(f'Test4.  Part1: {a} Part 2: {b}')
+    print("\nTests\n")
+    a, b, t  = solve(input_test)
+    print(f'Test1 Part 1: {a} in {t[1]-t[0]:.4f}s')
+    print(f'      Part 2: {b} in {t[2]-t[1]:.4f}s')
+    print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
+    
+    a, b, t  = solve(input_test2)
+    print(f'Test2 Part 1: {a} in {t[1]-t[0]:.4f}s')
+    print(f'      Part 2: {b} in {t[2]-t[1]:.4f}s')
+    print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
 
-if __name__ == "__main__":    # print()
+
+if __name__ == "__main__":
 
     runAllTests()
 
-    solutions = solve(input)
+    sol1, sol2, times = solve(input)
     print('\nAOC')
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+    print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
+    print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
