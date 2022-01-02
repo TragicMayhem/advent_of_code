@@ -7,6 +7,8 @@ import time
 # elf 7 - 7th house        70 presents
 # elf 100 - 100th house    1000 presents
 
+## Tried a version to yield numbers etc, but was slower (and didn't run) than just running the loops below. So left as is
+
 input = 29000000   # 665280 / 705600
 input_test = 130   # 8 / 6 
 
