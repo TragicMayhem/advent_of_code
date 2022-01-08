@@ -8,6 +8,7 @@ import re
 # Alternatives to implement:
 # [x] - Initial check - look left to right, if its invalid char, then increment it, scrap rest to 'a' 
 # [ ] - When increment if its invalid then skip it (and reset from that possition to 'a')
+# [ ] - maybe put debugging and log in here rather than print to see what its doing?
 
 input_pt1 = 'hepxcrrq'   # hepxxyzz  > becomes input for part 2
 input_pt2 = 'hepxxyzz'   # heqaabcc
