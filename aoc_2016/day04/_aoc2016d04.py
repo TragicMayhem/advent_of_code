@@ -1,4 +1,4 @@
-# https://adventofcode.com/2016/day/xx
+# https://adventofcode.com/2016/day/4
 
 import pathlib
 import time
@@ -11,7 +11,10 @@ input_test = script_path / 'test.txt'  #
 def parse(puzzle_input):
     """Parse input """
     with open(puzzle_input, 'r') as file:
-        data = file.read().split('\n')
+        data = file.read().split('\n')  # Read file make list bu splitting on new line \n
+        data = [' '.join(d.split()).split() for d in data] # Splits/rejoins (to replace the multiple spaces), the splits into list
+        data = [[int(i) for i in d] for d in data]
+
     return data
 
 
