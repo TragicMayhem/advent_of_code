@@ -7,8 +7,8 @@ import  collections
 from typing import Counter
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  #
-input_test = script_path / 'test.txt'  # 
+input = script_path / 'input.txt'  #                     Not 179969
+input_test = script_path / 'test.txt'  # 1514 / 
 
 
 def parse(puzzle_input):
@@ -18,10 +18,11 @@ def parse(puzzle_input):
         lines = file.read().split('\n')
         for l in lines:
             a, checksum = l[:-1].split('[')
-            tally = dict(Counter(a.replace('-','')).most_common(5))
-            # tally = Counter(a.replace('-','')).most_common(5)
             breakup = a.split('-')
-            data.append((breakup[:-1], int(breakup[-1]), tally, checksum)) 
+            encrypt_name = ''.join(breakup[:-1])
+            sector = int(breakup[-1])
+            # tally = dict(Counter(encrypt_name.replace('-','')).most_common())
+            data.append((encrypt_name, sector, checksum)) 
 
     return data
 
@@ -29,18 +30,41 @@ def parse(puzzle_input):
 def part1(data):
     """Solve part 1""" 
 
+    valid_sectors = []
+
     for room in data:
+        print()
         for ele in room:
             print(ele)
 
-        prev = 0
-        for c in room[-1]:
-            print(c)
-            if 
-# look round check sum and then tally the order, 
-# if each order is greater than or eq to previos ok, else not valid
+        name = room[0]
+        sector = room[1]
+        checksum = room[2]
 
-    return 1
+        tally = Counter(name).most_common()
+        # tally = dict(Counter(name).most_common())
+
+        prev = 0
+        valid_room = True
+        
+        # for k, v in tally.items():
+        #     print('kv',k,v)
+
+        for t in tally:
+            print(t)
+
+        for c in checksum:
+            print(c, tally.get(c,-1))
+            if tally.get(c,-1) < prev:
+                valid_room = False
+                break
+        
+        if valid_room:
+            valid_sectors.append(sector)
+
+    print(valid_sectors)
+
+    return sum(valid_sectors)
 
 
 def part2(data):
