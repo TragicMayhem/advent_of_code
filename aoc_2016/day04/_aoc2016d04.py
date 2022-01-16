@@ -3,6 +3,9 @@
 import pathlib
 import time
 
+import  collections
+from typing import Counter
+
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  #
 input_test = script_path / 'test.txt'  # 
@@ -10,17 +13,33 @@ input_test = script_path / 'test.txt'  #
 
 def parse(puzzle_input):
     """Parse input """
+    data = []
     with open(puzzle_input, 'r') as file:
-        data = file.read().split('\n')  # Read file make list bu splitting on new line \n
-        data = [' '.join(d.split()).split() for d in data] # Splits/rejoins (to replace the multiple spaces), the splits into list
-        data = [[int(i) for i in d] for d in data]
+        lines = file.read().split('\n')
+        for l in lines:
+            a, checksum = l[:-1].split('[')
+            tally = dict(Counter(a.replace('-','')).most_common(5))
+            # tally = Counter(a.replace('-','')).most_common(5)
+            breakup = a.split('-')
+            data.append((breakup[:-1], int(breakup[-1]), tally, checksum)) 
 
     return data
 
 
 def part1(data):
     """Solve part 1""" 
-   
+
+    for room in data:
+        for ele in room:
+            print(ele)
+
+        prev = 0
+        for c in room[-1]:
+            print(c)
+            if 
+# look round check sum and then tally the order, 
+# if each order is greater than or eq to previos ok, else not valid
+
     return 1
 
 
@@ -59,8 +78,8 @@ if __name__ == "__main__":    # print()
 
     runAllTests()
 
-    sol1, sol2, times = solve(input)
-    print('\nAOC')
-    print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
-    print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
-    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+    # sol1, sol2, times = solve(input)
+    # print('\nAOC')
+    # print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
+    # print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
+    # print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
