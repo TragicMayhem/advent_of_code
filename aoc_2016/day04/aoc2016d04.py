@@ -53,12 +53,25 @@ def part1(data):
             d.setdefault(v, []).append(k)
         stack = list(checksum)
 
+        print('tally:', tally)
+        print('d:', d)
+        print()
         for k,v in d.items():
-            next = stack.pop(0)
-            print('kv', k,v,'next', next)
-            if next not in v:
-                valid_room = False
-                break
+            
+            # in in list then nees next from stakc and check
+            # if not in list then continue loop
+            # loop while valid room and STACK
+
+            while stack and valid_room:
+                next = stack.pop(0)
+                print('k', k, 'v', v,'next', next)
+                if next in v:
+                    continue
+                if next not in v:
+                    valid_room = False
+
+            if not valid_room: break
+
 
         # for c in checksum:
         #     print(c, tally.get(c,-1))
