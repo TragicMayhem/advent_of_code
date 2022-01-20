@@ -35,6 +35,9 @@ def part1(data):
 
     for room in data:
         print()
+        # for ele in room:
+        #     print(ele)
+
         (name, sector, checksum) = tuple(room)
         print(name)
         print(sector)
@@ -53,12 +56,15 @@ def part1(data):
         print('tally:', tally)
         tmpdict = dict(tally)
         print('tmpdict', tmpdict)
+
+        a = ''.join([str(x) for _, x in tally[:5]])
+        print('a', a)
+
         # print('d:', d)
         # print()
 
         valid_room = True
         check_counts = []
-
         for ch in checksum:
             score = tmpdict.get(ch, -1)
             
