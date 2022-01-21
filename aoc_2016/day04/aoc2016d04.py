@@ -1,12 +1,8 @@
 # https://adventofcode.com/2016/day/4
 
 import pathlib
-from tabnanny import check
 import time
-
-import  collections
-from tkinter.tix import Tree
-from typing import Counter
+from collections import Counter
 
 script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'  # 158835 / 993
