@@ -9,7 +9,7 @@ from tkinter.tix import Tree
 from typing import Counter
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  #                     Not 179969
+input = script_path / 'input.txt'  # 158835
 input_test = script_path / 'test.txt'  # 1514 / 
 
 
@@ -35,88 +35,25 @@ def part1(data):
     valid_sectors = []
 
     for room in data:
-        print()
         (name, sector, checksum) = tuple(room)
-        print(name)
-        print(sector)
-        print(checksum)
+        # print(name)
+        # print(sector)
+        # print(checksum)
 
         # list of Tuples: letter & count, in order. If same value, listed in order found
         tally = Counter(name).most_common()  
+        # resort this using lambda function to return altered tuple
+        #    1st: descending count (using -m[1])
+        #    2nd: alphabetical (using m[0])
+        tally = sorted(tally, key=lambda m: (-m[1],m[0]))
 
-        # Flip the counts to validate against the checksum        
-        # d = {}
-        # for k, v in tally:
-        #     d.setdefault(v, []).append(k)
-        # stack = list(checksum)
-
-
-        print('tally:', tally)
-        print(sorted(tally))
-        print(sorted(tally,key=lambda a: a[1], reverse=True))
-        tmpdict = dict(tally)
-        print('tmpdict', tmpdict)
-        # print('d:', d)
-        # print()
-
-        first_tuple_elements = [a_tuple[0] for a_tuple in tally]
-        print(first_tuple_elements)
-        # roll_list1.sort(key=lambda a: a[1])
-
-
-        valid_room = True
-        check_counts = []
-
-        for ch in checksum:
-            score = tmpdict.get(ch, -1)
-            
-            if score < 0: 
-                valid_room = False
-                break
-
-            check_counts.append(str(score))
-
-        print(check_counts)
-        print(''.join(check_counts))
-
-
-
-        # prev = None
+        # Just take the first 5 most common and form a check sequence
+        seq = ''.join([str(x) for x, _ in tally[:5]])
         
-        # while stack and valid_room:
-        #     next = stack.pop(0)
-        #     print("Next", next)
-
-
-
-
-        # for k,v in d.items():
-            
-        #     # in in list then nees next from stakc and check
-        #     # if not in list then continue loop
-        #     # loop while valid room and STACK
-
-        #     while stack and valid_room:
-        #         next = stack.pop(0)
-        #         print('k', k, 'v', v,'next', next)
-        #         if next in v:
-        #             continue
-        #         if next not in v:
-        #             valid_room = False
-
-        #     if not valid_room: break
-
-
-        # for c in checksum:
-        #     print(c, tally.get(c,-1))
-        #     if tally.get(c,-1) < prev:
-        #         valid_room = False
-        #         break
-        
-        if valid_room:
+        if seq == checksum:
             valid_sectors.append(sector)
 
-    print(valid_sectors)
+    print("Valid Room sectors:", valid_sectors)
 
     return sum(valid_sectors)
 
@@ -156,8 +93,8 @@ if __name__ == "__main__":    # print()
 
     runAllTests()
 
-    # sol1, sol2, times = solve(input)
-    # print('\nAOC')
-    # print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
-    # print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
-    # print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+    sol1, sol2, times = solve(input)
+    print('\nAOC')
+    print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
+    print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
