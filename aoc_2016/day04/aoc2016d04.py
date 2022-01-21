@@ -5,6 +5,7 @@ from tabnanny import check
 import time
 
 import  collections
+from tkinter.tix import Tree
 from typing import Counter
 
 script_path = pathlib.Path(__file__).parent
@@ -51,10 +52,17 @@ def part1(data):
 
 
         print('tally:', tally)
+        print(sorted(tally))
+        print(sorted(tally,key=lambda a: a[1], reverse=True))
         tmpdict = dict(tally)
         print('tmpdict', tmpdict)
         # print('d:', d)
         # print()
+
+        first_tuple_elements = [a_tuple[0] for a_tuple in tally]
+        print(first_tuple_elements)
+        # roll_list1.sort(key=lambda a: a[1])
+
 
         valid_room = True
         check_counts = []
