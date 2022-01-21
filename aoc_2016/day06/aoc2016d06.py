@@ -32,6 +32,7 @@ def rotate_and_count(data):
     # print('Tuple counter:\n', counts)
     # print('Top tuple from each list:\n', top_counts)
     # print('Bottom tuple from each list:\n', bottom_counts)
+    
     top_seq = ''.join([str(x[0]) for x in top_counts])
     bottom_seq = ''.join([str(x[0]) for x in bottom_counts])
 
