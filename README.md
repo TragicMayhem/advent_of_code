@@ -3,7 +3,7 @@
 Code for the daily challenges
 https://adventofcode.com/
 
-[2021](https://github.com/TragicMayhem/advent_of_code/tree/master/aoc_2021) - started / python  << - Now
+[2021](https://github.com/TragicMayhem/advent_of_code/tree/master/aoc_2021) - complete / python
 
 [2020](https://github.com/TragicMayhem/advent_of_code/tree/master/aoc_2020) - started / python
 
