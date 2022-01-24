@@ -25,6 +25,37 @@ def parse(puzzle_input):
 
 
 def validate_rooms(rooms):
+    '''
+    Using Counter to create a counter object of the character counts.
+    Using most common without an argument just returns a list of tuples for all counts highest to lowest
+
+    tally = Counter(strippedname).most_common()
+
+    The tuples are (character, count occurred) but the order is not alphabetical.
+    This sort uses lambda to switch the items, 
+        -m[1] to reverse the order of the count
+        m[0] for the letter
+    
+    The reason for this is that the sorted(iterable) function default will sort in order - first the number, then the letter. 
+    This forces them to be alphabetical.
+    
+    tally = sorted(tally, key=lambda m: (-m[1],m[0]))
+
+    This just joins the first 5 in a string (for comparison later)
+    seq = ''.join([str(x) for x, _ in tally[:5]])
+
+    Output sample
+    -------------
+    tally
+    [('x', 7), ('g', 5), ('m', 3), ('k', 3), ('z', 3), ('l', 2), ('v', 2), ('b', 2), ('h', 1), ('i', 1), ('t', 1), ('o', 1), ('a', 1), ('n', 1)]
+    
+    tally after new sort
+    [('x', 7), ('g', 5), ('k', 3), ('m', 3), ('z', 3), ('b', 2), ('l', 2), ('v', 2), ('a', 1), ('h', 1), ('i', 1), ('n', 1), ('o', 1), ('t', 1)]
+    
+    seq string
+    xgkmz
+    
+    '''
     valid_rooms = []
     
     for room in rooms:
@@ -32,7 +63,9 @@ def validate_rooms(rooms):
         strippedname = name.replace(' ','')
         tally = Counter(strippedname).most_common()  
         tally = sorted(tally, key=lambda m: (-m[1],m[0]))
+        print(tally)
         seq = ''.join([str(x) for x, _ in tally[:5]])
+        print(seq)
         
         if seq == checksum:
             valid_rooms.append((name, sector))
