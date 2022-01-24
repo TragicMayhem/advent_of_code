@@ -1,0 +1,23 @@
+rect 1x1
+rotate row y=0 by 10
+rect 1x1
+rotate row y=0 by 10
+rect 1x1
+rotate row y=0 by 5
+rect 1x1
+rotate row y=0 by 3
+rect 2x1
+rotate row y=0 by 4
+rect 1x1
+rotate row y=0 by 3
+rect 1x1
+rotate row y=0 by 2
+rect 1x1
+rotate row y=0 by 3
+rect 2x1
+rotate row y=0 by 2
+rect 1x1
+rotate row y=0 by 3
+rect 2x1
+rotate row y=0 by 5
+rotate column x=0 by 1
