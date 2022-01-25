@@ -23,7 +23,7 @@ def generate_screen(width, height):
 Best way is to read and understand this: 
 https://thispointer.com/how-to-create-and-initialize-a-list-of-lists-in-python/
 
-HEadlines:
+Headlines:
  - the sub lists according the python are ALL the same list.
  - So when you change a [r][x] they ALL change
  - So when you think you are turning on one light, at the start, you are actually turning on 6.
@@ -34,7 +34,7 @@ HEadlines:
  - List copy is shallow copy, so the sub lists are still references.  
    Needs to use deepcopy from some module to copy all data - its slow.
 
-
+see testing_by_reference_error.py for a quick test
 
 '''
 
