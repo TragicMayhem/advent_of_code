@@ -10,9 +10,6 @@ script_path = pathlib.Path(__file__).parent
 input = script_path / 'input.txt'       # 121 / RURUCEOEIL
 input_test = script_path / 'test.txt'   # 6 / -
 
-# todo - there are # missing from the printout and the count is 117 (count #) compared to 121 (count rect values)
-# This MUST be wrong. need to check the rotate and work out which is failing > Guessing column
-
 SCREEN_WIDTH = 50
 SCREEN_HEIGHT = 6
 
@@ -78,44 +75,30 @@ def rotate_row(grid, row, pixels):
 
 
 def rotate_column(grid, col, pixels):
-    print('rotate_column(grid, col, pixels)', col, pixels)
+    # print('rotate_column(grid, col, pixels)', col, pixels)
     
-
-    # not sure it works when its 1
-    print('   a', pixels)
     pixels = pixels % len(grid)
-    print('   b',pixels)
     
     tmp_column = []
-
-    show_screen(grid)
 
     for row in range(len(grid)):
         tmp_column.append(grid[row][col])
     
-    print("tmp before:", tmp_column)
     tmp_column = tmp_column[-pixels:] + tmp_column[:-pixels]
-    print("tmp after :", tmp_column)
-
-    print(len(tmp_column))
 
     for row in range(len(grid)):
-        print(row, col)
         val = tmp_column.pop(0)
-        print(val, len(tmp_column), tmp_column)
         grid[row][col] = val # tmp_column.pop(0)
-        print('grc', grid[row][col])
-        print('gr_', grid[row])
-        print(grid)
-
-    print(grid)
-    show_screen(grid)
 
     return grid
 
 
 def generate_screen(width, height):
-    grid = [['.'] * width] * height
+    # Version 1 - This is creating the SAME OBJECT references lots of times. Problem, change one change them all
+    # grid = [['.'] * width] * height
+
+    # Version 2 - Using range, generates multiple objects, all different.  (can check if you print the id)
+    grid = [['.' for i in range(width)] for i in range(height)]
     return grid
 
 
@@ -133,7 +116,7 @@ def process_screen(data, w, h):
     count_on = 0 
 
     for d in data:
-        print('Instruction:', d)
+        # print('Instruction:', d)
         if d[0] == 'rect':
             grid = fill_in_rect(grid, d[1], d[2])
             count_on += d[1] * d[2]
@@ -144,16 +127,11 @@ def process_screen(data, w, h):
         elif d[0] == 'column':
             grid = rotate_column(grid, d[1], d[2] )
 
-        print("processing count_on:", count_on)
-        print('  grid check        :',sum(x.count('#') for x in grid))
-
     show_screen(grid)
 
     # To answer part 1 - anything that draws a rectangle must turn on lights. Just count them.
-    print('Sum of rect w*h:', count_on)
-    
-    print('question is - why does the count of all the # not equal the above. # missing from the letter!')
-    print(sum(x.count('#') for x in grid))
+    print('Sum of rect w*h: ', count_on)
+    print('Sum of on lights:', sum(x.count('#') for x in grid))
 
     return count_on
 
