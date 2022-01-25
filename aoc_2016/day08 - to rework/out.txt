@@ -1,0 +1,26 @@
+Instruction: ('row', 0, 5)
+processing count_on: 14
+  grid check        : 14
+Instruction: ('column', 0, 1)
+   a 1
+   b 1
+
+#         # #   #   # #   #   #     #       # #   #         #                   #                  
+                                                                                                   
+                                                                                                   
+                                                                                                   
+                                                                                                   
+                                                                                                   
+
+tmp before: ['#', '.', '.', '.', '.', '.']
+tmp after : ['.', '#', '.', '.', '.', '.']
+
+          # #   #   # #   #   #     #       # #   #         #                   #                  
+                                                                                                   
+                                                                                                   
+                                                                                                   
+                                                                                                   
+                                                                                                   
+
+processing count_on: 14
+  grid check        : 13

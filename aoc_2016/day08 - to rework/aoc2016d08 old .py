@@ -1,5 +1,6 @@
 # https://adventofcode.com/2015/day/8
 
+from itertools import count
 import pathlib
 from socketserver import DatagramRequestHandler
 import time
@@ -17,7 +18,7 @@ SCREEN_HEIGHT = 6
 
 
 def test_functions():
-    print('TRESTING FUNCTIONS')
+    print('TESTING FUNCTIONS')
     g = fill_in_rect(generate_screen(10,4), 5, 4)
     pp(g)
     g = rotate_row(g, 0, 1)
@@ -42,7 +43,6 @@ def parse(puzzle_input):
         rect 3x2
         rotate column x=1 by 1
         rotate row y=0 by 4
-
     """
     with open(puzzle_input, 'r') as file:
         lines = file.read().split('\n')
@@ -78,18 +78,38 @@ def rotate_row(grid, row, pixels):
 
 
 def rotate_column(grid, col, pixels):
-    # print('rotate_column(grid, col, pixels)', col, pixels)
+    print('rotate_column(grid, col, pixels)', col, pixels)
     
+
+    # not sure it works when its 1
+    print('   a', pixels)
     pixels = pixels % len(grid)
+    print('   b',pixels)
     
     tmp_column = []
-    for row in range(len(grid)):
-        tmp_column.append(grid[row][col])
- 
-    tmp_column = tmp_column[-pixels:] + tmp_column[:-pixels]
+
+    show_screen(grid)
 
     for row in range(len(grid)):
-        grid[row][col] = tmp_column.pop(0)
+        tmp_column.append(grid[row][col])
+    
+    print("tmp before:", tmp_column)
+    tmp_column = tmp_column[-pixels:] + tmp_column[:-pixels]
+    print("tmp after :", tmp_column)
+
+    print(len(tmp_column))
+
+    for row in range(len(grid)):
+        print(row, col)
+        val = tmp_column.pop(0)
+        print(val, len(tmp_column), tmp_column)
+        grid[row][col] = val # tmp_column.pop(0)
+        print('grc', grid[row][col])
+        print('gr_', grid[row])
+        print(grid)
+
+    print(grid)
+    show_screen(grid)
 
     return grid
 
@@ -106,7 +126,6 @@ def show_screen(grid):
     print()
 
 
-
 def process_screen(data, w, h):
     """Solve part 1""" 
    
@@ -114,14 +133,19 @@ def process_screen(data, w, h):
     count_on = 0 
 
     for d in data:
-        # print('Instruction:', d)
+        print('Instruction:', d)
         if d[0] == 'rect':
             grid = fill_in_rect(grid, d[1], d[2])
             count_on += d[1] * d[2]
+        
         elif d[0] == 'row':
             grid = rotate_row(grid, d[1], d[2] )
+        
         elif d[0] == 'column':
             grid = rotate_column(grid, d[1], d[2] )
+
+        print("processing count_on:", count_on)
+        print('  grid check        :',sum(x.count('#') for x in grid))
 
     show_screen(grid)
 
@@ -157,7 +181,7 @@ def runAllTests():
 if __name__ == "__main__":    # print()
 
     # test_functions()
-    runAllTests()
+    # runAllTests()
 
     sol1, times = solve(input)
     print('\nAOC')
