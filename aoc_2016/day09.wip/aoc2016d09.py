@@ -1,5 +1,6 @@
 # https://adventofcode.com/2015/day/9
 
+from http.client import FOUND
 import pathlib
 import time
 import re
@@ -81,45 +82,70 @@ def part1(data):
     return full_decompressed_length
 
 
-def decompress_data1(compressed_input):
+def decompress_data(compressed_input):
+
+    print('\nFunction call:', compressed_input)
 
     look_ahead = marker_pattern.search(compressed_input)
 
     # need to take account for string BEFORE match??
     # If the compressed input has no instructions, then process that string and return the length
     if not look_ahead:
-        return len(compressed_input) ##???
+        print('No pattern found', compressed_input)
+        return len(compressed_input) ##???  so the one above and * qty?
 
     if look_ahead:
         marker_length, marker_qty = (int(x) for x in look_ahead.groups())
         match_start, match_end = look_ahead.span()
-        print(look_ahead.group(), '  \t', look_ahead.span(), '\t')
+        print('group & span: ',look_ahead.group(), '  \t', look_ahead.span(), '\t')
 
-        before = compressed_input[:match_start]
-        after = compressed_input[match_end:]
-        print(compressed_input[match_end:match_end+marker_length])
+        data_before_match = compressed_input[:match_start]
+        data_after_match = compressed_input[match_end:]
 
-        found = marker_pattern.findall(compressed_input[match_end:match_end+marker_length])
-        if found:
-            print("more")
+        # This builds the sequence to process for the identified length
+        data_sequence = compressed_input[match_end:match_end + marker_length]
+        print('seq', data_sequence)
 
-            for item in found:
-                print(item)
+        found_next_seq = marker_pattern.search(data_sequence)
+
+        if found_next_seq:
+            running_len = 0
+
+            while found_next_seq:
+                print(found_next_seq)
+                # Means in section of data there is another pattern to process
+                next_seq_len, next_seq_qty = (int(x) for x in found_next_seq.groups())
+                next_seq_start, next_seq_end = found_next_seq.span()
+
+                focus = data_sequence[next_seq_end:next_seq_end + next_seq_len]
+
+                print('focus', focus)
+                running_len += next_seq_qty * decompress_data(focus)
+
+
+                # just decompress whats left?s
+                # need to do something about look until remainin string is empty and then add those ones together before returning the lenght
+
+                data_sequence = data_sequence[next_seq_end + next_seq_len + len(focus) - 1:]
+
+                print('remaining seq', data_sequence)
+
+                found_next_seq = marker_pattern.search(data_sequence)
+                print("end running total:", running_len)
+
+        else:
+            return len(data_sequence)
 
         # base case is what - nothing found, so return the length of that base string up, multiple by qty
         # but what about adding the others to it... how to know?
         # return marker_qty * decompress_data(after)
-
-
-
-
 
         # if '(' not in after:
         #     return marker_length * marker_qty
 
         # # need to do len(before) + recursive call?
 
-        # # canwe look at () then count ( within the first ones range)
+        # # can we look at () then count ( within the first ones range)
         # # process and tally then move on
 
         # remaining_characters = after[:marker_length]
@@ -135,23 +161,6 @@ def decompress_data1(compressed_input):
         # compressed_data = after[marker_length:]
 
     return 1
-
-
-def decompress2(data):
-
-    # what if split all by (
-    # build dictionary of the parent childs like a route tree
-    # add up the leaves that have no brackest?
-
-    # seq_len: X   seq_rtp: y  child: {same if brackets} data: string remaining
-    # len of children is
-    # need to sum the children then multiuple by the parent qty
-
-    # or return the new string up. add it to the data  - much too big, point is do by numbers
-
-
-
-    return 88
 
 
 def part2(data):
@@ -176,7 +185,7 @@ def part2(data):
     # recursion?  pass in string left, until terminal and add to next one
     # repeat
 
-    ans = decompress_data1(data)
+    ans = decompress_data(data)
 
     return 1
  
