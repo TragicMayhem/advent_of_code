@@ -1,12 +1,13 @@
 # https://adventofcode.com/2015/day/9
 
 from http.client import FOUND
+from operator import length_hint
 import pathlib
 import time
 import re
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'       # 152851
+input = script_path / 'input.txt'       # 152851 / 11797310782
 input_test = script_path / 'test.txt'   # Not run
 
 marker_pattern = re.compile(r'\((\d+)x(\d+)\)')
@@ -82,85 +83,51 @@ def part1(data):
     return full_decompressed_length
 
 
-def decompress_data(compressed_input):
-
+def decompress_data(compressed_input, qty = 1):
+    '''
+    Recursive function to decompress given string
+    '''
     print('\nFunction call:', compressed_input)
 
-    look_ahead = marker_pattern.search(compressed_input)
-
-    # need to take account for string BEFORE match??
     # If the compressed input has no instructions, then process that string and return the length
-    if not look_ahead:
+    # if not look_ahead:
+    if '(' not in compressed_input:
         print('No pattern found', compressed_input)
-        return len(compressed_input) ##???  so the one above and * qty?
+        return qty * len(compressed_input) ##???  so the one above and * qty?
+    
+    uncompressed_length = 0
 
-    if look_ahead:
-        marker_length, marker_qty = (int(x) for x in look_ahead.groups())
-        match_start, match_end = look_ahead.span()
-        print('group & span: ',look_ahead.group(), '  \t', look_ahead.span(), '\t')
+    while len(compressed_input):
+        # Check for pattern to decide base case
+        look_ahead = marker_pattern.search(compressed_input)
 
-        data_before_match = compressed_input[:match_start]
-        data_after_match = compressed_input[match_end:]
+        # Will be a regex match group, and therefore if exists its true (so it found the pattern)
+        if look_ahead:  
+            # Get - the located length, quantity to repeat
+            #     - the match starts and stop to use to calculate the sequence length
+            marker_length, marker_qty = (int(x) for x in look_ahead.groups())
+            match_start, match_end = look_ahead.span()
+            print('group & span: ',look_ahead.group(), '  \t', look_ahead.span(), '\t')
+            
+            # This captures any characters before next instructions
+            # This is needed for points where the characters are not going to be decompressed
+            # So you add the length of this below
+            data_before_match = compressed_input[:match_start]
 
-        # This builds the sequence to process for the identified length
-        data_sequence = compressed_input[match_end:match_end + marker_length]
-        print('seq', data_sequence)
+            # This builds the sequence to process for the identified length of sequence
+            data_sequence = compressed_input[match_end:match_end + marker_length]
+            print('seq', data_sequence)
 
-        found_next_seq = marker_pattern.search(data_sequence)
+            # Add the length of any before characters to the decompression of the next sequence
+            # The quantity to repeat this by will be the parent quantity from previous call (qty) * this iteration
+            uncompressed_length += len(data_before_match) + decompress_data(data_sequence, marker_qty * qty)
 
-        if found_next_seq:
-            running_len = 0
+        # Now reduce the compressed input to be the string after the last match + length
+        # Outside the loop, for the time when the look_ahead doesnt find anything, so it moves the 
+        # input along to the next section because it has processed all the previous sequence
+        compressed_input = compressed_input[match_end + marker_length:]
 
-            while found_next_seq:
-                print(found_next_seq)
-                # Means in section of data there is another pattern to process
-                next_seq_len, next_seq_qty = (int(x) for x in found_next_seq.groups())
-                next_seq_start, next_seq_end = found_next_seq.span()
-
-                focus = data_sequence[next_seq_end:next_seq_end + next_seq_len]
-
-                print('focus', focus)
-                running_len += next_seq_qty * decompress_data(focus)
-
-
-                # just decompress whats left?s
-                # need to do something about look until remainin string is empty and then add those ones together before returning the lenght
-
-                data_sequence = data_sequence[next_seq_end + next_seq_len + len(focus) - 1:]
-
-                print('remaining seq', data_sequence)
-
-                found_next_seq = marker_pattern.search(data_sequence)
-                print("end running total:", running_len)
-
-        else:
-            return len(data_sequence)
-
-        # base case is what - nothing found, so return the length of that base string up, multiple by qty
-        # but what about adding the others to it... how to know?
-        # return marker_qty * decompress_data(after)
-
-        # if '(' not in after:
-        #     return marker_length * marker_qty
-
-        # # need to do len(before) + recursive call?
-
-        # # can we look at () then count ( within the first ones range)
-        # # process and tally then move on
-
-        # remaining_characters = after[:marker_length]
-        
-        # # return decompress_data(remaining_characters)
-
-        # if len(before): decompressed_sections.append(before)
-        # # this means there are more instructions to process. We have to go deeper
-
-
-        # decompressed_part = focus_characters * marker_qty
-        # decompressed_sections.append(decompressed_part)
-        # compressed_data = after[marker_length:]
-
-    return 1
+    return uncompressed_length
 
 
 def part2(data):
@@ -176,18 +143,18 @@ def part2(data):
                    25(9+6+10)                      41(6+35)
           75(25*3)                        369(9*41)
                   75+369= 444 + 1 char (X) = 445
+
+    example: 12*12*14*10*12 = 241920
+
+    look for first number (x), then x chars after the ).
+        if ( ) in that sequence, look again
+        decompress and return the tally
+        recursion. pass in string left, until terminal and add to next one
     """
     
-    # 12×12×14×10×12 = 241920
-    # look for first number (x), then x chars after the ).
-    #   if ( ) in that sequence, look again
-    #   decompress and return the tally
-    # recursion?  pass in string left, until terminal and add to next one
-    # repeat
-
     ans = decompress_data(data)
 
-    return 1
+    return ans
  
 
 def solve(puzzle_input):
