@@ -4,16 +4,26 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 
-input_test = script_path / 'test.txt'  # 
+
+input = (('E','SG', 'SM', 'PG', 'PM'),
+        ('TG', 'RG', 'RM', 'CG', 'CM'),
+        ('TM'),
+        ())
+
+input_test = (('E','HM','LM'),
+            ('HG'),
+            ('LG'),
+            ())
+
+
 
 
 def parse(puzzle_input):
     """Parse input """
 
-    with open(puzzle_input, 'r') as file:
-      data = file.read().split('\n')
-    #   data = [d.split(' | ') for d in file.read().split('\n')]
+    data = tuple()
+
+    data = (('E',''),(),(),())
 
     return data
 
