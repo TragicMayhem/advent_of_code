@@ -4,31 +4,61 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 
-input_test = script_path / 'test.txt'  # 
+input = script_path / 'input.txt'       # 317993 (1s) / 9227647  (28s)
+input_test = script_path / 'test.txt'   #  42         / 42
 
 
 def parse(puzzle_input):
     """Parse input """
 
     with open(puzzle_input, 'r') as file:
-      data = file.read().split('\n')
-    #   data = [d.split(' | ') for d in file.read().split('\n')]
+        data = file.read().split('\n')
+        instr = []
 
-    return data
+        for x in data:
+            instr.append(tuple(x.split()))
 
-
-def part1(data):
-    """Solve part 1""" 
-                  
-    return 1
+    return instr
 
 
-def part2(data):
-    """Solve part 2"""   
-   
-    return 1
- 
+def get_val(v, reg):
+    try:
+       return int(v)
+    except:
+        return reg[v]
+
+
+def process_instructions(data, c = 0):
+
+    registers = {'a':0,'b':0,'c':c,'d':0}
+
+    print(data)
+
+    point = 0
+
+    while point <= len(data) - 1:
+
+        next = data[point]
+
+        if next[0] == 'jnz': 
+            if get_val(next[1], registers) != 0:
+                point += int(next[2])
+                continue
+
+        elif next[0] == 'cpy':    
+            registers[next[2]] = get_val(next[1], registers)
+
+        elif next[0] == 'inc':
+            registers[next[1]] += 1
+
+        elif next[0] == 'dec':
+            registers[next[1]] -= 1
+
+        point+=1
+    
+
+    return registers['a']
+
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
@@ -37,9 +67,9 @@ def solve(puzzle_input):
     data = parse(puzzle_input)
     
     times.append(time.perf_counter())
-    solution1 = part1(data)
+    solution1 = process_instructions(data)
     times.append(time.perf_counter())
-    solution2 = part2(data)
+    solution2 = process_instructions(data, c = 1)
     times.append(time.perf_counter())
     
     return solution1, solution2, times
@@ -47,8 +77,8 @@ def solve(puzzle_input):
 
 def runTest(test_file):
     data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
+    test_solution1 = process_instructions(data)
+    test_solution2 = process_instructions(data, c = 1)
     return test_solution1, test_solution2
 
 
