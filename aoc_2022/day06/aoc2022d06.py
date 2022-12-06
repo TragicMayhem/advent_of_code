@@ -4,7 +4,7 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 1651 //
+input = script_path / "input.txt"  # 1651 //  3837
 input_test = script_path / "test0.txt"  # 7 // 19
 input_test1 = script_path / "test1.txt"  # 5  // 23
 input_test2 = script_path / "test2.txt"  # 6  // 23
