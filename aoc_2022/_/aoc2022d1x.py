@@ -14,9 +14,11 @@ def parse(puzzle_input):
     with open(puzzle_input, "r") as file:
         lst = file.read().split(
             "\n"
-        )  #  Read each line (split \n) and form a list of strings
+        )
 
-    return [int(n) for n in lst]
+        
+        
+    return 1
 
 
 def part1(data):
