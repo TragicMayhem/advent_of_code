@@ -16,6 +16,7 @@ def get_cardinals(r, c, h, w):
         if 0 <= rr < h and 0 <= cc < w:
             yield (rr, cc)
 
+# TO DO - use this coord = tuple(sum(x) for x in zip(coord, change)
 
 def get_surrounding(r, c, h, w):
     for delta_r, delta_c in (
