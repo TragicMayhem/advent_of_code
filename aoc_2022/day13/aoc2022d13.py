@@ -21,18 +21,17 @@ def parse(puzzle_input):
     with open(puzzle_input, "r") as file:
         pairs = [n.split("\n") for n in file.read().split("\n\n")]
 
-    for p, pair in enumerate(pairs):
-        print(p, pair)
+    for pair in pairs:
         pair[0] = json.loads(pair[0])
         pair[1] = json.loads(pair[1])
 
-    pp(pairs)
+    # pp(pairs)
 
     return pairs
 
 
 def comparison(left, right):
-    print("Compare", left, "with", right)
+    # print("Compare", left, "with", right)
 
     if isinstance(left, int) and isinstance(right, int):
         return left - right
@@ -60,7 +59,7 @@ def part1(data):
     print("Part 1")
     ans = 0
     for id, pair in enumerate(data, 1):  # enumerate can specify start
-        print(id, pair)
+        # print(id, pair)
 
         left = pair[0]
         right = pair[1]
@@ -69,7 +68,7 @@ def part1(data):
         # right_contains_list = any(isinstance(l, list) for l in right)
 
         result = comparison(left, right)
-        print("res:", result)
+        # print("res:", result)
         if result < 0:
             ans += id
 
@@ -91,12 +90,10 @@ def part2(data):
 
     # functools can provide function to use as a key.
     signals.sort(key=cmp_to_key(comparison))
-    pp(signals)
+    # pp(signals)
 
     pos1 = signals.index([[2]]) + 1
     pos2 = signals.index([[6]]) + 1
-
-    print(pos1, pos2)
 
     return pos1 * pos2
 
