@@ -43,7 +43,7 @@ def parse(puzzle_input):
 
     with open(puzzle_input, 'r') as file:
         data = file.read().split('\n')
-
+    # Sensor at x=2, y=18: closest beacon is at x=-2, y=15
     for item in data:
         break_item = re.findall(r"^(\w*) can fly (\d+) km/s for (\d+) sec.* for (\d+) seconds\.$", item)  
         
