@@ -9,6 +9,7 @@ input = script_path / "input.txt"  # 6494 // 2691
 input_test = script_path / "test.txt"  # 13 // 1
 input_test2 = script_path / "test2.txt"  # ?88? Not proved // 36
 
+
 # Previous AOC
 def get_cardinals(r, c, h, w):
     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
@@ -16,7 +17,9 @@ def get_cardinals(r, c, h, w):
         if 0 <= rr < h and 0 <= cc < w:
             yield (rr, cc)
 
+
 # TO DO - use this coord = tuple(sum(x) for x in zip(coord, change)
+
 
 def get_surrounding(r, c, h, w):
     for delta_r, delta_c in (
@@ -161,7 +164,7 @@ def part2(data):
     return ans
 
 
-def solve(puzzle_input):
+def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
     times = []
 
@@ -173,33 +176,18 @@ def solve(puzzle_input):
     solution2 = part2(data)
     times.append(time.perf_counter())
 
+    print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
+    print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+
     return solution1, solution2, times
 
 
-def runTest(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
-def runAllTests():
-
-    # print("Test 1")
-    # a, b = runTest(input_test)
-    # print(f"Test 1.  Part1: {a} Part 2: {b}")
-
-    print("\nTest 2")
-    a, b = runTest(input_test2)
-    print(f"Test 2.  Part1: {a} Part 2: {b}")
-
-
 if __name__ == "__main__":
-
-    runAllTests()
-
-    solutions = solve(input)
     print("\nAOC")
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+
+    tests = solve(input_test, run="Test")
+    # tests2 = solve(input_test2, run="Test2")
+
+    print()
+    solutions = solve(input)

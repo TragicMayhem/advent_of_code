@@ -59,7 +59,7 @@ def compute_monkey_value(mky):
     return ans
 
 
-def part1():
+def part1(data):
     """Solve part 1"""
 
     ans = compute_monkey_value("root")
@@ -67,55 +67,49 @@ def part1():
     return ans
 
 
-def part2():
+def part2(data):
     """Solve part 2"""
 
     return 2
 
 
-def solve(puzzle_input):
+# def runTest(test_file):
+#     parse(test_file)
+#     # Test data check for function
+#     print("lfqf", compute_monkey_value("lfqf"))
+#     print("drzm", compute_monkey_value("drzm"))
+#     print("sjmn", compute_monkey_value("sjmn"))
+#     print("pppw", compute_monkey_value("pppw"))
+#     print()
+
+#     test_solution1 = part1()
+#     test_solution2 = part2()
+#     return test_solution1, test_solution2
+
+
+def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
     times = []
 
-    parse(puzzle_input)
+    data = parse(puzzle_input)
 
     times.append(time.perf_counter())
-    solution1 = part1()
+    solution1 = part1(data)
     times.append(time.perf_counter())
-    solution2 = part2()
+    solution2 = part2(data)
     times.append(time.perf_counter())
+
+    print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
+    print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
 
     return solution1, solution2, times
 
 
-def runTest(test_file):
-
-    parse(test_file)
-    # Test data check for function
-    print("lfqf", compute_monkey_value("lfqf"))
-    print("drzm", compute_monkey_value("drzm"))
-    print("sjmn", compute_monkey_value("sjmn"))
-    print("pppw", compute_monkey_value("pppw"))
-    print()
-
-    test_solution1 = part1()
-    test_solution2 = part2()
-    return test_solution1, test_solution2
-
-
-def runAllTests():
-
-    print("Tests")
-    a, b = runTest(input_test)
-    print(f"Test1.  Part1: {a} Part 2: {b}")
-
-
 if __name__ == "__main__":
-
-    runAllTests()
-
-    solutions = solve(input)
     print("\nAOC")
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+
+    tests = solve(input_test, run="Test")
+
+    print()
+    solutions = solve(input)

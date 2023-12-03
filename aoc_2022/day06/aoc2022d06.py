@@ -23,7 +23,6 @@ def parse(puzzle_input):
 
 
 def find_marker(data, marker_length):
-
     for i in range(len(data) - marker_length):
         current = data[i : i + marker_length]
         count_chars = set(current)
@@ -62,7 +61,7 @@ def part2(data):
     return find_marker(data, 14)
 
 
-def solve(puzzle_input):
+def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
     times = []
 
@@ -74,41 +73,21 @@ def solve(puzzle_input):
     solution2 = part2(data)
     times.append(time.perf_counter())
 
+    print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
+    print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+
     return solution1, solution2, times
 
 
-def runTest(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
-def runAllTests():
-
-    print("Tests")
-    a, b = runTest(input_test)
-    print(f"Test.  Part1: {a} Part 2: {b}")
-
-    a, b = runTest(input_test1)
-    print(f"Test1.  Part1: {a} Part 2: {b}")
-
-    a, b = runTest(input_test2)
-    print(f"Test2.  Part1: {a} Part 2: {b}")
-
-    a, b = runTest(input_test3)
-    print(f"Test3.  Part1: {a} Part 2: {b}")
-
-    a, b = runTest(input_test4)
-    print(f"Test4.  Part1: {a} Part 2: {b}")
-
-
 if __name__ == "__main__":
-
-    runAllTests()
-
-    solutions = solve(input)
     print("\nAOC")
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+
+    tests = solve(input_test, run="Test")
+    tests1 = solve(input_test1, run="Test")
+    tests2 = solve(input_test2, run="Test")
+    tests3 = solve(input_test3, run="Test")
+    tests4 = solve(input_test4, run="Test")
+
+    print()
+    solutions = solve(input)

@@ -12,15 +12,17 @@ def parse(puzzle_input):
     """Parse input"""
 
     with open(puzzle_input, "r") as file:
-        data = file.read().split('\n')  # Read file make list by splitting on new line \n
+        data = file.read().split(
+            "\n"
+        )  # Read file make list by splitting on new line \n
         data = [tuple(d.split(",")) for d in data]
         data = [[tuple(sec.split("-")) for sec in pair] for pair in data]
-        data = [[tuple(map(int,sec)) for sec in pair] for pair in data]
+        data = [[tuple(map(int, sec)) for sec in pair] for pair in data]
 
     return data
 
 
-def check_sections_fully_overlap(a,b):
+def check_sections_fully_overlap(a, b):
     checks = []
     if a[0] <= b[0] and a[1] >= b[1]:
         checks.append(True)
@@ -31,8 +33,7 @@ def check_sections_fully_overlap(a,b):
     return any(checks)
 
 
-def check_sections_for_overlap(a,b):
-
+def check_sections_for_overlap(a, b):
     checks = []
 
     if a[0] <= b[0] and a[1] >= b[0]:
@@ -56,7 +57,7 @@ def part1(data):
 
     for pair in data:
         section1, section2 = pair
-        ans = check_sections_fully_overlap(section1,section2)
+        ans = check_sections_fully_overlap(section1, section2)
         if ans:
             overlaps.append(pair)
 
@@ -69,14 +70,14 @@ def part2(data):
     overlaps = []
     for pair in data:
         section1, section2 = pair
-        ans = check_sections_for_overlap(section1,section2)
+        ans = check_sections_for_overlap(section1, section2)
         if ans:
             overlaps.append(pair)
-            
+
     return len(overlaps)
 
 
-def solve(puzzle_input):
+def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
     times = []
 
@@ -88,29 +89,17 @@ def solve(puzzle_input):
     solution2 = part2(data)
     times.append(time.perf_counter())
 
+    print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
+    print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+
     return solution1, solution2, times
 
 
-def runTest(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
-def runAllTests():
-
-    print("Tests")
-    a, b = runTest(input_test)
-    print(f"Test1.  Part1: {a} Part 2: {b}")
-
-
 if __name__ == "__main__":
-
-    runAllTests()
-
-    solutions = solve(input)
     print("\nAOC")
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+
+    tests = solve(input_test, run="Test")
+
+    print()
+    solutions = solve(input)

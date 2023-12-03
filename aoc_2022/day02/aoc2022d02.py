@@ -53,7 +53,6 @@ def parse(puzzle_input):
 
 def part1(data):
     """Solve part 1"""
-    print("Running part 1")
 
     total_points = 0
     game_combinations = Counter(data)
@@ -78,7 +77,6 @@ def part1(data):
 
 def part2(data):
     """Solve part 2"""
-    print("Running part 2")
 
     total_points = 0
     game_combinations = Counter(data)
@@ -102,7 +100,7 @@ def part2(data):
     return total_points
 
 
-def solve(puzzle_input):
+def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
     times = []
 
@@ -114,32 +112,18 @@ def solve(puzzle_input):
     solution2 = part2(data)
     times.append(time.perf_counter())
 
+    print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
+    print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+
     return solution1, solution2, times
 
 
-def runTest(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
-def runAllTests():
-
-    print("Tests\n")
-    a, b = runTest(input_test)
-    print(f"Test1.  Part1: {a} Part 2: {b}")
-    print()
-    a, b = runTest(input_test2)
-    print(f"Test2.  Part1: {a} Part 2: {b}")
-
-
 if __name__ == "__main__":
-
-    runAllTests()
-
     print("\nAOC")
+
+    test1 = solve(input_test, run="Test1")
+    test2 = solve(input_test2, run="Test2")
+
+    print()
     solutions = solve(input)
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")

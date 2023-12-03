@@ -9,7 +9,6 @@ input = script_path / "input.txt"  # 529618 / 77509019
 input_test = script_path / "test.txt"  # 4361 / 467835
 
 
-
 # Previous AOC
 def get_cardinals(r, c, h, w):
     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
@@ -17,42 +16,52 @@ def get_cardinals(r, c, h, w):
         if 0 <= rr < h and 0 <= cc < w:
             yield (rr, cc)
 
-# Previous AOC
 
+# Previous AOC
 def get_coords8d(r, c, h, w):
-    for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)):
+    for delta_r, delta_c in (
+        (-1, 0),
+        (1, 0),
+        (0, -1),
+        (0, 1),
+        (-1, -1),
+        (-1, 1),
+        (1, -1),
+        (1, 1),
+    ):
         rr, cc = (r + delta_r, c + delta_c)
         if 0 <= rr < h and 0 <= cc < w:
             yield (rr, cc)
-            
+
+
 def check_all_position(num_start, num_end, row, h, w, grid):
-    found_symbol = False    
+    found_symbol = False
     for s in range(num_start, num_end):
-        for (i,j) in get_coords8d(row,s,h,w):
+        for i, j in get_coords8d(row, s, h, w):
             val = grid[i][j]
-            
-            if val.isdigit(): 
+
+            if val.isdigit():
                 continue
-            if val == ".": 
+            if val == ".":
                 continue
 
             found_symbol = True
             break
-    
+
     return found_symbol
 
-    
+
 def find_parts(num_start, num_end, row, h, w, grid):
     # List the points on grid for matches around the gear. Might be same part
     found_parts = []
     for s in range(num_start, num_end):
-        for (i,j) in get_coords8d(row,s,h,w):
+        for i, j in get_coords8d(row, s, h, w):
             val = grid[i][j]
 
-            if val == ".": 
+            if val == ".":
                 continue
-            if val.isdigit(): 
-                found_parts.append((i,j))
+            if val.isdigit():
+                found_parts.append((i, j))
 
     return found_parts
 
@@ -77,7 +86,7 @@ def part1(lines):
     # need to look at all digits, so need to get length of the number and then loop through that coords
     # either way skip to the end of the number and check the next position
 
-    dig_pattern = re.compile(r'(\d+)')
+    dig_pattern = re.compile(r"(\d+)")
     height = len(lines)
     width = len(lines[0])
 
@@ -96,7 +105,7 @@ def part1(lines):
             count += 1
             # print("match", count, match.group(), "start index", match.start(), "End index", match.end())
             # print(list(get_coords8d(match.start(), match.end(), height, width)))
-            if check_all_position(match.start(), match.end(),r, height, width, grid):
+            if check_all_position(match.start(), match.end(), r, height, width, grid):
                 valid_parts.append(int(match.group()))
 
     # print("Valid parts", valid_parts)
@@ -107,8 +116,8 @@ def part1(lines):
 def part2(lines):
     """Solve part 2"""
 
-    gear_pattern = re.compile(r'\*')
-    dig_pattern = re.compile(r'(\d+)')
+    gear_pattern = re.compile(r"\*")
+    dig_pattern = re.compile(r"(\d+)")
     height = len(lines)
     width = len(lines[0])
 
@@ -130,30 +139,29 @@ def part2(lines):
 
             # need to be careful of 2 points but same numbers so not valid
             parts = set()
-            
-            for (i, j) in part_coords:
+
+            for i, j in part_coords:
                 for match in re.finditer(dig_pattern, lines[i]):
                     # print("match", match.group(), "start index", match.start(), "End index", match.end())
-                    
+
                     if match.start() <= j <= match.end():
                         # Store number and position, to allow for sets to remove dups
-                        parts.add((match.group(),(match.start(), match.end())) )
+                        parts.add((match.group(), (match.start(), match.end())))
 
             if len(parts) > 1:
                 ratio = 1
-                for (num, coords) in parts:
+                for num, coords in parts:
                     # print(num)
-                    ratio*=int(num)
+                    ratio *= int(num)
                 # print("ratio ", ratio)
                 valid_ratios.append(ratio)
 
-    print("Valid ratios", valid_ratios)
+    # print("Valid ratios", valid_ratios)
 
     return sum(valid_ratios)
 
 
-
-def solve(puzzle_input):
+def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
     times = []
 
@@ -165,27 +173,17 @@ def solve(puzzle_input):
     solution2 = part2(data)
     times.append(time.perf_counter())
 
+    print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
+    print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+
     return solution1, solution2, times
 
 
-def runTest(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
-def runAllTests():
-    print("Tests")
-    a, b = runTest(input_test)
-    print(f"Test1.  Part1: {a} Part 2: {b}")
-
-
 if __name__ == "__main__":
-    runAllTests()
-    
-    solutions = solve(input)
     print("\nAOC")
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+
+    tests = solve(input_test, run="Test")
+
+    print()
+    solutions = solve(input)

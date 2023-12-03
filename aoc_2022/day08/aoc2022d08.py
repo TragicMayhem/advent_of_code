@@ -23,6 +23,7 @@ def parse(puzzle_input):
 
     return trees
 
+
 def part1(data):
     """Solve part 1"""
 
@@ -42,7 +43,6 @@ def part1(data):
                 # print("Edge")
                 visilbity_count += 1
             else:
-
                 # Replaces my for loops within forloops with list comprehension and
                 # then directly use the all
 
@@ -93,13 +93,11 @@ def part2(data):
                     # print("left break")
                     break
 
-
             for cr in range(c + 1, w, 1):
                 # print("right", r, cr, ": ", data[r][cr])
                 if data[r][cr] >= val:
                     # print("right break")
                     break
-
 
             for cu in range(r - 1, -1, -1):
                 # print("up", cu, c, ": ", data[cu][c])
@@ -107,27 +105,25 @@ def part2(data):
                     # print("up break")
                     break
 
-
             for cd in range(r + 1, h, 1):
                 # print("down", cd, c, ": ", data[cd][c])
                 if data[cd][c] >= val:
                     # print("down break")
                     break
 
-
             count_left = c - cl
             count_right = cr - c
             count_up = r - cu
             count_down = cd - r
             tree_score = count_left * count_right * count_up * count_down
-          
+
             highest_score = tree_score if tree_score > highest_score else highest_score
             # print(highest_score)
 
     return highest_score
 
 
-def solve(puzzle_input):
+def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
     times = []
 
@@ -139,29 +135,17 @@ def solve(puzzle_input):
     solution2 = part2(data)
     times.append(time.perf_counter())
 
+    print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
+    print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+
     return solution1, solution2, times
 
 
-def runTest(test_file):
-    data = parse(test_file)
-    test_solution1 = part1(data)
-    test_solution2 = part2(data)
-    return test_solution1, test_solution2
-
-
-def runAllTests():
-
-    print("Tests")
-    a, b = runTest(input_test)
-    print(f"Test1.  Part1: {a} Part 2: {b}")
-
-
 if __name__ == "__main__":
-
-    runAllTests()
-
-    solutions = solve(input)
     print("\nAOC")
-    print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
-    print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
-    print(f"\nExecution total: {solutions[2][-1]-solutions[2][0]:.4f} seconds")
+
+    tests = solve(input_test, run="Test")
+
+    print()
+    solutions = solve(input)
