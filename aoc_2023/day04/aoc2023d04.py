@@ -5,8 +5,8 @@ import time
 from copy import deepcopy
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #
-input_test = script_path / "test.txt"  #
+input = script_path / "input.txt"  # 24542/ XX Too low8724714
+input_test = script_path / "test.txt"  # 13 / 30
 
 
 def parse(puzzle_input):
@@ -25,7 +25,7 @@ def parse(puzzle_input):
             winners = set(map(int, c[1].strip().split(" ")))
             nums = set(map(int, c[2].strip().split(" ")))
             winning_set = nums.intersection(winners)
-            cards.append((card, winners, nums, winning_set))
+            cards.append((card, winners, nums, winning_set, len(winning_set)))
 
     return cards
 
@@ -36,7 +36,7 @@ def part1(data):
     ans = 0
 
     for d in data:
-        card, winners, nums, winning_set = d
+        card, winners, nums, winning_set, num_winners = d
 
         # winning_set = nums.intersection(winners)
         if winning_set:
@@ -45,26 +45,66 @@ def part1(data):
     return ans
 
 
-def count_winners():
-    # if winning_set:
-    #     number_cards_won = len(winning_set)
-
-    #     pass
-
-    pass
-
-
 def part2(data):
     """Solve part 2"""
 
     ans = 0
 
-    working_cards = deepcopy(data)
+    max_cards_pos = len(data)
+    # working_cards = [0 for c in data]
+    # working_cards[0] = 1
 
-    for d in working_cards:
-        card, winners, nums, winning_set = d
+    # print(working_cards)
+    working_cards = [(0, 0, 0)]
 
-    return 1
+    for d in data:
+        card, winners, nums, winning_set, num_winners = d
+        working_cards.append((card, num_winners, 1))
+    print(working_cards)
+
+    card = 1
+
+    while card <= max_cards_pos:
+        # for next_card_info in working_cards[1:]:
+        # card, num_winners, card_count = next_card_info
+        card, num_winners, card_count = working_cards[card]
+        print("\nLoop #", card, " wins ", num_winners, " card count ", card_count)
+        # print(next_card_info)
+
+        if num_winners:
+            # number of winning numbers indicates how many cards are duplicated
+            # tmp_num, temp_wins, tmp_count = working_cards[card]
+            # working_cards[card] = (card, num_winners, tmp_count)
+            # print("Next card", working_cards[card])
+
+            loop_stop = card + num_winners + 1
+            if loop_stop > max_cards_pos:
+                loop_stop = max_cards_pos
+            print("stop", loop_stop)
+
+            # indexing starts 0, so added fake zero to use card number
+            for i in range(card + 1, loop_stop):
+                # cd, wn, nm, ws, num_wins = data[i]
+                curr_card, curr_wins, curr_count = working_cards[i]
+                print(
+                    "   loc",
+                    i,
+                    ": card",
+                    curr_card,
+                    "wins",
+                    curr_wins,
+                    "curr count",
+                    curr_count,
+                )
+
+                working_cards[i] = (curr_card, curr_wins, curr_count + card_count)
+
+            print(working_cards)
+        card += 1
+
+    ans = sum([c for a, b, c in working_cards])
+
+    return ans
 
 
 def solve(puzzle_input, run="Solution"):
