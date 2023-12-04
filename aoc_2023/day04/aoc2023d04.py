@@ -48,60 +48,46 @@ def part1(data):
 def part2(data):
     """Solve part 2"""
 
-    ans = 0
+    # Got stuck in loops, and  initial version gets right answer for sample, but not input - too low.
+    # Looking for some hints I was over compicating my data in and the lookups to
+    # calculate the totals.  Right idea on using the counts just badly coded.
+    #
+    # Options to explore and get better
+    # [x] list comprehension
+    # using a dictionary with card as the key to tally each winning count
 
-    max_cards_pos = len(data)
-    # working_cards = [0 for c in data]
-    # working_cards[0] = 1
+    # We have 1 card of each initially, and we know how many cards as the length of the list
+    card_counts_list = [1] * len(data)
 
-    # print(working_cards)
-    working_cards = [(0, 0, 0)]
+    # V1 Original method for getting a list of the winnning counts per card
+    # win_counts_list = []
+    # for d in data:
+    #     card, winners, nums, winning_set, winning_count = d
+    #     win_counts_list.append(winning_count)
 
-    for d in data:
-        card, winners, nums, winning_set, num_winners = d
-        working_cards.append((card, num_winners, 1))
-    print(working_cards)
+    # V2 finally got list comrehension to get just the last value from my input tuples (has 5 values)
+    # List comprehension example from web: result = [a for tup in y for a in tup]
+    card_wins_list = [d[-1] for d in data]
+    print("Initial card wins:\n", card_wins_list)
 
-    card = 1
+    # Help https://docs.python.org/3/library/functions.html#enumerate
+    # list(enumerate(seasons))
+    # [(0, 'Spring'), (1, 'Summer'), (2, 'Fall'), (3, 'Winter')]
 
-    for card in range(len(data)):
-        # for next_card_info in working_cards[1:]:
-        # card, num_winners, card_count = next_card_info
-        card, num_winners, card_count = working_cards[card]
-        print("\nLoop #", card, " wins ", num_winners, " card count ", card_count)
-        # print(next_card_info)
+    for card, winning_count in enumerate(card_wins_list):
+        # print(card, winning_count)
 
-        if num_winners:
-            # number of winning numbers indicates how many cards are duplicated
-            # tmp_num, temp_wins, tmp_count = working_cards[card]
-            # working_cards[card] = (card, num_winners, tmp_count)
-            # print("Next card", working_cards[card])
+        # For the number of wins, we get duplicate of the next cards based on wins value
+        # We dont have to look to do a loop for each one, as we can set the range based on
+        # the next values based on the number of wins
+        # For each of those additional cars we can add the current card's count to it
 
-            loop_stop = card + num_winners + 1
-            if loop_stop > max_cards_pos:
-                loop_stop = max_cards_pos
-            print("stop", loop_stop)
+        for j in range(card + 1, card + winning_count + 1):
+            card_counts_list[j] += card_counts_list[card]
+            # print(card_counts_list)
 
-            # indexing starts 0, so added fake zero to use card number
-            for i in range(card + 1, loop_stop):
-                # cd, wn, nm, ws, num_wins = data[i]
-                curr_card, curr_wins, curr_count = working_cards[i]
-                print(
-                    "   loc",
-                    i,
-                    ": card",
-                    curr_card,
-                    "wins",
-                    curr_wins,
-                    "curr count",
-                    curr_count,
-                )
-
-                working_cards[i] = (curr_card, curr_wins, curr_count + card_count)
-
-            print(working_cards)
-
-    ans = sum([c for a, b, c in working_cards])
+    print("\nFinal counts:\n", card_counts_list)
+    ans = sum(card_counts_list)
 
     return ans
 
