@@ -5,7 +5,7 @@ import time
 from copy import deepcopy
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 24542/ XX Too low8724714
+input = script_path / "input.txt"  # 24542/         XX Too low8724714
 input_test = script_path / "test.txt"  # 13 / 30
 
 
@@ -64,7 +64,7 @@ def part2(data):
 
     card = 1
 
-    while card <= max_cards_pos:
+    for card in range(len(data)):
         # for next_card_info in working_cards[1:]:
         # card, num_winners, card_count = next_card_info
         card, num_winners, card_count = working_cards[card]
@@ -100,7 +100,6 @@ def part2(data):
                 working_cards[i] = (curr_card, curr_wins, curr_count + card_count)
 
             print(working_cards)
-        card += 1
 
     ans = sum([c for a, b, c in working_cards])
 
@@ -132,4 +131,4 @@ if __name__ == "__main__":
     tests = solve(input_test, run="Test")
 
     print()
-    # solutions = solve(input)
+    solutions = solve(input)
