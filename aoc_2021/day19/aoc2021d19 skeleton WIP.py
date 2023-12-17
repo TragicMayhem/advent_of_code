@@ -10,8 +10,8 @@ import scipy as sp
 import itertools as its
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 
-input_test = script_path / 'test.txt'  # 
+input = script_path / "input.txt"  #
+input_test = script_path / "test.txt"  #
 
 
 # class Scanner:
@@ -34,7 +34,7 @@ input_test = script_path / 'test.txt'  #
 
 
 #     def beacon_map_distances(self):
-       
+
 #         for b in self.data:
 #             print(b)
 
@@ -44,41 +44,40 @@ input_test = script_path / 'test.txt'  #
 
 
 def parse(puzzle_input):
-    """Parse input """
+    """Parse input"""
 
     scannerdata = defaultdict()
 
-    with open(puzzle_input, 'r') as file:
-        lines = file.read().split('\n')
-        
+    with open(puzzle_input, "r") as file:
+        lines = file.read().split("\n")
 
     return 1
 
 
 def part1(data):
-    """Solve part 1""" 
-                  
+    """Solve part 1"""
+
     return 1
 
 
 def part2(data):
-    """Solve part 2"""   
-   
+    """Solve part 2"""
+
     return 1
- 
+
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
-    times=[]
+    times = []
 
     data = parse(puzzle_input)
-    
+
     times.append(time.perf_counter())
     solution1 = part1(data)
     times.append(time.perf_counter())
     solution2 = part2(data)
     times.append(time.perf_counter())
-    
+
     return solution1, solution2, times
 
 
@@ -90,14 +89,12 @@ def runTest(test_file):
 
 
 def runAllTests():
-    
     print("Tests")
-    a, b  = runTest(input_test)
-    print(f'Test1.  Part1: {a} Part 2: {b}')
+    a, b = runTest(input_test)
+    print(f"Test1.  Part1: {a} Part 2: {b}")
 
 
-if __name__ == "__main__":    # print()
-
+if __name__ == "__main__":  # print()
     runAllTests()
 
     # solutions = solve(input)

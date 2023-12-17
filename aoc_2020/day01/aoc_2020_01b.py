@@ -1,4 +1,4 @@
-from itertools import combinations 
+from itertools import combinations
 import sys
 
 # Input file is a list of numbers, one per line
@@ -7,22 +7,22 @@ import sys
 print("Advent of Code 2020 - Day 1 - Part 2")
 
 if sys.platform == "linux" or sys.platform == "linux2":
-  dirpath = sys.path[0] + "/"
+    dirpath = sys.path[0] + "/"
 elif sys.platform == "darwin":
-  dirpath = sys.path[0] + "/"
+    dirpath = sys.path[0] + "/"
 elif sys.platform == "win32":
-  dirpath = sys.path[0] + "\\\\"
+    dirpath = sys.path[0] + "\\\\"
 
 numbers = []
 
 # handle = open(dirpath + 'test.txt', 'r')
-handle = open(dirpath + 'input.txt', 'r')
+handle = open(dirpath + "input.txt", "r")
 lines_list = handle.readlines()
 handle.close()
 
 # Create a list of numbers from the input
 for i in range(len(lines_list)):
-  numbers.append(int(lines_list[i].rstrip()))
+    numbers.append(int(lines_list[i].rstrip()))
 
 numbers = sorted(numbers)  # Sort the list and store back in same variable
 
@@ -31,6 +31,5 @@ combination_list = list(combinations(numbers, 3))
 
 # Loop through the tuples (each of 3 elements), sum them and if 2020 then output the answer (*)
 for tup in combination_list:
-  if sum(tup) == 2020:
-    print(tup, "Multiplied = ", tup[0] * tup[1] * tup[2])
-
+    if sum(tup) == 2020:
+        print(tup, "Multiplied = ", tup[0] * tup[1] * tup[2])

@@ -1,6 +1,6 @@
 # https://adventofcode.com/2021/day/16
 
-'''
+"""
 0 = 0000
 1 = 0001
 2 = 0010
@@ -17,20 +17,21 @@ C = 1100
 D = 1101
 E = 1110
 F = 1111
-'''
+"""
 import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 
-input_test = script_path / 'test.txt'  # 
+input = script_path / "input.txt"  #
+input_test = script_path / "test.txt"  #
+
 
 def parse(puzzle_input):
-    """Parse input """
+    """Parse input"""
 
-    with open(puzzle_input, 'r') as file:
+    with open(puzzle_input, "r") as file:
         data = file.readlines()
-    code= data[0]
+    code = data[0]
     return code
 
 
@@ -46,35 +47,33 @@ def hex_to_binary(hex_number: str, num_digits: int = 8) -> str:
         string representation of a binary number 0-padded
         to a minimum length of <num_digits>
     """
-    return str(bin(int(hex_number, 16)))[2:].zfill(len(hex_number) * 4 )
+    return str(bin(int(hex_number, 16)))[2:].zfill(len(hex_number) * 4)
 
 
 def returnPacketInfo(binary_input):
-
-    packet_version = int(binary_input[0:3],2)
-    packet_type = int(binary_input[3:6] ,2)
+    packet_version = int(binary_input[0:3], 2)
+    packet_type = int(binary_input[3:6], 2)
     data = binary_input[6:]
 
     return (packet_version, packet_type, data)
 
 
 def processInstructions(data):
-
-    return ''
+    return ""
 
 
 def part1(data):
-    """Solve part 1""" 
+    """Solve part 1"""
     # data='D2FE28'
-    data='38006F45291200'
-    # data='EE00D40C823060' 
+    data = "38006F45291200"
+    # data='EE00D40C823060'
     print(data)
 
     binary_input = hex_to_binary(data)
     print(binary_input)
 
     packet_version, packet_type, packet_data = returnPacketInfo(binary_input)
-    print('ver',packet_version, 'type', packet_type, 'remaining', packet_data)
+    print("ver", packet_version, "type", packet_type, "remaining", packet_data)
 
     # packet_version = int(binary_input[0:3],2)
     # packet_type = int(binary_input[3:6]  ,2)
@@ -91,47 +90,47 @@ def part1(data):
     if packet_type == 4:
         for i in range(0, len(binary_input), 5):
             print(i)
-            next = packet_data[i:i+5]
+            next = packet_data[i : i + 5]
             print(next)
             if len(next) < 5:
                 break
             msg.append(next[1:])
 
         print(msg)
-        num = ''.join(msg)
-        print(int(num,2))
+        num = "".join(msg)
+        print(int(num, 2))
 
     if packet_type != 4:
-        sub_packet_length = 15 if packet_data[0] == '0' else 11
+        sub_packet_length = 15 if packet_data[0] == "0" else 11
         print(sub_packet_length)
 
         next = packet_data[1:sub_packet_length]
         print(next)
 
-    tmp='1101000101'
-    print(int(tmp,2))
+    tmp = "1101000101"
+    print(int(tmp, 2))
 
     return 1
 
 
 def part2(data):
-    """Solve part 2"""   
-   
+    """Solve part 2"""
+
     return 1
- 
+
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
-    times=[]
+    times = []
 
     data = parse(puzzle_input)
-    
+
     times.append(time.perf_counter())
     solution1 = part1(data)
     times.append(time.perf_counter())
     solution2 = part2(data)
     times.append(time.perf_counter())
-    
+
     return solution1, solution2, times
 
 
@@ -143,14 +142,12 @@ def runTest(test_file):
 
 
 def runAllTests():
-    
     print("Tests")
-    a, b  = runTest(input_test)
-    print(f'Test1.  Part1: {a} Part 2: {b}')
+    a, b = runTest(input_test)
+    print(f"Test1.  Part1: {a} Part 2: {b}")
 
 
-if __name__ == "__main__":    # print()
-
+if __name__ == "__main__":  # print()
     runAllTests()
 
     # solutions = solve(input)

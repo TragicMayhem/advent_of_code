@@ -4,14 +4,14 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'           # 46065  / a = 46065 > b and run again. a = 14134
-input_test = script_path / 'test.txt'       # a = 930
+input = script_path / "input.txt"  # 46065  / a = 46065 > b and run again. a = 14134
+input_test = script_path / "test.txt"  # a = 930
 
 # input_test = script_path / 'test_data.txt'       # d: 72 e: 507 f: 492 g: 114 h: 65412 i: 65079 x: 123 y: 456
 
-# Input pattern  
+# Input pattern
 #    {change} -> {target wire}
-# {change} can be 
+# {change} can be
 #   {Number}                # 123 -> x
 #   {wire/#} AND {wire/#}   # x AND y -> d      a & b
 #   {wire/#} OR {wire/#}    # x OR y -> e       a | b
@@ -23,117 +23,130 @@ instructions = dict()
 
 
 def parse(puzzle_input):
-    """Parse input """
+    """Parse input"""
 
-    with open(puzzle_input, 'r') as file:
-        data = file.read().split('\n')
-        data = [x.replace('->', '').split() for x in data]  # Split on 'x' in each string ('1x2x3')
+    with open(puzzle_input, "r") as file:
+        data = file.read().split("\n")
+        data = [
+            x.replace("->", "").split() for x in data
+        ]  # Split on 'x' in each string ('1x2x3')
 
         for l in data:
-            instructions[l[-1]] = l[:-1]  # key is the last list item, value is the rest of the list      
+            instructions[l[-1]] = l[
+                :-1
+            ]  # key is the last list item, value is the rest of the list
 
 
 def convert_int(val):
-  '''
+    """
     Check if can convert str to int, if not return the str (ref to another wire)
-  '''
-  try: 
-    return int(val)
-  except: 
-    return val 
+    """
+    try:
+        return int(val)
+    except:
+        return val
 
 
-def complete_wire(name, wires = None):
-    '''
+def complete_wire(name, wires=None):
+    """
     Take the name of wire and recursively workout the set value.
-    '''
+    """
     # print("\n-----\nname:", name)
-    if wires == None: wires = dict()
-    if name in wires.keys(): return wires.get(name)
-    
+    if wires == None:
+        wires = dict()
+    if name in wires.keys():
+        return wires.get(name)
+
     values = instructions[name]
 
     if len(values) == 1:  # SET
         # print("<1>", values)
         tmp = convert_int(values[0])
         wires[name] = tmp if isinstance(tmp, int) else complete_wire(tmp, wires)
-        
+
     elif len(values) == 2:  # NOT
         # print("<2>", values)
         tmp = convert_int(values[1])
-        wires[name] = ~ tmp & 0xFFFF if isinstance(tmp, int) else ~ complete_wire(tmp, wires) & 0xFFFF
+        wires[name] = (
+            ~tmp & 0xFFFF
+            if isinstance(tmp, int)
+            else ~complete_wire(tmp, wires) & 0xFFFF
+        )
 
     elif len(values) == 3:  # AND, OR, LSHIFT, RSHIFT
         # print("<3>", values)
         left_op = convert_int(values[0])
-        right_op = convert_int(values[2]) 
+        right_op = convert_int(values[2])
 
         if not isinstance(left_op, int):
             left_op = complete_wire(left_op, wires)
 
         if not isinstance(right_op, int):
             right_op = complete_wire(right_op, wires)
-        
+
         if isinstance(left_op, int) and isinstance(right_op, int):
-            if "AND" in values: wires[name] = left_op & right_op
-            if "OR" in values: wires[name] = left_op | right_op
-            if "LSHIFT" in values: wires[name] = left_op << right_op
-            if "RSHIFT" in values: wires[name] = left_op >> right_op
-    
+            if "AND" in values:
+                wires[name] = left_op & right_op
+            if "OR" in values:
+                wires[name] = left_op | right_op
+            if "LSHIFT" in values:
+                wires[name] = left_op << right_op
+            if "RSHIFT" in values:
+                wires[name] = left_op >> right_op
+
     # print("END:", wires)
 
     return wires[name]
 
 
 def part1():
-    """Solve part 1""" 
-   
-    answer = complete_wire('a')
+    """Solve part 1"""
+
+    answer = complete_wire("a")
     # print(f'\nValue on "a" = ', answer)
 
     return answer
 
 
 def part2():
-    """Solve part 2"""   
+    """Solve part 2"""
 
-    instructions['b'] = ['46065']
-    answer = complete_wire('a')
+    instructions["b"] = ["46065"]
+    answer = complete_wire("a")
     # print(f'\nValue on "a" = ', answer)
 
     return answer
- 
+
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input"""
-    times=[]
+    times = []
 
     data = parse(puzzle_input)
-    
+
     times.append(time.perf_counter())
     solution1 = part1()
     times.append(time.perf_counter())
     solution2 = part2()
     times.append(time.perf_counter())
-    
+
     return solution1, solution2, times
 
 
 def runAllTests():
     print("\nTests\n")
 
-    a, b, t  = solve(input_test)
-    print(f'Test1 Part 1: {a} in {t[1]-t[0]:.4f}s')
-    print(f'      Part 2: {b} in {t[2]-t[1]:.4f}s')
+    a, b, t = solve(input_test)
+    print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
+    print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
 
 
-if __name__ == "__main__":    # print()
-
+if __name__ == "__main__":  # print()
     runAllTests()
 
     sol1, sol2, times = solve(input)
-    print('\nAOC')
+    print("\nAOC")
     print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")
     print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")

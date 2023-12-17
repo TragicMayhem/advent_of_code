@@ -5,34 +5,34 @@ import ast
 from itertools import permutations
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / 'input.txt'  # 3488 / 4583
-input_test2 = script_path / 'test2.txt'  # 3488 / 3805
-input_test3 = script_path / 'test3.txt'  # 4140 / 3993
+input = script_path / "input.txt"  # 3488 / 4583
+input_test2 = script_path / "test2.txt"  # 3488 / 3805
+input_test3 = script_path / "test3.txt"  # 4140 / 3993
 
 
 def parse(puzzle_input):
-    """Parse input """
+    """Parse input"""
 
-    with open(puzzle_input, 'r') as file:
-        lines = file.read().replace(' ','').split('\n')
+    with open(puzzle_input, "r") as file:
+        lines = file.read().replace(" ", "").split("\n")
         # print(lines)
     return lines
 
 
 ##### PATTERNS #####
-two_digits_pattern = re.compile('(\d{2})')
-find_digit = re.compile(r'(\d+)')
-find_last_digit = re.compile(r'(\d+)(?!.*\d)')
-find_digit_pair = re.compile(r'(\d+)[, ]+(\d+)')
+two_digits_pattern = re.compile("(\d{2})")
+find_digit = re.compile(r"(\d+)")
+find_last_digit = re.compile(r"(\d+)(?!.*\d)")
+find_digit_pair = re.compile(r"(\d+)[, ]+(\d+)")
 
 
 def make_new_split(big_number):
     ln = big_number // 2
     rn = big_number - ln
-    new = '[' + str(ln) + ',' + str(rn) + ']'
+    new = "[" + str(ln) + "," + str(rn) + "]"
     return new
 
-    
+
 def explode_node(data_in, current_pos):
     # need to find number left (or start of string)
     # need to find number right
@@ -46,7 +46,7 @@ def explode_node(data_in, current_pos):
     # print("  exploding at pos",current_pos, 'nums', num_explode_to_left, num_explode_to_right, 'pos',start,end)
 
     to_the_left = data_in[:current_pos]
-    to_the_right = data_in[current_pos+end:]
+    to_the_right = data_in[current_pos + end :]
 
     next_left_num_pos = find_last_digit.search(to_the_left)
     next_right_num_pos = find_digit.search(to_the_right)
@@ -68,21 +68,20 @@ def explode_node(data_in, current_pos):
         new_right = to_the_right[1:]
 
     # print('  new left:', new_left,' new right:',new_right)
-    data_out = new_left + '0' + new_right
+    data_out = new_left + "0" + new_right
     return data_out
 
 
 def collapse_next(data_in):
-
     depth = 0
 
     # I think you do explodes first. then splits. I think.  hard to tell if always do leftmost change first?!?!
     for current_pos in range(len(data_in)):
-        if data_in[current_pos] == "[": 
+        if data_in[current_pos] == "[":
             depth += 1
-        elif data_in[current_pos] == "]": 
+        elif data_in[current_pos] == "]":
             depth -= 1
-        elif depth == 5: 
+        elif depth == 5:
             # If it goes 5 deep, then need to explode and this will stop this loop and re-start
             return explode_node(data_in, current_pos)
 
@@ -91,18 +90,23 @@ def collapse_next(data_in):
 
     if big_numbers:
         # print('  splitting',big_numbers.group(0))
-        return re.sub(two_digits_pattern, make_new_split(int(big_numbers.group(0))), data_in, count=1)
+        return re.sub(
+            two_digits_pattern,
+            make_new_split(int(big_numbers.group(0))),
+            data_in,
+            count=1,
+        )
 
     return False
 
 
 def reduce_input(data_in):
     answer = data_in.pop(0)  # Get initial answer as first element
-    
-    for i, elem in enumerate(data_in):
-        answer = '[' + answer +',' + elem + ']'
 
-        while True: # and c < 25:
+    for i, elem in enumerate(data_in):
+        answer = "[" + answer + "," + elem + "]"
+
+        while True:  # and c < 25:
             # print('\nprocess', answer)
             tmp_answer = collapse_next(answer)
             # print(tmp_answer)
@@ -113,23 +117,22 @@ def reduce_input(data_in):
                 answer = tmp_answer
 
     # print()
-    # print('final reduction')  
+    # print('final reduction')
     # print(answer)
     return answer
 
 
 def calc_mag(reduced_data):
-    
-    if isinstance(reduced_data,list):
+    if isinstance(reduced_data, list):
         left = reduced_data[0]
         right = reduced_data[1]
 
-        return 3*calc_mag(left) + 2*calc_mag(right)
+        return 3 * calc_mag(left) + 2 * calc_mag(right)
     else:
         return reduced_data
 
 
-print('<'*25,'TEST','>'*25)
+print("<" * 25, "TEST", ">" * 25)
 
 input_data = parse(input_test3)
 print(input_data)
@@ -138,18 +141,21 @@ final_reduction = reduce_input(input_data)
 final_list = ast.literal_eval(final_reduction)
 
 # print(final_list)
-mag=calc_mag(final_list)
+mag = calc_mag(final_list)
 print(mag)
 
-print('-'*50)
+print("-" * 50)
 
-t1 = ['[[[5,[2,8]],4],[5,[[9,9],0]]]', '[6,[[[6,2],[5,6]],[[7,6],[4,7]]]]']
-t2 = ['[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]', '[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]']
+t1 = ["[[[5,[2,8]],4],[5,[[9,9],0]]]", "[6,[[[6,2],[5,6]],[[7,6],[4,7]]]]"]
+t2 = [
+    "[[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]",
+    "[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]",
+]
 t_fr = reduce_input(t2)
 print(t_fr)
 print(calc_mag(ast.literal_eval(t_fr)))
 
-print('<'*25,'INPUT','>'*25)
+print("<" * 25, "INPUT", ">" * 25)
 
 input_data = parse(input)
 # print(input_data)
@@ -159,16 +165,16 @@ possible_magnitudes = []
 perms = []
 results = []
 
-for p in permutations(input_data, 2): # All permutations of 2 fish numbers
+for p in permutations(input_data, 2):  # All permutations of 2 fish numbers
     perms.append(p)
     fr = reduce_input(list(p))
     final_reduction_perms.append(fr)
     mag = calc_mag(ast.literal_eval(fr))
     possible_magnitudes.append(mag)
-    results.append([p,fr,mag])
-    
+    results.append([p, fr, mag])
+
 # print(perms)
-print('_'*50)
+print("_" * 50)
 # print(perms[0])
 # print(perms[1])
 # print(len(perms))
@@ -191,12 +197,9 @@ possible_magnitudes.sort(reverse=True)
 print(possible_magnitudes[0:2])
 
 
-
-
-
-print('########## AD HOC ###########')
-test1 = '[[1, 2], [[1, 2], 3], [9, [8, 7]], [[1, 9], [8, 5]], [[[[1, 2], [3, 4]], [[5, 6], [7, 8]]], 9]]'
-test2 = '[[1, 2], [[1, 12], 3], [9, [8, 7]], [[1, 19], [8, 15]], [[[[1, 2], [13, 4]], [[5, 6], [7, 8]]], 9]]'
+print("########## AD HOC ###########")
+test1 = "[[1, 2], [[1, 2], 3], [9, [8, 7]], [[1, 9], [8, 5]], [[[[1, 2], [3, 4]], [[5, 6], [7, 8]]], 9]]"
+test2 = "[[1, 2], [[1, 12], 3], [9, [8, 7]], [[1, 19], [8, 15]], [[[[1, 2], [13, 4]], [[5, 6], [7, 8]]], 9]]"
 
 # print(test2)
 # tmp = find_digit_pair.search(test2)
