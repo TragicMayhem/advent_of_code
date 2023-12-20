@@ -5,8 +5,10 @@ import time
 import itertools
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # Part 1 = 141 (Shortest)   Part 2 = 736 (Longest)
-input_test = script_path / "test.txt"  # London -> Dublin -> Belfast = 605 / 982
+soln_file = (
+    script_path / "input.txt"
+)  # Part 1 = 141 (Shortest)   Part 2 = 736 (Longest)
+test_file = script_path / "test.txt"  # London -> Dublin -> Belfast = 605 / 982
 
 
 def solve(puzzle_input):
@@ -57,5 +59,5 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":  # print()
-    solve(input_test)
-    solve(input)
+    solve(test_file)
+    solve(soln_file)

@@ -5,9 +5,9 @@ import time
 from pprint import pprint as pp
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 6494 // 2691
-input_test = script_path / "test.txt"  # 13 // 1
-input_test2 = script_path / "test2.txt"  # ?88? Not proved // 36
+soln_file = script_path / "input.txt"  # 6494 // 2691
+test_file = script_path / "test.txt"  # 13 // 1
+test_file2 = script_path / "test2.txt"  # ?88? Not proved // 36
 
 
 # Previous AOC
@@ -186,8 +186,8 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
-    # tests2 = solve(input_test2, run="Test2")
+    tests = solve(test_file, run="Test")
+    # tests2 = solve(test_file2, run="Test2")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

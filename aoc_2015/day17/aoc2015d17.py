@@ -5,8 +5,8 @@ import time
 from itertools import combinations
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 1304 / 18 (ways to use 4 containers)
-input_test = script_path / "test.txt"  # 4 / 3
+soln_file = script_path / "input.txt"  # 1304 / 18 (ways to use 4 containers)
+test_file = script_path / "test.txt"  # 4 / 3
 
 
 def parse(puzzle_input):
@@ -78,7 +78,7 @@ def solve(puzzle_input, target_amount):
 
 def runAllTests(target_amount):
     print("\nTests\n")
-    a, b, t = solve(input_test, target_amount)
+    a, b, t = solve(test_file, target_amount)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")

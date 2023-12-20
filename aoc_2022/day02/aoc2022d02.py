@@ -5,9 +5,9 @@ import time
 from collections import Counter
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 13484  //  13433
-input_test = script_path / "test.txt"  # 15  // 12
-input_test2 = script_path / "test2.txt"  # 33  // 35
+soln_file = script_path / "input.txt"  # 13484  //  13433
+test_file = script_path / "test.txt"  # 15  // 12
+test_file2 = script_path / "test2.txt"  # 33  // 35
 
 
 winning_moves = {
@@ -122,8 +122,8 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    test1 = solve(input_test, run="Test1")
-    test2 = solve(input_test2, run="Test2")
+    test1 = solve(test_file, run="Test1")
+    test2 = solve(test_file2, run="Test2")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

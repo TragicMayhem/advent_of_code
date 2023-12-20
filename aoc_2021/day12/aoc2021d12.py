@@ -6,12 +6,12 @@ from collections import defaultdict
 from collections import deque
 
 script_path = pathlib.Path(__file__).parent
-input = (
+soln_file = (
     script_path / "input.txt"
 )  # Right answers: 5178 / 130094   (~but test 2 gives wrong answer!)  LUCK?  WHY?
-input_test = script_path / "test.txt"  # 10 / 36 matches
-input_test2 = script_path / "test2.txt"  #  19 / 103
-input_test3 = script_path / "test3.txt"  #  226 / 3509 matches
+test_file = script_path / "test.txt"  # 10 / 36 matches
+test_file2 = script_path / "test2.txt"  #  19 / 103
+test_file3 = script_path / "test3.txt"  #  226 / 3509 matches
 
 
 def parse(puzzle_input):
@@ -122,9 +122,9 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
-    tests2 = solve(input_test2, run="Test2")
-    tests3 = solve(input_test3, run="Test3")
+    tests = solve(test_file, run="Test")
+    tests2 = solve(test_file2, run="Test2")
+    tests3 = solve(test_file3, run="Test3")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

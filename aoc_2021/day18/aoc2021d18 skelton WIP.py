@@ -8,9 +8,9 @@ import re
 import math
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #
-input_test = script_path / "test.txt"  #
-input_test2 = script_path / "test2.txt"  #
+soln_file = script_path / "input.txt"  #
+test_file = script_path / "test.txt"  #
+test_file2 = script_path / "test2.txt"  #
 
 """
 list = [[reduce(lambda x, y: x*y, l)] for l in lis]
@@ -56,10 +56,10 @@ def parse_keepstr(puzzle_input):
 # file is add first two together, that answer is added to row 3, then row 4 and so on!!
 
 
-def check_for_split(input):
+def check_for_split(soln_file):
     count_depth = 0
 
-    for i in range(len(input)):
+    for i in range(len(soln_file)):
         if input[i] == "[":
             count_depth += 1
         elif input[i] == "]":
@@ -233,16 +233,16 @@ def runTest(test_file):
 
 def runAllTests():
     print("Tests")
-    a, b = runTest(input_test)
+    a, b = runTest(test_file)
     print(f"Test1.  Part1: {a} Part 2: {b}")
 
 
 if __name__ == "__main__":  # print()
-    parse2(input_test)
+    parse2(test_file)
 
     runAllTests()
 
-    # solutions = solve(input)
+    # solutions = solve(soln_file)
     # print('\nAOC')
     # print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     # print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")

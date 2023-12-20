@@ -7,8 +7,8 @@ import time
 from pprint import pprint as pp
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 121 / RURUCEOEIL
-input_test = script_path / "test.txt"  # 6 / -
+soln_file = script_path / "input.txt"  # 121 / RURUCEOEIL
+test_file = script_path / "test.txt"  # 6 / -
 
 SCREEN_WIDTH = 50
 SCREEN_HEIGHT = 6
@@ -153,7 +153,7 @@ def solve(puzzle_input, w=SCREEN_WIDTH, h=SCREEN_HEIGHT):
 
 def runAllTests():
     print("\nTests\n")
-    a, t = solve(input_test, 7, 3)
+    a, t = solve(test_file, 7, 3)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
 
@@ -162,7 +162,7 @@ if __name__ == "__main__":  # print()
     # test_functions()
     # runAllTests()
 
-    sol1, times = solve(input)
+    sol1, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")

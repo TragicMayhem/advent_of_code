@@ -5,9 +5,9 @@ import ast
 from itertools import permutations
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 3488 / 4583
-input_test2 = script_path / "test2.txt"  # 3488 / 3805
-input_test3 = script_path / "test3.txt"  # 4140 / 3993
+soln_file = script_path / "input.txt"  # 3488 / 4583
+test_file2 = script_path / "test2.txt"  # 3488 / 3805
+test_file3 = script_path / "test3.txt"  # 4140 / 3993
 
 
 def parse(puzzle_input):
@@ -134,7 +134,7 @@ def calc_mag(reduced_data):
 
 print("<" * 25, "TEST", ">" * 25)
 
-input_data = parse(input_test3)
+input_data = parse(test_file3)
 print(input_data)
 print()
 final_reduction = reduce_input(input_data)
@@ -157,7 +157,7 @@ print(calc_mag(ast.literal_eval(t_fr)))
 
 print("<" * 25, "INPUT", ">" * 25)
 
-input_data = parse(input)
+input_data = parse(soln_file)
 # print(input_data)
 
 final_reduction_perms = []

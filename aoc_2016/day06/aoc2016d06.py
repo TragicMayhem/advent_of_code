@@ -5,8 +5,8 @@ import time
 from collections import Counter
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # ikerpcty  /   uwpfaqrq
-input_test = script_path / "test.txt"  # easter    /   advent
+soln_file = script_path / "input.txt"  # ikerpcty  /   uwpfaqrq
+test_file = script_path / "test.txt"  # easter    /   advent
 
 
 def parse(puzzle_input):
@@ -52,7 +52,7 @@ def solve(puzzle_input):
 
 def runAllTests():
     print("\nTests\n")
-    a, b, t = solve(input_test)
+    a, b, t = solve(test_file)
     print(f"Test1 Part 1: {a}")
     print(f"      Part 2: {b}")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
@@ -61,7 +61,7 @@ def runAllTests():
 if __name__ == "__main__":  # print()
     runAllTests()
 
-    sol1, sol2, times = solve(input)
+    sol1, sol2, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(sol1)}")
     print(f"Solution 2: {str(sol2)}")

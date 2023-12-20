@@ -6,8 +6,8 @@ from pprint import pprint as pp
 import itertools
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 1776 //  234416
-input_test = script_path / "test.txt"  # 21  // 8
+soln_file = script_path / "input.txt"  # 1776 //  234416
+test_file = script_path / "test.txt"  # 21  // 8
 
 direction_visiblity = [[]]
 
@@ -145,7 +145,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

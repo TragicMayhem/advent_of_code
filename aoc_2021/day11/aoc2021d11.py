@@ -6,9 +6,9 @@ import time
 # from collections import deque
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 1673 (100 steps) /
-input_test = script_path / "test.txt"  # 1656 (100 steps)
-input_test2 = script_path / "test2.txt"  #
+soln_file = script_path / "input.txt"  # 1673 (100 steps) /
+test_file = script_path / "test.txt"  # 1656 (100 steps)
+test_file2 = script_path / "test2.txt"  #
 
 steps = 100
 
@@ -82,10 +82,10 @@ def parse(puzzle_input):
     """Parse input"""
 
     with open(puzzle_input, "r") as file:
-        input = file.read().split("\n")
-        input = [[int(x) for x in row] for row in input]
+        lst = file.read().split("\n")
+        lst = [[int(x) for x in row] for row in lst]
 
-    return input
+    return lst
 
 
 def part1(data):
@@ -182,7 +182,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

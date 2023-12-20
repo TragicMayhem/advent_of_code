@@ -6,8 +6,8 @@ import re
 
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  5809294 (very slow ~10s) //
-input_test = script_path / "test.txt"  #  26  //  56000011
+soln_file = script_path / "input.txt"  #  5809294 (very slow ~10s) //
+test_file = script_path / "test.txt"  #  26  //  56000011
 
 TARGET_ROW_TEST = 10
 TARGET_ROW_INPUT = 2000000
@@ -208,7 +208,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

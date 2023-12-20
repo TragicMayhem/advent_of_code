@@ -4,8 +4,8 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  1195 / 1235
-input_test = script_path / "test.txt"  # 7 / 5
+soln_file = script_path / "input.txt"  #  1195 / 1235
+test_file = script_path / "test.txt"  # 7 / 5
 
 
 def parse(puzzle_input):
@@ -67,7 +67,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

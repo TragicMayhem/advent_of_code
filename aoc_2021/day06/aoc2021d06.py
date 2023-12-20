@@ -4,16 +4,16 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 390011 for 80d   1746710169834 for 256d
-input_test = script_path / "test.txt"  # 5934 for 80d   26984457539 for 256d
+soln_file = script_path / "input.txt"  # 390011 for 80d   1746710169834 for 256d
+test_file = script_path / "test.txt"  # 5934 for 80d   26984457539 for 256d
 
 
 def parse(puzzle_input):
     """Parse input"""
     with open(puzzle_input, "r") as file:
-        input = [[int(x) for x in row] for row in [line.split(",") for line in file]]
-        input = input[0]
-    return input
+        lst = [[int(x) for x in row] for row in [line.split(",") for line in file]]
+        lst = input[0]
+    return lst
 
 
 def model_fish(initial_fish, model_days):
@@ -62,7 +62,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

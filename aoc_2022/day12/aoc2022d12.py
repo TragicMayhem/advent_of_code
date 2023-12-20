@@ -7,8 +7,8 @@ from math import inf as INFINITY
 from copy import deepcopy
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 330  // 321
-input_test = script_path / "test.txt"  # 31  // 29
+soln_file = script_path / "input.txt"  # 330  // 321
+test_file = script_path / "test.txt"  # 31  // 29
 
 # need to make the search much better and not replace S E
 # Need a better way for part 2, and hints say work backwards - research
@@ -177,7 +177,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

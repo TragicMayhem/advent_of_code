@@ -13,7 +13,7 @@ import re
 input_pt1 = "hepxcrrq"  # hepxxyzz  > becomes input for part 2
 input_pt2 = "hepxxyzz"  # heqaabcc
 
-input_test = [
+test_file = [
     "abcddffh",  # abcddffj
     "abcddfah",  # abcddfbb
     "abceefgh",  # abceefhh
@@ -131,13 +131,13 @@ def solve(puzzle_input):
 def runAllTests():
     print("\nTests\n")
 
-    a, t = solve(input_test[0])
+    a, t = solve(test_file[0])
     print(f"Test1 : {a} in {t[1]-t[0]:.4f}s")
 
-    a, t = solve(input_test[4])
+    a, t = solve(test_file[4])
     print(f"Test4 : {a} in {t[1]-t[0]:.4f}s")
 
-    a, t = solve(input_test[5])
+    a, t = solve(test_file[5])
     print(f"Test5 : {a} in {t[1]-t[0]:.4f}s")
 
 

@@ -13,8 +13,8 @@ from math import floor, lcm, gcd
 from collections import deque
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 112815  // 25738411485
-input_test = script_path / "test.txt"  # 10605 // 2713310158
+soln_file = script_path / "input.txt"  # 112815  // 25738411485
+test_file = script_path / "test.txt"  # 10605 // 2713310158
 
 # TO DO - How to use objects?  Must be better option.
 
@@ -193,7 +193,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

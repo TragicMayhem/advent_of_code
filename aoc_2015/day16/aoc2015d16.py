@@ -6,7 +6,7 @@ from pprint import pprint
 from collections import defaultdict
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  213 / 323
+soln_file = script_path / "input.txt"  #  213 / 323
 dna_info = script_path / "dna_target.txt"
 
 props_higher = ["cats", "trees"]
@@ -116,7 +116,7 @@ def solve(puzzle_input):
 
 
 if __name__ == "__main__":  # print()
-    sol1, sol2, times = solve(input)
+    sol1, sol2, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")

@@ -7,8 +7,8 @@ import re
 from pprint import pprint
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.json"  # 191164 / 87842
-input_test = (
+soln_file = script_path / "input.json"  # 191164 / 87842
+test_file = (
     script_path / "test.json"
 )  # 23 / 19 (not 14, doh read rules. Not lists only objects!)
 
@@ -96,7 +96,7 @@ def solve(puzzle_input):
 def runAllTests():
     print("\nTests\n")
 
-    a, b, t = solve(input_test)
+    a, b, t = solve(test_file)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
@@ -105,7 +105,7 @@ def runAllTests():
 if __name__ == "__main__":  # print()
     runAllTests()
 
-    sol1, sol2, times = solve(input)
+    sol1, sol2, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")

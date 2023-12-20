@@ -5,8 +5,8 @@ import time
 import numpy as np
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 5301 / 19492
-input_test = script_path / "test.txt"  # 35 / 3351
+soln_file = script_path / "input.txt"  # 5301 / 19492
+test_file = script_path / "test.txt"  # 35 / 3351
 
 # 5362 too high still zero adding!!! background switching after looking at the hits on reddit
 
@@ -143,14 +143,14 @@ def runTest(test_file):
 
 def runAllTests():
     print("Tests")
-    a, b = runTest(input_test)
+    a, b = runTest(test_file)
     print(f"Test1.  Part1: {a} Part 2: {b}")
 
 
 if __name__ == "__main__":  # print()
     runAllTests()
 
-    solutions = solve(input)
+    solutions = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")

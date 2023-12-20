@@ -5,9 +5,9 @@ import time
 import copy
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # (after 100 steps) 821 / 886
-input_test = (
-    script_path / "input_test.txt"
+soln_file = script_path / "input.txt"  # (after 100 steps) 821 / 886
+test_file = (
+    script_path / "test_file.txt"
 )  # 4 (after 4 steps) / 14 (after 4 steps)  (or in example 17 after 5 steps)
 
 
@@ -188,7 +188,7 @@ def solve(puzzle_input, steps=100):
 
 def runAllTests():
     print("\nTests\n")
-    a, b, t = solve(input_test, 4)
+    a, b, t = solve(test_file, 4)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")

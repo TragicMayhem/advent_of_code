@@ -5,9 +5,9 @@ import hashlib
 
 # Takes AGES to run :D
 
-input = "yzbqklnj"  # 282749 / 9962624
-input_test = "abcdef"  # 609043 = 000001dbbfa...   / 6742839
-input_test2 = "pqrstuv"  #  1048970 = 000006136ef....  / 5714438
+soln_file = "yzbqklnj"  # 282749 / 9962624
+test_file = "abcdef"  # 609043 = 000001dbbfa...   / 6742839
+test_file2 = "pqrstuv"  #  1048970 = 000006136ef....  / 5714438
 
 
 def part1(key):
@@ -57,12 +57,12 @@ def solve(puzzle_input):
 def runAllTests():
     print("\nTests\n")
 
-    a, b, t = solve(input_test)
+    a, b, t = solve(test_file)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
 
-    a, b, t = solve(input_test2)
+    a, b, t = solve(test_file2)
     print(f"Test2 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
@@ -73,7 +73,7 @@ if __name__ == "__main__":  # print()
 
     runAllTests()
 
-    sol1, sol2, times = solve(input)
+    sol1, sol2, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")

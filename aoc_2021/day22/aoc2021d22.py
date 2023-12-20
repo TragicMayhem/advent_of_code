@@ -21,10 +21,10 @@ only running 1 copy (oops) takes 16.1s  (old laptop ubuntu)  10.1 on new Win11 P
 
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 583636 / 1294137045134837
-input_test = script_path / "test.txt"  # 39 / 39
-input_test2 = script_path / "test2.txt"  # 590784 / maybe 39769202357821
-input_test3 = script_path / "test3.txt"  # 474140 / 2758514936282235
+soln_file = script_path / "input.txt"  # 583636 / 1294137045134837
+test_file = script_path / "test.txt"  # 39 / 39
+test_file2 = script_path / "test2.txt"  # 590784 / maybe 39769202357821
+test_file3 = script_path / "test3.txt"  # 474140 / 2758514936282235
 
 
 def parse(puzzle_input):
@@ -285,11 +285,11 @@ def runTest(test_file, size):
 
 def runAllTests():
     print("Tests")
-    a, b = runTest(input_test, 15)
+    a, b = runTest(test_file, 15)
     print(f"Test1.  Part1: {a} Part 2: {b}")
-    a, b = runTest(input_test2, 60)
+    a, b = runTest(test_file2, 60)
     print(f"Test2.  Part1: {a} Part 2: {b}")
-    a, b = runTest(input_test3, 60)
+    a, b = runTest(test_file3, 60)
     print(f"Test3.  Part1: {a} Part 2: {b}")
 
 

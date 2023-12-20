@@ -7,11 +7,11 @@ import re
 from collections import defaultdict
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 576 /
-input_test = script_path / "input_test.txt"  # 4 distinct in 1 replacements
-input_test2 = script_path / "input_test2.txt"  # 7 distinct in 9 replacements
-input_test3 = script_path / "input_test3pt2.txt"  # 7 distinct in 9 replacements
-input_test4 = script_path / "input_test4pt2.txt"  # 7 distinct in 9 replacements
+soln_file = script_path / "input.txt"  # 576 /
+test_file = script_path / "test_file.txt"  # 4 distinct in 1 replacements
+test_file2 = script_path / "test_file2.txt"  # 7 distinct in 9 replacements
+test_file3 = script_path / "test_file3pt2.txt"  # 7 distinct in 9 replacements
+test_file4 = script_path / "test_file4pt2.txt"  # 7 distinct in 9 replacements
 
 
 def parse(puzzle_input):
@@ -122,12 +122,12 @@ def solve(puzzle_input):
 
 def runAllTests():
     print("\nTests\n")
-    a, b, t = solve(input_test)
+    a, b, t = solve(test_file)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
 
-    a, b, t = solve(input_test2)
+    a, b, t = solve(test_file2)
     print(f"Test2 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
@@ -136,7 +136,7 @@ def runAllTests():
 if __name__ == "__main__":
     # runAllTests()
 
-    sol1, sol2, times = solve(input)
+    sol1, sol2, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")

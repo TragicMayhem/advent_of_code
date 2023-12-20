@@ -4,11 +4,11 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  6005 / 23864
-input_test = script_path / "test.txt"  # 5 / 12
-input_test2 = script_path / "test2.txt"  # 2
-input_test3 = script_path / "test3.txt"  # 4
-input_test4 = script_path / "test4.txt"  # 0
+soln_file = script_path / "input.txt"  #  6005 / 23864
+test_file = script_path / "test.txt"  # 5 / 12
+test_file2 = script_path / "test2.txt"  # 2
+test_file3 = script_path / "test3.txt"  # 4
+test_file4 = script_path / "test4.txt"  # 0
 
 grid_size = 1000
 
@@ -17,8 +17,8 @@ def parse(puzzle_input):
     """Parse input"""
 
     with open(puzzle_input, "r") as file:
-        input = [line.split() for line in file]
-    return input
+        lst = [line.split() for line in file]
+    return lst
 
 
 def part1(data):
@@ -133,10 +133,10 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
-    tests2 = solve(input_test2, run="Test")
-    tests3 = solve(input_test3, run="Test")
-    tests4 = solve(input_test4, run="Test")
+    tests = solve(test_file, run="Test")
+    tests2 = solve(test_file2, run="Test")
+    tests3 = solve(test_file3, run="Test")
+    tests4 = solve(test_file4, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

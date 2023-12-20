@@ -10,7 +10,7 @@ elif sys.platform == "darwin":
 elif sys.platform == "win32":
     dirpath = sys.path[0] + "\\\\"
 
-# Input file is a list of policy and passwords
+# soln_filefile is a list of policy and passwords
 # n-m : passwordstring
 # How many on the input file are valid
 

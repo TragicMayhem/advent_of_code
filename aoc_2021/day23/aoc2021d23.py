@@ -6,8 +6,8 @@ from math import inf as INF
 from functools import lru_cache
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  16059 /
-input_test = script_path / "test.txt"  #  12521 / 44169
+soln_file = script_path / "input.txt"  #  16059 /
+test_file = script_path / "test.txt"  #  12521 / 44169
 
 
 """
@@ -336,9 +336,9 @@ def runTest(test_file):
 
 
 if __name__ == "__main__":  # print()
-    runTest(input_test)
+    runTest(test_file)
 
-    solutions = solve(input)
+    solutions = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")

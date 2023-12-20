@@ -4,12 +4,12 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 1651 //  3837
-input_test = script_path / "test0.txt"  # 7 // 19
-input_test1 = script_path / "test1.txt"  # 5  // 23
-input_test2 = script_path / "test2.txt"  # 6  // 23
-input_test3 = script_path / "test3.txt"  # 10  // 29
-input_test4 = script_path / "test4.txt"  # 11  // 26
+soln_file = script_path / "input.txt"  # 1651 //  3837
+test_file = script_path / "test0.txt"  # 7 // 19
+test_file1 = script_path / "test1.txt"  # 5  // 23
+test_file2 = script_path / "test2.txt"  # 6  // 23
+test_file3 = script_path / "test3.txt"  # 10  // 29
+test_file4 = script_path / "test4.txt"  # 11  // 26
 
 
 def parse(puzzle_input):
@@ -83,11 +83,11 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
-    tests1 = solve(input_test1, run="Test")
-    tests2 = solve(input_test2, run="Test")
-    tests3 = solve(input_test3, run="Test")
-    tests4 = solve(input_test4, run="Test")
+    tests = solve(test_file, run="Test")
+    tests1 = solve(test_file1, run="Test")
+    tests2 = solve(test_file2, run="Test")
+    tests3 = solve(test_file3, run="Test")
+    tests4 = solve(test_file4, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

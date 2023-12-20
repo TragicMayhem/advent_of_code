@@ -126,7 +126,7 @@ def compute_model_numbers(data):
 if __name__ == "__main__":  # print()
     times = []
 
-    data = parse(input)
+    data = parse(soln_file)
 
     times.append(time.perf_counter())
     highest, lowest = compute_model_numbers(data)

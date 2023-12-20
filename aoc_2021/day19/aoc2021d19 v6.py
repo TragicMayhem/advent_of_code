@@ -4,8 +4,8 @@ import itertools as its
 
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 472 / 12092
-input_test = script_path / "test.txt"  # 79 / 3621
+soln_file = script_path / "input.txt"  # 472 / 12092
+test_file = script_path / "test.txt"  # 79 / 3621
 
 #### Think the looping round scanners is not right.
 #### changing code to reference the last one found (as per examples from others code )
@@ -239,7 +239,7 @@ def calculate_beacons(scanners):
 ###############################################
 
 print("=" * 50)
-scanners = parse_np(input)
+scanners = parse_np(soln_file)
 beacon_distances = calc_distances(scanners)
 # print("Beacon distances")
 # print(beacon_distances[0])

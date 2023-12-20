@@ -6,9 +6,9 @@ from itertools import cycle, product
 from math import lcm
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 13301 / 7309459565207
-input_test = script_path / "test.txt"  # 6 /
-input_test_pt2 = script_path / "test_pt2.txt"  # 6 /
+soln_file = script_path / "input.txt"  # 13301 / 7309459565207
+test_file = script_path / "test.txt"  # 6 /
+test_file_pt2 = script_path / "test_pt2.txt"  # 6 /
 
 # itertool cycle
 # https://docs.python.org/3/library/itertools.html
@@ -174,8 +174,8 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test Pt1")
-    tests_pt2 = solve(input_test_pt2, run="Test Pt2")
+    tests = solve(test_file, run="Test Pt1")
+    tests_pt2 = solve(test_file_pt2, run="Test Pt2")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

@@ -7,8 +7,8 @@ from collections import defaultdict
 from collections import Counter
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 2447 / 3018019237563
-input_test = script_path / "test.txt"  # 1588 / 2188189693529
+soln_file = script_path / "input.txt"  # 2447 / 3018019237563
+test_file = script_path / "test.txt"  # 1588 / 2188189693529
 
 
 def parse(puzzle_input):
@@ -142,7 +142,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

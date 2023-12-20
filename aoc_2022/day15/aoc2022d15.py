@@ -6,8 +6,8 @@ import re
 
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  5809294 (8+secs) //  10693731308112  (60+sec)
-input_test = script_path / "test.txt"  #  26  //  56000011
+soln_file = script_path / "input.txt"  #  5809294 (8+secs) //  10693731308112  (60+sec)
+test_file = script_path / "test.txt"  #  26  //  56000011
 
 TARGET_ROW_TEST = 10
 TARGET_ROW_INPUT = 2000000
@@ -204,7 +204,7 @@ def part2(data):
 # def runAllTests():
 
 #     print("Tests")
-#     a, b = runTest(input_test)
+#     a, b = runTest(test_file)
 #     print(f"Test1.  Part1: {a} Part 2: {b}")
 
 
@@ -216,7 +216,7 @@ def part2(data):
 
 #     TARGET_ROW = TARGET_ROW_INPUT
 #     MAX_RANGE = MAX_RANGE_INPUT
-#     solutions = solve(input)
+#     solutions = solve(soln_file)
 #     print("\nAOC")
 #     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
 #     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
@@ -246,9 +246,9 @@ if __name__ == "__main__":
     print("\nAOC")
     TARGET_ROW = TARGET_ROW_TEST
     MAX_RANGE = MAX_RANGE_TEST
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
     TARGET_ROW = TARGET_ROW_INPUT
     MAX_RANGE = MAX_RANGE_INPUT
-    solutions = solve(input)
+    solutions = solve(soln_file)

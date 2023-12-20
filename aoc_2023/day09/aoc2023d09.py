@@ -5,8 +5,8 @@ import time
 from itertools import repeat
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 1868368343 / 1022
-input_test = script_path / "test.txt"  # 114 / 2
+soln_file = script_path / "input.txt"  # 1868368343 / 1022
+test_file = script_path / "test.txt"  # 114 / 2
 
 # original_list = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
 # converted_list = [[int(string) for string in sublist] for sublist in original_list]
@@ -147,7 +147,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

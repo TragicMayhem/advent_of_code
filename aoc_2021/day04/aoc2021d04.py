@@ -4,9 +4,9 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  39984 / 8468
-input_test = script_path / "test.txt"  # 4512 / 1924
-input_test2 = script_path / "test2.txt"  # 2607 - testing column win pt1 / 2192
+soln_file = script_path / "input.txt"  #  39984 / 8468
+test_file = script_path / "test.txt"  # 4512 / 1924
+test_file2 = script_path / "test2.txt"  # 2607 - testing column win pt1 / 2192
 
 
 def make_grids(data):
@@ -170,8 +170,8 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
-    tests2 = solve(input_test2, run="Test 2")
+    tests = solve(test_file, run="Test")
+    tests2 = solve(test_file2, run="Test 2")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

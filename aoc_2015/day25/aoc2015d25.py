@@ -4,10 +4,10 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # row 3010, column 3019   result:  8997277
-input_test = script_path / "test.txt"  # row 1, column 2         result: 18749137
-input_test2 = script_path / "test2.txt"  # row 2, column 4         result:  7726640
-input_test3 = script_path / "test3.txt"  # row 4, column 5         result: 10600672
+soln_file = script_path / "input.txt"  # row 3010, column 3019   result:  8997277
+test_file = script_path / "test.txt"  # row 1, column 2         result: 18749137
+test_file2 = script_path / "test2.txt"  # row 2, column 4         result:  7726640
+test_file3 = script_path / "test3.txt"  # row 4, column 5         result: 10600672
 
 starting_val = 20151125
 multiplier = 252533
@@ -114,17 +114,17 @@ def solve(puzzle_input):
 
 def runAllTests():
     print("\nTests\n")
-    a, t = solve(input_test)
+    a, t = solve(test_file)
     print(f"Test1: {a} in {t[1]-t[0]:.4f}s")
-    a, t = solve(input_test2)
+    a, t = solve(test_file2)
     print(f"Test2: {a} in {t[1]-t[0]:.4f}s")
-    a, t = solve(input_test3)
+    a, t = solve(test_file3)
     print(f"Test3: {a} in {t[1]-t[0]:.4f}s")
 
 
 if __name__ == "__main__":  # print()
     runAllTests()
 
-    sol1, times = solve(input)
+    sol1, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution: {str(sol1)} in {times[1]-times[0]:.4f}s")

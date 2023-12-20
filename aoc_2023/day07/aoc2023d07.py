@@ -5,9 +5,9 @@ import time
 from collections import Counter
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 251216224 / 250825971
-input_test = script_path / "test.txt"  # 6440 / 5905
-input_test2 = script_path / "test2.txt"  # 6592 / 6839
+soln_file = script_path / "input.txt"  # 251216224 / 250825971
+test_file = script_path / "test.txt"  # 6440 / 5905
+test_file2 = script_path / "test2.txt"  # 6592 / 6839
 
 # Use HEX and string translation
 # https://www.geeksforgeeks.org/python-string-translate/
@@ -253,8 +253,8 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
-    tests2 = solve(input_test2, run="Test2")
+    tests = solve(test_file, run="Test")
+    tests2 = solve(test_file2, run="Test2")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

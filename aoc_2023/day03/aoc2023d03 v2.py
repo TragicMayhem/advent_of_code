@@ -5,8 +5,8 @@ import time
 import re
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 529618 / 77509019
-input_test = script_path / "test.txt"  # 4361 / 467835
+soln_file = script_path / "input.txt"  # 529618 / 77509019
+test_file = script_path / "test.txt"  # 4361 / 467835
 
 
 # Previous AOC
@@ -237,8 +237,8 @@ def solve2(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
-    test2 = solve2(input_test, run="Test")
+    tests = solve(test_file, run="Test")
+    test2 = solve2(test_file, run="Test")
 
     # print()
-    # solutions = solve(input)
+    # solutions = solve(soln_file)

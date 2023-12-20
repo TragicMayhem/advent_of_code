@@ -9,8 +9,8 @@ import math
 from pprint import pprint
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  # 21367368 / 1766400
-input_test = (
+soln_file = script_path / "input.txt"  #  # 21367368 / 1766400
+test_file = (
     script_path / "test.txt"
 )  # 44 B 65 C score is 62842880 / 40 B and 60 C = 500 calories and score 57600000
 
@@ -140,7 +140,7 @@ def solve(puzzle_input):
 
 def runAllTests():
     print("\nTests\n")
-    a, b, t = solve(input_test)
+    a, b, t = solve(test_file)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
@@ -153,7 +153,7 @@ if __name__ == "__main__":  # print()
         "\n\n....wait for it to run its computing a lot of permutations (approx 30-40s)"
     )
 
-    sol1, sol2, times = solve(input)
+    sol1, sol2, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")

@@ -5,8 +5,8 @@ import time
 from collections import deque
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 550 / 1100682
-input_test = script_path / "test.txt"  # 15 /1134
+soln_file = script_path / "input.txt"  # 550 / 1100682
+test_file = script_path / "test.txt"  # 15 /1134
 
 grid_size_rows = 0
 grid_size_cols = 0
@@ -125,7 +125,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

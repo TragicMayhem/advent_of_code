@@ -7,8 +7,8 @@ from pprint import pprint
 import math
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #  11266889531 / 77387711
-input_test = (
+soln_file = script_path / "input.txt"  #  11266889531 / 77387711
+test_file = (
     script_path / "test.txt"
 )  #  Num parcels 10 with total weight of 60 Group target weight is 20.0  > 99
 
@@ -106,7 +106,7 @@ def solve(puzzle_input):
 
 def runAllTests():
     print("\nTests\n")
-    a, b, t = solve(input_test)
+    a, b, t = solve(test_file)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")
@@ -115,7 +115,7 @@ def runAllTests():
 if __name__ == "__main__":  # print()
     runAllTests()
 
-    sol1, sol2, times = solve(input)
+    sol1, sol2, times = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(sol1)} in {times[1]-times[0]:.4f}s")
     print(f"Solution 2: {str(sol2)} in {times[2]-times[1]:.4f}s")

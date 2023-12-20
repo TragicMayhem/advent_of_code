@@ -4,15 +4,15 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 331067 / 92881128
-input_test = script_path / "test.txt"  # 37 / 168
+soln_file = script_path / "input.txt"  # 331067 / 92881128
+test_file = script_path / "test.txt"  # 37 / 168
 
 
 def parse(puzzle_input):
     """Parse input"""
     with open(puzzle_input, "r") as file:
-        input = [[int(x) for x in row] for row in [line.split(",") for line in file]]
-    return input.pop()
+        lst = [[int(x) for x in row] for row in [line.split(",") for line in file]]
+    return lst.pop()
 
 
 def part1(data):
@@ -70,7 +70,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

@@ -5,8 +5,8 @@ import time
 from itertools import groupby
 
 script_path = pathlib.Path(__file__).parent
-input = "1113222113"  # Part 1 = 252594  // Part 2 = 3579328
-input_test = "1"  # 312211 > len = 6 after 5 .... 82350 / 1166642
+soln_file = "1113222113"  # Part 1 = 252594  // Part 2 = 3579328
+test_file = "1"  # 312211 > len = 6 after 5 .... 82350 / 1166642
 
 
 def solve(puzzle_input, max_count):
@@ -33,9 +33,9 @@ if __name__ == "__main__":  # print()
     times = []
 
     times.append(time.perf_counter())
-    ans1a = solve(input_test, 40)
+    ans1a = solve(test_file, 40)
     times.append(time.perf_counter())
-    ans1b = solve(input_test, 50)
+    ans1b = solve(test_file, 50)
     times.append(time.perf_counter())
 
     print(f"Test1 Part 1: {ans1a} in {times[1]-times[0]:.4f}s")

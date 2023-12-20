@@ -7,8 +7,8 @@ from pprint import pprint
 from collections import defaultdict
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # Rudolph 2640km in 2503 seconds /  1102 points
-input_test = (
+soln_file = script_path / "input.txt"  # Rudolph 2640km in 2503 seconds /  1102 points
+test_file = (
     script_path / "test.txt"
 )  # Comet 1120km in 1000 seconds  / Dancer on 689 points (Comet on 312)
 
@@ -205,7 +205,7 @@ def solve(puzzle_input, race_time=1000):
 def runAllTests(race_time):
     print("\nTests\n")
 
-    a, b, t = solve(input_test, 1000)
+    a, b, t = solve(test_file, 1000)
     print(f"Test1 Part 1: {a} in {t[1]-t[0]:.4f}s")
     print(f"      Part 2: {b} in {t[2]-t[1]:.4f}s")
     print(f"      Execution total: {t[-1]-t[0]:.4f} seconds")

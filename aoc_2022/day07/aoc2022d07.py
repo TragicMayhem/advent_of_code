@@ -21,8 +21,8 @@ from functools import lru_cache
 
 """
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  # 1350966 //   6296435
-input_test = script_path / "test.txt"  # 95437 // 24933642
+soln_file = script_path / "input.txt"  # 1350966 //   6296435
+test_file = script_path / "test.txt"  # 95437 // 24933642
 
 fs = defaultdict(dict)
 
@@ -169,7 +169,7 @@ def solve(puzzle_input, run="Solution"):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(input_test, run="Test")
+    tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(input)
+    solutions = solve(soln_file)

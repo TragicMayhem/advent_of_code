@@ -16,8 +16,8 @@ import time
 from math import prod
 
 script_path = pathlib.Path(__file__).parent
-input = script_path / "input.txt"  #
-input_test = script_path / "test.txt"  #
+soln_file = script_path / "input.txt"  #
+test_file = script_path / "test.txt"  #
 
 
 class packets:
@@ -354,9 +354,9 @@ def runAllTests(test_file):
 
 
 if __name__ == "__main__":  # print()
-    runAllTests(input_test)
+    runAllTests(test_file)
 
-    solutions = solve(input)
+    solutions = solve(soln_file)
     print("\nAOC")
     print(f"Solution 1: {str(solutions[0])} in {solutions[2][1]-solutions[2][0]:.4f}s")
     print(f"Solution 2: {str(solutions[1])} in {solutions[2][2]-solutions[2][1]:.4f}s")
