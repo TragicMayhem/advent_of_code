@@ -2,10 +2,11 @@
 
 import pathlib
 import time
+from collections import Counter
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  #
-test_file = script_path / "test.txt"  #
+soln_file = script_path / "input.txt"  # 2086478 / 24941624
+test_file = script_path / "test.txt"  # 11 / 31
 
 
 def parse(puzzle_input):
@@ -13,7 +14,9 @@ def parse(puzzle_input):
 
     with open(puzzle_input, "r") as file:
         #  Read each line (split \n) and form a list of strings
-        lst = file.read().split("\n\n")
+        lst = []
+        for l, r in [x.replace("   ", " ").split(" ") for x in file.read().split("\n")]:
+            lst.append((int(l), int(r)))
 
     return lst
 
@@ -21,13 +24,44 @@ def parse(puzzle_input):
 def part1(data):
     """Solve part 1"""
 
-    return 1
+    left_list = []
+    right_list = []
+    for l, r in data:
+        left_list.append(l)
+        right_list.append(r)
+
+    left_list.sort()
+    right_list.sort()
+
+    if len(left_list) != len(right_list):
+        print("Lists not equal")
+
+    tot = 0
+
+    for l, r in zip(left_list, right_list):
+        diff = abs(l - r)
+        tot += diff
+
+    return tot
 
 
 def part2(data):
     """Solve part 2"""
 
-    return 1
+    left_list = []
+    right_list = []
+    for l, r in data:
+        left_list.append(l)
+        right_list.append(r)
+
+    right_counter = Counter(right_list)
+    tot_sim = 0
+
+    for l in left_list:
+        if l in right_counter.keys():
+            tot_sim += l * right_counter[l]
+
+    return tot_sim
 
 
 def solve(puzzle_input, run="Solution"):
