@@ -4,8 +4,10 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 549 / 
-test_file = script_path / "test.txt"  # 2 / 
+soln_file = script_path / "input.txt"  # 549 /  589    (Not 579, 575 too low)
+test_file = script_path / "test.txt"  # 2 / 4
+test_file2 = script_path / "test2.txt"  #
+
 
 def convert_to_numbers(list_of_lists):
     """Converts a list of list of strings into a list of list of integers.
@@ -36,27 +38,26 @@ def part1(data):
     safe_count = 0
 
     for l in data:
-        print("\n",l)
-        dir = 1 if l[0] > l[-1] else -1
-       
+        seq_dir = 1 if l[0] > l[-1] else -1
+
         a = l[0]
         still_safe = False
 
-        for n in range(1,len(l)):
+        for n in range(1, len(l)):
 
-            cur_dir = 1 if l[n] < l[n-1] else -1
-            if cur_dir != dir:
-                print("Direction unsafe", cur_dir, dir)
+            cur_dir = 1 if l[n] < l[n - 1] else -1
+            if cur_dir != seq_dir:
+                # print("Direction unsafe", cur_dir, seq_dir)
                 still_safe = False
                 break
 
             b = l[n]
-            print(n, ":", a, b, (a - b) * dir)
+            # print(n, ":", a, b, (a - b) * seq_dir)
 
-            if 0 < (a - b) * dir <= 3:
+            if 0 < (a - b) * seq_dir <= 3:
                 still_safe = True
             else:
-                print("Difference unsafe")
+                # print("Difference unsafe")
                 still_safe = False
                 break
 
@@ -66,17 +67,105 @@ def part1(data):
             safe_list.append(l)
             safe_count += 1
 
-
-    print(safe_count)
-    print(safe_list)
+    # print(safe_count)
+    # print(safe_list)
 
     return safe_count
+
+
+def check_dir_and_diff(a, b, prev_dir):
+
+    cur_dir = 1 if a > b else -1
+    same_dir = cur_dir == prev_dir
+
+    in_range = 0 < abs(a - b) <= 3
+    return same_dir and in_range
+
+
+# Future Me: Options from other solutions
+# ---------------------------------------
+# zip[list, list[1:]] creates a list of numbers and same list offset
+# Then diff between each pair:
+#   d > 0 for d in new_list
+#   1 <= abs(diff) <= 3
+# python all command to check all are true  (not any)
+# checks all the same direction and in range
+
+
+def check_report(rep):
+
+    a = rep[0]
+    prev_dir = None
+
+    for n in range(1, len(rep)):
+        b = rep[n]
+        curr_dir = 1 if a > b else -1
+
+        if prev_dir is None:
+            prev_dir = curr_dir
+
+        if check_dir_and_diff(a, b, prev_dir):
+            a = b
+            prev_dir = curr_dir
+            continue
+
+        # Means not safe so can return
+        return False
+
+    return True
 
 
 def part2(data):
     """Solve part 2"""
 
-    return 1
+    safe_list = []
+    safe_count = 0
+    pos = 0
+
+    while pos < len(data):
+        still_safe = True
+        fail_safe = True
+
+        report = data.pop(0)
+        a = report[0]
+        prev_dir = None
+
+        print("\n", report)
+
+        for n in range(1, len(report)):
+            b = report[n]
+            curr_dir = 1 if a > b else -1
+
+            if prev_dir is None:
+                prev_dir = curr_dir
+
+            check_pair = check_dir_and_diff(a, b, prev_dir)
+            print(n, ":", "a", a, "b", b, a - b, prev_dir, curr_dir, check_pair)
+
+            if check_pair:
+                a = b
+                prev_dir = curr_dir
+                continue
+
+            print("Difference unsafe")
+            still_safe = False
+            break
+
+        if not still_safe:
+            for i in range(len(report)):
+                new_report = report[:i] + report[i + 1 :]
+                if check_report(new_report):
+                    print("new ok", new_report)
+                    still_safe = True
+                    break
+
+        if still_safe:
+            safe_list.append(report)
+            safe_count += 1
+
+    print(safe_list)
+
+    return safe_count
 
 
 def solve(puzzle_input, run="Solution"):
@@ -102,6 +191,7 @@ if __name__ == "__main__":
     print("\nAOC")
 
     tests = solve(test_file, run="Test")
+    tests = solve(test_file2, run="Test2")
 
     print()
     solutions = solve(soln_file)
