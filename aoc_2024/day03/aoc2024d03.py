@@ -1,4 +1,4 @@
-# https://adventofcode.com/2024/day/
+# https://adventofcode.com/2024/day/3
 
 import pathlib
 import time
@@ -10,6 +10,7 @@ test_file = script_path / "test.txt"  # 161 (with two examples its 322) / 48
 
 # 18041735 too low
 # 85770822 too high
+
 
 def parse(puzzle_input):
     """Parse input"""
@@ -45,6 +46,7 @@ def part1(data):
 
 # 1 Original - works when put enabled outside loop :/
 
+
 def part2_v1(data):
     """Solve part 2"""
 
@@ -71,7 +73,9 @@ def part2_v1(data):
 
     return tot
 
+
 # 2 STACK version
+
 
 def part2_v2(data):
     """Solve part 2"""
@@ -96,6 +100,7 @@ def part2_v2(data):
                     tot += int(res[1]) * int(res[2])
 
     return tot
+
 
 # 3 Using 0/1 to simplify if
 def part2(data):
@@ -122,6 +127,7 @@ def part2(data):
                     tot += int(res[1]) * int(res[2]) * enabled
 
     return tot
+
 
 def solve(puzzle_input, run="Solution"):
     """Solve the puzzle for the given input"""
