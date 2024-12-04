@@ -10,27 +10,27 @@ test_file = script_path / "test.txt"  # 18 / 9
 
 
 # Previous AOC
-def get_coords4d(r, c, h, w):
-    for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-        rr, cc = (r + delta_r, c + delta_c)
-        if 0 <= rr < h and 0 <= cc < w:
-            yield (rr, cc)
+# def get_coords4d(r, c, h, w):
+#     for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+#         rr, cc = (r + delta_r, c + delta_c)
+#         if 0 <= rr < h and 0 <= cc < w:
+#             yield (rr, cc)
 
 # Previous AOC
-def get_coords8d(r, c, h, w):
-    for delta_r, delta_c in (
-        (-1, 0),
-        (1, 0),
-        (0, -1),
-        (0, 1),
-        (-1, -1),
-        (-1, 1),
-        (1, -1),
-        (1, 1),
-    ):
-        rr, cc = (r + delta_r, c + delta_c)
-        if 0 <= rr < h and 0 <= cc < w:
-            yield (rr, cc)
+# def get_coords8d(r, c, h, w):
+#     for delta_r, delta_c in (
+#         (-1, 0),
+#         (1, 0),
+#         (0, -1),
+#         (0, 1),
+#         (-1, -1),
+#         (-1, 1),
+#         (1, -1),
+#         (1, 1),
+#     ):
+#         rr, cc = (r + delta_r, c + delta_c)
+#         if 0 <= rr < h and 0 <= cc < w:
+#             yield (rr, cc)
 
 
 # new
@@ -40,6 +40,19 @@ def get_deltas_8d():
         (1, 0),
         (0, -1),
         (0, 1),
+        (-1, -1),
+        (-1, 1),
+        (1, -1),
+        (1, 1),
+    ]
+
+    for (r,c) in deltas:
+        yield (r,c)
+
+
+# new
+def get_deltas_4diag():
+    deltas = [
         (-1, -1),
         (-1, 1),
         (1, -1),
@@ -72,7 +85,29 @@ def check_for_xmas(data, start_r, start_c, delta_r, delta_c):
 
     return word
 
+def validate_coords(r, c, data):
+    if 0 <= r < len(data[0]) and 0 <= c < len(data):
+        return data[r][c]
+    return ""
 
+
+def check_for_mas(data, start_r, start_c):
+    diag_1 = [(-1, -1),(0, 0),(1, 1)]
+    diag_2 = [(1, -1),(0, 0),(-1, 1)]
+
+    valid = ["MAS", "SAM"]
+
+    way1 = way2 = ""
+
+    for delta_r, delta_c in diag_1:
+        way1 += validate_coords(start_r + delta_r, start_c + delta_c, data)
+
+    for delta_r, delta_c in diag_2:
+        way2 += validate_coords(start_r + delta_r, start_c + delta_c, data)
+
+    # print(way1,way2)
+
+    return way1 in valid and way2 in valid
 
 
 def parse(puzzle_input):
@@ -82,7 +117,7 @@ def parse(puzzle_input):
         #  Read each line (split \n) and form a list of strings
         lst = [[x for x in row] for row in file.read().split("\n")]
 
-    print(lst)
+    # print(lst)
 
     return lst
 
@@ -106,7 +141,7 @@ def part1(data):
                 if tmp_word == 'XMAS':
                     word_count += 1
 
-    print(word_count)
+    # print(word_count)
 
     return word_count
 
@@ -114,10 +149,16 @@ def part1(data):
 def part2(data):
     """Solve part 2"""
 
+    h = len(data)
+    w = len(data[0])
+    count = 0
 
+    for r in range(w):
+        for c in range(h):
+            if check_for_mas(data, r, c):
+                count += 1
 
-
-    return 1
+    return count
 
 
 def solve(puzzle_input, run="Solution"):
