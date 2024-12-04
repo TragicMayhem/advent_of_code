@@ -4,8 +4,75 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  #
-test_file = script_path / "test.txt"  #
+soln_file = script_path / "input.txt"  # 2447
+test_file = script_path / "test.txt"  # 18 / 9
+
+
+
+# Previous AOC
+def get_coords4d(r, c, h, w):
+    for delta_r, delta_c in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+        rr, cc = (r + delta_r, c + delta_c)
+        if 0 <= rr < h and 0 <= cc < w:
+            yield (rr, cc)
+
+# Previous AOC
+def get_coords8d(r, c, h, w):
+    for delta_r, delta_c in (
+        (-1, 0),
+        (1, 0),
+        (0, -1),
+        (0, 1),
+        (-1, -1),
+        (-1, 1),
+        (1, -1),
+        (1, 1),
+    ):
+        rr, cc = (r + delta_r, c + delta_c)
+        if 0 <= rr < h and 0 <= cc < w:
+            yield (rr, cc)
+
+
+# new
+def get_deltas_8d():
+    deltas = [
+        (-1, 0),
+        (1, 0),
+        (0, -1),
+        (0, 1),
+        (-1, -1),
+        (-1, 1),
+        (1, -1),
+        (1, 1),
+    ]
+
+    for (r,c) in deltas:
+        yield (r,c)
+
+
+
+def check_for_xmas(data, start_r, start_c, delta_r, delta_c):  
+    # Take first letter, then do the check 3 more times
+    word = ''
+
+    for cnt in range(4): # 0123
+
+        new_deltar = delta_r * cnt
+        new_deltac = delta_c * cnt
+        rr = start_r + new_deltar
+        cc = start_c + new_deltac
+
+        if 0 <= rr < len(data[0]) and 0 <= cc < len(data):
+            word += data[rr][cc]
+        else:
+            break
+
+    # if word == 'XMAS':
+    #     print(start_r, start_c, delta_r, delta_c, word)
+
+    return word
+
+
 
 
 def parse(puzzle_input):
@@ -13,7 +80,9 @@ def parse(puzzle_input):
 
     with open(puzzle_input, "r", encoding="UTF-8") as file:
         #  Read each line (split \n) and form a list of strings
-        lst = file.read().split("\n\n")
+        lst = [[x for x in row] for row in file.read().split("\n")]
+
+    print(lst)
 
     return lst
 
@@ -21,11 +90,32 @@ def parse(puzzle_input):
 def part1(data):
     """Solve part 1"""
 
-    return 1
+    h = len(data)
+    w = len(data[0])
+
+    word_count = 0
+
+    # 8 directions, 4 letter word, so need to go from character out 8 directions 4 times
+    for r in range(w):
+        for c in range(h):
+            # print(r, c, data[r][c])
+
+            for delta_r, delta_c in get_deltas_8d():
+                tmp_word = check_for_xmas(data, r, c, delta_r, delta_c)
+
+                if tmp_word == 'XMAS':
+                    word_count += 1
+
+    print(word_count)
+
+    return word_count
 
 
 def part2(data):
     """Solve part 2"""
+
+
+
 
     return 1
 
