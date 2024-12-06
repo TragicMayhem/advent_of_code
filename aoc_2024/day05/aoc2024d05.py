@@ -5,7 +5,7 @@ import time
 import re
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 6951 /     Not 4689 too high
+soln_file = script_path / "input.txt"  # 6951 /    #1 4689 too high #2 4121
 test_file = script_path / "test.txt"  # 143 / 123
 
 
@@ -82,22 +82,30 @@ def part2(data):
                 invalid_pages.append(p)
                 break
 
+# I need to recheck these again until NO CHANGES
+
+    print(page_order)
+
     corrected = []
     for p in invalid_pages:
         numbers = [int(x) for x in p.split(",")]
-        
-        for pg_chk in page_order:
-            pg1, pg2 = pg_chk
-            
-            try:
-                index1 = numbers.index(pg1)
-                index2 = numbers.index(pg2)
-            except ValueError:
-                continue
+        more_changes = True
 
-            # Not in correct order
-            if index1 > index2:
-                numbers[index1], numbers[index2] = numbers[index2], numbers[index1]
+        while more_changes:
+            more_changes = False
+            for pg_chk in page_order:
+                pg1, pg2 = pg_chk
+                
+                try:
+                    index1 = numbers.index(pg1)
+                    index2 = numbers.index(pg2)
+                except ValueError:
+                    continue
+
+                # Not in correct order
+                if index1 > index2:
+                    numbers[index1], numbers[index2] = numbers[index2], numbers[index1]
+                    more_changes = True
 
         corrected.append(numbers[:])
 
