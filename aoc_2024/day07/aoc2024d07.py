@@ -4,7 +4,7 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 465126289353 /
+soln_file = script_path / "input.txt"  # 465126289353 (0.4s) / 70597497486371  (12s)
 test_file = script_path / "test.txt"  # 3749 / 11387
 
 
@@ -26,7 +26,7 @@ def parse(puzzle_input):
     return records
 
 
-def evaluate_target(target, numbers):
+def evaluate_target_v1(target, numbers):
     """
     Evaluates if a target number can be reached by adding or multiplying numbers in the given list,
     following a left-to-right calculation order.
@@ -56,6 +56,44 @@ def evaluate_target(target, numbers):
     return calculate(numbers[0], numbers[1:])
 
 
+def evaluate_target_v2(target, numbers):
+    """
+    Evaluates if a target number can be reached by adding or multiplying numbers in the given list,
+    following a left-to-right calculation order. This version also tries to concatenate the numbers
+    to reach the target
+
+    Args:
+      target: The target number to be reached.
+      numbers: A list of numbers to be combined.
+
+    Returns:
+      True if the target can be reached, False otherwise.
+    """
+
+    def calculate(current_result, remaining_numbers):
+        if not remaining_numbers:
+            return current_result == target
+
+        # Try adding the next number
+        if calculate(current_result + remaining_numbers[0], remaining_numbers[1:]):
+            return True
+
+        # Try multiplying the next number
+        if calculate(current_result * remaining_numbers[0], remaining_numbers[1:]):
+            return True
+
+        # Try concatenating with the next number
+        new_combined = int(str(current_result) + str(remaining_numbers[0]))
+        # print(current_result, remaining_numbers[0], new_combined)
+
+        if calculate(new_combined, remaining_numbers[1:]):
+            return True
+
+        return False
+
+    return calculate(numbers[0], numbers[1:])
+
+
 def part1(data):
     """Solve part 1"""
 
@@ -63,7 +101,7 @@ def part1(data):
 
     for d in data:
         target, values = d
-        if evaluate_target(target, values):
+        if evaluate_target_v1(target, values):
             print("Target can be reached!")
             valid_calibrations.append(target)
         else:
@@ -77,7 +115,19 @@ def part1(data):
 def part2(data):
     """Solve part 2"""
 
-    return 1
+    valid_calibrations = []
+
+    for d in data:
+        target, values = d
+        if evaluate_target_v2(target, values):
+            print("Target can be reached!")
+            valid_calibrations.append(target)
+        else:
+            print("Target cannot be reached.")
+
+    tot = sum(valid_calibrations)
+
+    return tot
 
 
 def solve(puzzle_input, run="Solution"):
