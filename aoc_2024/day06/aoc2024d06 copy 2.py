@@ -4,8 +4,8 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 4973 /
-test_file = script_path / "test.txt"  #  41 /
+soln_file = script_path / "input.txt"  #
+test_file = script_path / "test.txt"  #
 
 
 EAST = ">"
@@ -13,6 +13,29 @@ WEST = "<"
 NORTH = "n"
 SOUTH = "v"
 EMPTY = "."
+
+# # Example usage:
+# print("_" * 25)
+# my_tuples = [(1, 2), (3, 4), (5, 6), (7, 8), (9, 10)]
+# target_number = 7
+# print(my_tuples, target_number)
+# closest_tuple = min(my_tuples, key=lambda x: abs(x[1] - target_number))
+# print(closest_tuple)  # Output: (7, 8)
+
+# my_tuples = [(0, 4), (1, 4), (9, 4)]
+# target_number = 6
+
+# print(my_tuples, target_number)
+# print(step)
+# if step == -1:
+#     closest_tuple = [tuple for tuple in my_tuples if tuple[d] < target_number]
+# else:
+#     closest_tuple = [tuple for tuple in my_tuples if tuple[d] > target_number]
+
+# print(closest_tuple)
+
+# closest_tuple = min(closest_tuple, key=lambda x: abs(x[0] - target_number))
+# print(closest_tuple)  # Output: (7, 8)
 
 
 def parse(puzzle_input):
@@ -65,7 +88,7 @@ def get_points_between(point1, point2, inclusive=0):
     steps = max(abs(dx), abs(dy))
 
     # Generate points along the shortest path
-    points = [point1]
+    points = []
     for i in range(1, steps + inclusive):
         new_x = x1 + i * dx // steps
         new_y = y1 + i * dy // steps
@@ -74,28 +97,10 @@ def get_points_between(point1, point2, inclusive=0):
     return points
 
 
-def sort_by_distance(coordinate_list, target_number, pos):
-    """Sorts a list of coordinate tuples by their distance from a target number.
+def check_for_next_obstacle(obs, current_pos, dn):
 
-    Args:
-      coordinate_list: A list of tuples, where each tuple represents a coordinate pair (x, y).
-      target_number: The target number to compare the first coordinate to.
-      pos: The coordinate position int he tuple to compare 0 or 1
-
-    Returns:
-      A new list of coordinate tuples sorted by their distance from the target number.
-    """
-
-    def distance_key(coordinate):
-        return abs(coordinate[pos] - target_number)
-
-    return sorted(coordinate_list, key=distance_key)
-
-
-def check_for_next_obstacle(h, w, obs, current_pos, dn):
-
-    # print("\nobs, curr, dir")
-    # print(obs, current_pos, dn)
+    print("\nobs, curr, dir")
+    print(obs, current_pos, dn)
 
     r, c = current_pos
 
@@ -115,37 +120,31 @@ def check_for_next_obstacle(h, w, obs, current_pos, dn):
         lock_in = 0
 
     filtered_tuples = [tuple for tuple in obs if tuple[lock_in] == target]
-    print("filtered 1:", filtered_tuples)
+    d = 0 if lock_in == 1 else 1
 
-    d = 1 - lock_in
+    print("-" * 10)
+    print("filtered:", filtered_tuples)
+    print("target, moveable, d, step")
+    print(target, moveable, d, step)
+
     if step == -1:
-        filtered_tuples = [tuple for tuple in filtered_tuples if tuple[d] < moveable]
+        closest_tuple = [tuple for tuple in filtered_tuples if tuple[d] < moveable]
     else:
-        filtered_tuples = [tuple for tuple in filtered_tuples if tuple[d] > moveable]
+        closest_tuple = [tuple for tuple in filtered_tuples if tuple[d] > moveable]
 
-    print("filtered_tuples 2:", filtered_tuples)
+    # If there are NO obstacles in the directional path, means the guard will walk out of area
+    # Get the last point and path. How to tell
 
-    filtered_tuples = sort_by_distance(filtered_tuples, moveable, 1 - lock_in)
-    print("filtered_tuples 3:", filtered_tuples)
+    print(closest_tuple)
 
-    # print("-" * 10)
-    print("target", target, "moveable", moveable, "d", d, "step", step)
-
-    if filtered_tuples:
-        walking_to_pos = filtered_tuples.pop(0)
-    else:
-        if dn == 1:
-            walking_to_pos = (-1, c)
-        elif dn == 4:
-            walking_to_pos = (r, -1)
-        elif dn == 3:
-            walking_to_pos = (h, c)
-        else:
-            walking_to_pos = (r, w)
+    walking_to_pos = min(closest_tuple, key=lambda x: abs(x[d] - target))
+    print(walking_to_pos)
 
     visited = get_points_between(current_pos, walking_to_pos)
 
-    print("walking_to_pos", walking_to_pos, "len", len(visited))
+    print(visited)
+    print(set(visited))
+
     return visited
 
 
@@ -174,34 +173,39 @@ def part1(data):
     dir = 1
     in_area = True
 
+    # print("TEST")
+    # test = check_for_next_obstacle(obstructions, pos, dir)
+    # print(test)
+    # print("TEST OVER")
+
     while in_area:
-        # loop, process pos, direction
-        next_path = check_for_next_obstacle(h, w, obstructions, pos, dir)
+        # loop
+        # process pos, direction
+        next_path = check_for_next_obstacle(obstructions, pos, dir)
+        new_pos = next_path[-1]
+
         # extend set
         path.update(next_path)
-        # print("Path:", path)
-
-        new_pos = next_path[-1]
+        print("Path:", path)
 
         if (
             (dir == 1 and new_pos[0] == 0)
-            or (dir == 3 and new_pos[0] == h - 1)
+            or (dir == 3 and new_pos[0] == h)
             or (dir == 2 and new_pos[1] == 0)
-            or (dir == 4 and new_pos[1] == w - 1)
+            or (dir == 4 and new_pos[1] == w)
         ):
             print("out of area?")
             in_area = False
 
-        print("Path length:", len(path))
         # direction change
         dir = get_next_direction(dir)
         pos = new_pos
-        print("\nnew_pos, dir", new_pos, dir)
+        # if not left area then
+        print(new_pos, dir)
 
-    print("-" * 10)
-    print("Path:", path)
+        # in_area = False
 
-    return len(path)
+    return 1
 
 
 def part2(data):
@@ -235,4 +239,4 @@ if __name__ == "__main__":
     tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(soln_file)
+    # solutions = solve(soln_file)
