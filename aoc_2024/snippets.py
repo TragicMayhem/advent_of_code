@@ -235,3 +235,43 @@ def find_antinodes(point1, point2):
     antinode2 = (x2 + vector_x, y2 + vector_y)
 
     return [antinode1, antinode2]
+
+
+def find_all_antinodes_in_grid(p1, p2, grid_width, grid_height):
+    """Finds all antinodes on the line connecting the given points within a grid.
+
+    Args:
+        p1: A tuple representing the first point (x1, y1).
+        p2: A tuple representing the second point (x2, y2).
+        grid_width: The width of the grid.
+        grid_height: The height of the grid.
+
+    Returns:
+        A list of tuples representing the coordinates of all antinodes.
+    """
+
+    dx = p2[0] - p1[0]
+    dy = p2[1] - p1[1]
+    sx = 1 if dx > 0 else -1
+    sy = 1 if dy > 0 else -1
+    dx = abs(dx)
+    dy = abs(dy)
+    err = dx - dy
+
+    antinodes = []
+    x, y = p1[0], p1[1]
+
+    # Extend the line in one direction
+    while 0 <= x < grid_width and 0 <= y < grid_height:
+        antinodes.append((x, y))
+        x += sx
+        y += sy
+
+    # Reset to the original point and extend in the other direction
+    x, y = p1[0], p1[1]
+    while 0 <= x < grid_width and 0 <= y < grid_height:
+        antinodes.append((x, y))
+        x -= sx
+        y -= sy
+
+    return antinodes
