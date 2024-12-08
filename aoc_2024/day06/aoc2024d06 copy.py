@@ -4,8 +4,8 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  #
-test_file = script_path / "test.txt"  #
+soln_file = script_path / "input.txt"  # 4973 /
+test_file = script_path / "test.txt"  #  41 /
 
 
 EAST = ">"
@@ -13,29 +13,6 @@ WEST = "<"
 NORTH = "n"
 SOUTH = "v"
 EMPTY = "."
-
-# # Example usage:
-# print("_" * 25)
-# my_tuples = [(1, 2), (3, 4), (5, 6), (7, 8), (9, 10)]
-# target_number = 7
-# print(my_tuples, target_number)
-# closest_tuple = min(my_tuples, key=lambda x: abs(x[1] - target_number))
-# print(closest_tuple)  # Output: (7, 8)
-
-# my_tuples = [(0, 4), (1, 4), (9, 4)]
-# target_number = 6
-
-# print(my_tuples, target_number)
-# print(step)
-# if step == -1:
-#     closest_tuple = [tuple for tuple in my_tuples if tuple[d] < target_number]
-# else:
-#     closest_tuple = [tuple for tuple in my_tuples if tuple[d] > target_number]
-
-# print(closest_tuple)
-
-# closest_tuple = min(closest_tuple, key=lambda x: abs(x[0] - target_number))
-# print(closest_tuple)  # Output: (7, 8)
 
 
 def parse(puzzle_input):
@@ -45,7 +22,7 @@ def parse(puzzle_input):
         #  Read each line (split \n) and form a list of strings
         lst = [list(d) for d in file.read().split("\n")]
 
-    print(lst)
+    # print(lst)
 
     return lst
 
@@ -70,7 +47,8 @@ def get_points_between(point1, point2, inclusive=0):
     Args:
         point1 (tuple): The starting point.
         point2 (tuple): The ending point.
-        inclusive: Wheter to include or exclude point2 from the list. Default not inclusive = 0
+        inclusive: Wheter to include or exclude point2 from the list.
+        Default not including the last point = 0
 
     Returns:
         list: A list of points between the two input points.
@@ -87,7 +65,7 @@ def get_points_between(point1, point2, inclusive=0):
     steps = max(abs(dx), abs(dy))
 
     # Generate points along the shortest path
-    points = []
+    points = [point1]
     for i in range(1, steps + inclusive):
         new_x = x1 + i * dx // steps
         new_y = y1 + i * dy // steps
@@ -96,16 +74,34 @@ def get_points_between(point1, point2, inclusive=0):
     return points
 
 
-def check_for_next_obstacle(obs, current_pos, dn):
+def sort_by_distance(coordinate_list, target_number, pos):
+    """Sorts a list of coordinate tuples by their distance from a target number.
 
-    print()
-    print(obs, current_pos, dn)
+    Args:
+      coordinate_list: A list of tuples, where each tuple represents a coordinate pair (x, y).
+      target_number: The target number to compare the first coordinate to.
+      pos: The coordinate position int he tuple to compare 0 or 1
+
+    Returns:
+      A new list of coordinate tuples sorted by their distance from the target number.
+    """
+
+    def distance_key(coordinate):
+        return abs(coordinate[pos] - target_number)
+
+    return sorted(coordinate_list, key=distance_key)
+
+
+def check_for_next_obstacle(h, w, obs, current_pos, dn):
+
+    # print("\nobs, curr, dir")
+    # print(obs, current_pos, dn)
 
     r, c = current_pos
 
-    if dn in [1, 2]:  # N E
+    if dn in [1, 4]:  # N W
         step = -1
-    else:  #  "S" "W"
+    else:  #  "S" "E"
         step = 1
 
     if dn in [1, 3]:  # N S
@@ -119,71 +115,145 @@ def check_for_next_obstacle(obs, current_pos, dn):
         lock_in = 0
 
     filtered_tuples = [tuple for tuple in obs if tuple[lock_in] == target]
-    d = 0 if lock_in == 1 else 1
 
-    print(filtered_tuples)
-    print("-" * 10)
-    print(target, moveable, d)
-
+    d = 1 - lock_in
     if step == -1:
-        closest_tuple = [tuple for tuple in filtered_tuples if tuple[d] < moveable]
+        filtered_tuples = [tuple for tuple in filtered_tuples if tuple[d] < moveable]
     else:
-        closest_tuple = [tuple for tuple in filtered_tuples if tuple[d] > moveable]
+        filtered_tuples = [tuple for tuple in filtered_tuples if tuple[d] > moveable]
 
-    print(closest_tuple)
+    filtered_tuples = sort_by_distance(filtered_tuples, moveable, 1 - lock_in)
+    # print("filtered_tuples 3:", filtered_tuples)
 
-    walking_to_pos = min(closest_tuple, key=lambda x: abs(x[d] - target))
-    print(walking_to_pos)
+    if filtered_tuples:
+        walking_to_pos = filtered_tuples.pop(0)
+    else:
+        if dn == 1:
+            walking_to_pos = (-1, c)
+        elif dn == 4:
+            walking_to_pos = (r, -1)
+        elif dn == 3:
+            walking_to_pos = (h, c)
+        else:
+            walking_to_pos = (r, w)
 
     visited = get_points_between(current_pos, walking_to_pos)
 
-    print(visited)
-    print(set(visited))
-
+    # print("walking_to_pos", walking_to_pos, "len", len(visited))
     return visited
 
 
 def get_next_direction(current_value):
+    # Turning right each time
+    # dirns = [1, 2, 3, 4]  # N, E, S, W
     return (current_value % 4) + 1
+
+
+def find_guard_path(data):
+
+    h = len(data)
+    w = len(data[0])
+
+    obstructions, pos = find_obstacles(data)
+    path = {pos}
+    dir = 1
+    in_area = True
+
+    while in_area:
+        next_path = check_for_next_obstacle(h, w, obstructions, pos, dir)
+        path.update(next_path)
+
+        new_pos = next_path[-1]
+
+        if (
+            (dir == 1 and new_pos[0] == 0)
+            or (dir == 3 and new_pos[0] == h - 1)
+            or (dir == 2 and new_pos[1] == 0)
+            or (dir == 4 and new_pos[1] == w - 1)
+        ):
+            in_area = False
+
+        dir = get_next_direction(dir)
+        pos = new_pos
+
+    return path
 
 
 def part1(data):
     """Solve part 1"""
 
-    obstructions, start_pos = find_obstacles(data)
-    path = {start_pos}
+    return len(find_guard_path(data))
 
-    print(obstructions)
-    print(start_pos)
-    print(path)
 
-    # dirns = [1, 2, 3, 4]  # N, E, S, W
+def run_scenario(grid):
 
-    pos = start_pos
-    dir = 1
+    h = len(grid)
+    w = len(grid[0])
+
+    obstructions, pos = find_obstacles(grid)
+
     in_area = True
-
-    test = check_for_next_obstacle(obstructions, pos, dir)
-    print(test)
+    dir = 1
+    path = {pos}
+    visited = {(pos, dir)}
 
     while in_area:
-        # loop
-        # process pos, direction
-        next_path = check_for_next_obstacle(obstructions, pos, dir)
+
+        next_path = check_for_next_obstacle(h, w, obstructions, pos, dir)
+
+        for new in next_path:
+            check = (new, dir)
+            if check in visited:
+                continue
+
+        path.update(next_path)
         new_pos = next_path[-1]
-        # extend set
-        # if not left area then
-        # direction change
+
+        if (
+            (dir == 1 and new_pos[0] == 0)
+            or (dir == 3 and new_pos[0] == h - 1)
+            or (dir == 2 and new_pos[1] == 0)
+            or (dir == 4 and new_pos[1] == w - 1)
+        ):
+            print("out of area")
+            in_area = False
+
         dir = get_next_direction(dir)
-        print(new_pos, dir)
+        pos = new_pos
 
-        in_area = False
-
-    return 1
+    return path
 
 
 def part2(data):
     """Solve part 2"""
+
+    # Notes
+    # Some input from web using delta_r (dr) and delta_c (dc) -1 0 1 to show directions
+    # Need to cature the path (so visited)
+    #   also direction guard was going to see if repeating and in a loop.
+    #   Then break and count
+    # I dont see how I can do as I did in part 1 and a set of tuple coordinates.
+    # How would you change one of them... and then rest of the grid?
+
+    initial_obstructions, start_pos = find_obstacles(data)
+    print(start_pos, initial_obstructions)
+
+    # intial_path = run_scenario(data)
+    # print(intial_path)
+
+    # Need to MOVE along the original path, change by adding an obstacle (and remembering it)
+    # Then try and solve
+
+    last_change = None
+
+    # for seen_coords in intial_path:
+    # print(seen_coords)
+    # add as obstacle
+
+    # for r, line in enumerate(data):
+    #     for c, cell in enumerate(line):
+    #         # print(r, c, cell)
+    #         continue
 
     return 1
 

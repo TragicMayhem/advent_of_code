@@ -4,15 +4,8 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 4973 /
-test_file = script_path / "test.txt"  #  41 /
-
-
-EAST = ">"
-WEST = "<"
-NORTH = "n"
-SOUTH = "v"
-EMPTY = "."
+soln_file = script_path / "input.txt"  # 4973 /  High:2313
+test_file = script_path / "test.txt"  #  41 / 6
 
 
 def parse(puzzle_input):
@@ -22,7 +15,7 @@ def parse(puzzle_input):
         #  Read each line (split \n) and form a list of strings
         lst = [list(d) for d in file.read().split("\n")]
 
-    print(lst)
+    # print(lst)
 
     return lst
 
@@ -94,9 +87,6 @@ def sort_by_distance(coordinate_list, target_number, pos):
 
 def check_for_next_obstacle(h, w, obs, current_pos, dn):
 
-    # print("\nobs, curr, dir")
-    # print(obs, current_pos, dn)
-
     r, c = current_pos
 
     if dn in [1, 4]:  # N W
@@ -114,22 +104,15 @@ def check_for_next_obstacle(h, w, obs, current_pos, dn):
         moveable = c
         lock_in = 0
 
-    filtered_tuples = [tuple for tuple in obs if tuple[lock_in] == target]
-    print("filtered 1:", filtered_tuples)
+    filtered_tuples = [tup for tup in obs if tup[lock_in] == target]
 
     d = 1 - lock_in
     if step == -1:
-        filtered_tuples = [tuple for tuple in filtered_tuples if tuple[d] < moveable]
+        filtered_tuples = [tup for tup in filtered_tuples if tup[d] < moveable]
     else:
-        filtered_tuples = [tuple for tuple in filtered_tuples if tuple[d] > moveable]
-
-    print("filtered_tuples 2:", filtered_tuples)
+        filtered_tuples = [tup for tup in filtered_tuples if tup[d] > moveable]
 
     filtered_tuples = sort_by_distance(filtered_tuples, moveable, 1 - lock_in)
-    print("filtered_tuples 3:", filtered_tuples)
-
-    # print("-" * 10)
-    print("target", target, "moveable", moveable, "d", d, "step", step)
 
     if filtered_tuples:
         walking_to_pos = filtered_tuples.pop(0)
@@ -145,69 +128,130 @@ def check_for_next_obstacle(h, w, obs, current_pos, dn):
 
     visited = get_points_between(current_pos, walking_to_pos)
 
-    print("walking_to_pos", walking_to_pos, "len", len(visited))
+    # print("walking_to_pos", walking_to_pos, "len", len(visited))
     return visited
 
 
-def get_next_direction(current_value):
+def get_next_direction(current):
     # Turning right each time
     # dirns = [1, 2, 3, 4]  # N, E, S, W
-    return (current_value % 4) + 1
+    return (current % 4) + 1
+
+
+def find_guard_path(data):
+
+    h = len(data)
+    w = len(data[0])
+
+    obstructions, pos = find_obstacles(data)
+    path = {pos}
+    direct = 1
+    in_area = True
+
+    while in_area:
+        next_path = check_for_next_obstacle(h, w, obstructions, pos, direct)
+        path.update(next_path)
+
+        new_pos = next_path[-1]
+
+        if (
+            (direct == 1 and new_pos[0] == 0)
+            or (direct == 3 and new_pos[0] == h - 1)
+            or (direct == 2 and new_pos[1] == 0)
+            or (direct == 4 and new_pos[1] == w - 1)
+        ):
+            in_area = False
+
+        direct = get_next_direction(direct)
+        pos = new_pos
+
+    return path
 
 
 def part1(data):
     """Solve part 1"""
 
-    h = len(data)
-    w = len(data[0])
+    return len(find_guard_path(data))
 
-    obstructions, start_pos = find_obstacles(data)
-    path = {start_pos}
 
-    print(obstructions)
-    print(start_pos)
-    print(path)
+def run_scenario(obstructions, h, w, pos):
 
-    # dirns = [1, 2, 3, 4]  # N, E, S, W
-
-    pos = start_pos
-    dir = 1
     in_area = True
+    direct = 1
+    path = set()
+    visited = set()
 
     while in_area:
-        # loop, process pos, direction
-        next_path = check_for_next_obstacle(h, w, obstructions, pos, dir)
-        # extend set
-        path.update(next_path)
-        # print("Path:", path)
+        next_path = check_for_next_obstacle(h, w, obstructions, pos, direct)
 
+        for new in next_path:
+            check = (new, direct)
+            if check in visited:
+                return True
+            visited.add(check)
+
+        path.update(next_path)
         new_pos = next_path[-1]
 
         if (
-            (dir == 1 and new_pos[0] == 0)
-            or (dir == 3 and new_pos[0] == h - 1)
-            or (dir == 2 and new_pos[1] == 0)
-            or (dir == 4 and new_pos[1] == w - 1)
+            (direct == 1 and new_pos[0] == 0)
+            or (direct == 3 and new_pos[0] == h - 1)
+            or (direct == 2 and new_pos[1] == 0)
+            or (direct == 4 and new_pos[1] == w - 1)
         ):
-            print("out of area?")
             in_area = False
+            break
 
-        print("Path length:", len(path))
-        # direction change
-        dir = get_next_direction(dir)
+        direct = get_next_direction(direct)
         pos = new_pos
-        print("\nnew_pos, dir", new_pos, dir)
 
-    print("-" * 10)
-    print("Path:", path)
-
-    return len(path)
+    return False
 
 
 def part2(data):
     """Solve part 2"""
 
-    return 1
+    print("Part 2")
+
+    # Start is (44, 69)
+
+    # Notes
+    # Some input from web using delta_r (dr) and delta_c (dc) -1 0 1 to show directions
+    # Need to cature the path (so visited)
+    #   also direction guard was going to see if repeating and in a loop.
+    #   Then break and count
+    # I dont see how I can do as I did in part 1 and a set of tuple coordinates.
+    # How would you change one of them... and then rest of the grid?
+
+    # Need to MOVE along the original path, change by adding an obstacle (and remembering it)
+    # Then try and solve
+
+    h = len(data)
+    w = len(data[0])
+
+    initial_obstructions, start_pos = find_obstacles(data)
+    intial_path = find_guard_path(data)
+
+    # print(start_pos, initial_obstructions)
+    # print(intial_path)
+
+    possible_options = 0
+
+    for seen_coords in intial_path:
+        if seen_coords == start_pos:
+            print("start ignored")
+            continue
+
+        obstructions = initial_obstructions.copy()
+        obstructions.append(seen_coords)
+
+        tmp = run_scenario(obstructions, h, w, start_pos)
+
+        if tmp:
+            # print(seen_coords, tmp, possible_options)
+            possible_options += 1
+
+    return possible_options
 
 
 def solve(puzzle_input, run="Solution"):
