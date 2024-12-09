@@ -4,7 +4,7 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 4973 /  Too High:2313
+soln_file = script_path / "input.txt"  # 4973 /  High:2313
 test_file = script_path / "test.txt"  #  41 / 6
 
 
@@ -85,51 +85,97 @@ def sort_by_distance(coordinate_list, target_number, pos):
     return sorted(coordinate_list, key=distance_key)
 
 
-# X/r, Y/c
-DIRECTION_MAPPING = {
-    1: (0, -1),  # North
-    2: (1, 0),  # East
-    3: (0, 1),  # South
-    4: (-1, 0),  # West
-}
+# def check_for_next_obstacle_1_orig(h, w, obs, current_pos, dn):
+
+#     r, c = current_pos
+
+#     if dn in [1, 4]:  # N W
+#         step = -1
+#     else:  #  "S" "E"
+#         step = 1
+
+#     if dn in [1, 3]:  # N S
+#         target = c
+#         moveable = r
+#         lock_in = 1
+
+#     else:  # E, W
+#         target = r
+#         moveable = c
+#         lock_in = 0
+
+#     filtered_tuples = [tup for tup in obs if tup[lock_in] == target]
+
+#     d = 1 - lock_in
+#     if step == -1:
+#         filtered_tuples = [tup for tup in filtered_tuples if tup[d] < moveable]
+#     else:
+#         filtered_tuples = [tup for tup in filtered_tuples if tup[d] > moveable]
+
+#     filtered_tuples = sort_by_distance(filtered_tuples, moveable, 1 - lock_in)
+
+#     if filtered_tuples:
+#         walking_to_pos = filtered_tuples.pop(0)
+#     else:
+#         if dn == 1:
+#             walking_to_pos = (-1, c)
+#         elif dn == 4:
+#             walking_to_pos = (r, -1)
+#         elif dn == 3:
+#             walking_to_pos = (h, c)
+#         else:
+#             walking_to_pos = (r, w)
+
+#     visited = get_points_between(current_pos, walking_to_pos)
+
+#     # print("walking_to_pos", walking_to_pos, "len", len(visited))
+#     return visited
 
 
-def check_for_next_obstacle(h, w, obs, current_pos, drn):
+def check_for_next_obstacle(h, w, obs, current_pos, dn):
+
+    # X, Y
+    DIRECTION_MAPPING = {
+        1: (0, -1),  # North
+        2: (1, 0),  # East
+        3: (0, 1),  # South
+        4: (-1, 0),  # West
+    }
 
     r, c = current_pos
-    dx, dy = DIRECTION_MAPPING[drn]
+
+    dx, dy = DIRECTION_MAPPING[dn]
 
     target = c if dx == 0 else r
     moveable = r if dx == 0 else c
+
     locked_dim = 1 if dx == 0 else 0
 
+    # Column (moving up or down)
     if dx < 0 or dy < 0:
         filtered_obs = [
             tup
             for tup in obs
             if tup[locked_dim] == target and tup[1 - locked_dim] < moveable
         ]
+        filtered_obs = sorted(filtered_obs, key=lambda x: abs(x[1] - moveable))
     else:
+        # Row (moving left or right)
         filtered_obs = [
             tup
             for tup in obs
             if tup[locked_dim] == target and tup[1 - locked_dim] > moveable
         ]
-
-    filtered_obs = sorted(filtered_obs, key=lambda x: abs(x[1 - locked_dim] - moveable))
+        filtered_obs = sorted(filtered_obs, key=lambda x: abs(x[0] - moveable))
 
     if filtered_obs:
         walking_to_pos = filtered_obs[0]
     else:
-        # Handle edge cases for all directions
-        if drn == 1:  # North
-            walking_to_pos = (-1, c)
-        elif drn == 2:  # East
-            walking_to_pos = (r, w)
-        elif drn == 3:  # South
-            walking_to_pos = (h, c)
-        else:  # West
-            walking_to_pos = (r, -1)
+        # Handle edge cases
+        if dy == -1:
+            walking_to_pos = (0, c) if dx == 0 else (r, 0)
+        else:
+            walking_to_pos = (h, c) if dx == 0 else (r, w)
 
     visited = get_points_between(current_pos, walking_to_pos)
 
@@ -148,26 +194,26 @@ def find_guard_path(data):
     h = len(data)
     w = len(data[0])
 
-    obstacles, pos = find_obstacles(data)
+    obstructions, pos = find_obstacles(data)
     path = {pos}
-    drn = 1  # North
+    direct = 1
     in_area = True
 
     while in_area:
-        next_path = check_for_next_obstacle(h, w, obstacles, pos, drn)
+        next_path = check_for_next_obstacle(h, w, obstructions, pos, direct)
         path.update(next_path)
 
         new_pos = next_path[-1]
 
         if (
-            (drn == 1 and new_pos[0] == 0)
-            or (drn == 3 and new_pos[0] == h - 1)
-            or (drn == 2 and new_pos[1] == 0)
-            or (drn == 4 and new_pos[1] == w - 1)
+            (direct == 1 and new_pos[0] == 0)
+            or (direct == 3 and new_pos[0] == h - 1)
+            or (direct == 2 and new_pos[1] == 0)
+            or (direct == 4 and new_pos[1] == w - 1)
         ):
             in_area = False
 
-        drn = get_next_direction(drn)
+        direct = get_next_direction(direct)
         pos = new_pos
 
     return path
@@ -234,10 +280,13 @@ def part2(data):
     h = len(data)
     w = len(data[0])
 
-    possible_options = 0
-
     initial_obstructions, start_pos = find_obstacles(data)
     intial_path = find_guard_path(data)
+
+    # print(start_pos, initial_obstructions)
+    # print(intial_path)
+
+    possible_options = 0
 
     for seen_coords in intial_path:
         if seen_coords == start_pos:
@@ -250,7 +299,7 @@ def part2(data):
         tmp = run_scenario(obstructions, h, w, start_pos)
 
         if tmp:
-            print(seen_coords, tmp, possible_options)
+            # print(seen_coords, tmp, possible_options)
             possible_options += 1
 
     return possible_options

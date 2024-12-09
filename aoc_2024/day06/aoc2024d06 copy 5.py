@@ -1,10 +1,12 @@
 # https://adventofcode.com/2024/day/6
 
+# v5 works with pt1 and answers, rewrite
+
 import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 4973 /  Too High:2313
+soln_file = script_path / "input.txt"  # 4973 /  High:2313
 test_file = script_path / "test.txt"  #  41 / 6
 
 
@@ -85,6 +87,52 @@ def sort_by_distance(coordinate_list, target_number, pos):
     return sorted(coordinate_list, key=distance_key)
 
 
+# def check_for_next_obstacle_1_orig(h, w, obs, current_pos, dn):
+
+#     r, c = current_pos
+
+#     if dn in [1, 4]:  # N W
+#         step = -1
+#     else:  #  "S" "E"
+#         step = 1
+
+#     if dn in [1, 3]:  # N S
+#         target = c
+#         moveable = r
+#         lock_in = 1
+
+#     else:  # E, W
+#         target = r
+#         moveable = c
+#         lock_in = 0
+
+#     filtered_tuples = [tup for tup in obs if tup[lock_in] == target]
+
+#     d = 1 - lock_in
+#     if step == -1:
+#         filtered_tuples = [tup for tup in filtered_tuples if tup[d] < moveable]
+#     else:
+#         filtered_tuples = [tup for tup in filtered_tuples if tup[d] > moveable]
+
+#     filtered_tuples = sort_by_distance(filtered_tuples, moveable, 1 - lock_in)
+
+#     if filtered_tuples:
+#         walking_to_pos = filtered_tuples.pop(0)
+#     else:
+#         if dn == 1:
+#             walking_to_pos = (-1, c)
+#         elif dn == 4:
+#             walking_to_pos = (r, -1)
+#         elif dn == 3:
+#             walking_to_pos = (h, c)
+#         else:
+#             walking_to_pos = (r, w)
+
+#     visited = get_points_between(current_pos, walking_to_pos)
+
+#     # print("walking_to_pos", walking_to_pos, "len", len(visited))
+#     return visited
+
 # X/r, Y/c
 DIRECTION_MAPPING = {
     1: (0, -1),  # North
@@ -133,7 +181,7 @@ def check_for_next_obstacle(h, w, obs, current_pos, drn):
 
     visited = get_points_between(current_pos, walking_to_pos)
 
-    # print("walking_to_pos", walking_to_pos, "len", len(visited))
+    print("walking_to_pos", walking_to_pos, "len", len(visited))
     return visited
 
 
@@ -200,9 +248,9 @@ def run_scenario(obstructions, h, w, pos):
 
         if (
             (direct == 1 and new_pos[0] == 0)
-            or (direct == 3 and new_pos[0] == h - 1)
+            or (direct == 3 and new_pos[0] == h)
             or (direct == 2 and new_pos[1] == 0)
-            or (direct == 4 and new_pos[1] == w - 1)
+            or (direct == 4 and new_pos[1] == w)
         ):
             in_area = False
             break
@@ -234,24 +282,27 @@ def part2(data):
     h = len(data)
     w = len(data[0])
 
+    # initial_obstructions, start_pos = find_obstacles(data)
+    # intial_path = find_guard_path(data)
+
+    # print(start_pos, initial_obstructions)
+    # print(intial_path)
+
     possible_options = 0
 
-    initial_obstructions, start_pos = find_obstacles(data)
-    intial_path = find_guard_path(data)
+    # for seen_coords in intial_path:
+    #     if seen_coords == start_pos:
+    #         print("start ignored")
+    #         continue
 
-    for seen_coords in intial_path:
-        if seen_coords == start_pos:
-            print("start ignored")
-            continue
+    #     obstructions = initial_obstructions.copy()
+    #     obstructions.append(seen_coords)
 
-        obstructions = initial_obstructions.copy()
-        obstructions.append(seen_coords)
+    #     tmp = run_scenario(obstructions, h, w, start_pos)
 
-        tmp = run_scenario(obstructions, h, w, start_pos)
-
-        if tmp:
-            print(seen_coords, tmp, possible_options)
-            possible_options += 1
+    #     if tmp:
+    #         # print(seen_coords, tmp, possible_options)
+    #         possible_options += 1
 
     return possible_options
 
