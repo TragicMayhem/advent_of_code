@@ -7,11 +7,8 @@ from collections import deque
 
 script_path = pathlib.Path(__file__).parent
 soln_file = script_path / "input.txt"  # 6461289671426
-test_file = script_path / "test.txt"  # 1928
+test_file = script_path / "test.txt"  # 1928 / 2858
 test_file_x = script_path / "test_x.txt"  # 60
-
-
-# 1766 test
 
 
 def parse_block_gap_sequence(seq):
@@ -76,37 +73,12 @@ print(result)  # Output: 1928
 
 def part1(data):
     """Solve part 1"""
-
-    # pos on the line gets a number
-    # if odd then its a file, even its a space/gap
-    # the number and the type then show how long the file is or gap is
-
-    # how to store this data, in numbers not strings
-    # the files have id based on reading left to right, so need to assign
-    # then need to tag the gaps with the right file, filling up left to right
-    #    so reading the files backwards and filling in the gaps. reverse order?
-
-    # in the structure, just need to read the id of the file (dont get hung up on 1 char or not. its ID)
-    # and then assign that to the position (file bvlock)
-    # or move it later into a gap, in order, based on reading from the end and filling gaps forwards
-
-    # can we calcualte the answer as we go.
-
-    # read FORWARD AND read backward?  when pos1 > pos2
-    # dont know the ids..... so need to read once and assign IDs to all the file blocks
-    # what to store, as the order is important
-
-    # gaps might need to be split into 2 or more depending on if there are enough of a specific file to break down
-    # list slices?  before, change, keep after, then repeat?
-
     print(data)
 
     working_filesystem = data.copy()
     queue = deque(working_filesystem)
 
     answer = []
-    # Do I need to capture what final order is... part 2?
-
     final_pos = 0
 
     while queue:
@@ -128,8 +100,6 @@ def part1(data):
         else:
             print("Gap width", block_width)
             gap_to_fill = block_width
-
-            # careful = when pull gaps from end, need to just ignore? and pull again?
 
             while queue and gap_to_fill > 0:
                 _, last_width, last_id = queue.pop()
