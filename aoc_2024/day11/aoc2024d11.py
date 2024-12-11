@@ -6,10 +6,10 @@ from collections import deque
 from functools import lru_cache, cache
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 188902 /
-test_file = script_path / "test.txt"  # 55312 /
+soln_file = script_path / "input.txt"  # 188902 / 223894720281135
+test_file = script_path / "test.txt"  # 55312 / 65601038650482 
 
-# 65601038650482 Too Low
+
 
 def parse(puzzle_input):
     """Parse input"""
@@ -73,29 +73,6 @@ def process_queue2(queue):
     return new_queue
 
 
-def process_queue2(queue):
-    new_queue = deque()
-    while queue:
-        num = queue.popleft()
-        if num == 0:
-            new_queue.append(1)
-        else:
-            digits = 0
-            temp = num
-            while temp > 0:
-                digits += 1
-                temp //= 10
-
-            if digits % 2 == 0:
-                divisor = 10 ** (digits // 2)
-                left, right = num // divisor, num % divisor
-                new_queue.extend([left, right])
-            else:
-                new_queue.append(num * 2024)
-
-    return new_queue
-
-
 def run_scenario2(q, n=25):
     queue = deque(q)
     count = 0
@@ -108,7 +85,7 @@ def run_scenario2(q, n=25):
     return len(queue)
 
 
-# LRUCACHE
+# LRUCACHE / CACHE
 # Had to look up how it works again and the demo of fgibonacci
 
 # Key is the process the numbers so that pattern is repeated,
@@ -126,6 +103,7 @@ def run_scenario2(q, n=25):
 # hashable
 
 # @lru_cache(max_size=None)
+# https://docs.python.org/3/library/functools.html#functools.cache
 @cache
 def process_stones(stone, blinks):
 
@@ -175,7 +153,6 @@ def part2(data):
         print(d)
         res += process_stones(d, 75)
 
-
     return res
 
 
@@ -209,4 +186,4 @@ if __name__ == "__main__":
     tests = solve(test_file, run="Test")
 
     print()
-    # solutions = solve(soln_file)
+    solutions = solve(soln_file)
