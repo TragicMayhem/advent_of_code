@@ -4,10 +4,11 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 472
-test_file = script_path / "test.txt"  # 36
-test_file2 = script_path / "test2.txt"  # 4
-
+soln_file = script_path / "input.txt"  # 472 /
+test_file = script_path / "test.txt"  # 36 / 81
+test_file2 = script_path / "test2.txt"  # 4 / -
+test_file3a = script_path / "test3a.txt"  # - / 3
+test_file3b = script_path / "test3b.txt"  # - / 227
 
 
 def get_cardinals(r, c, h, w):
@@ -51,8 +52,8 @@ def parse(puzzle_input):
         #         height = int(char)
         #         row_list.append(((x, y), height))
         #     grid.append(row_list)
-        
-    print(grid)
+
+    # print(grid)
 
     return grid
 
@@ -80,10 +81,10 @@ def count_valid_paths(grid, pos, visited=None):
 
     count = 0
 
-    # Ensure the next step is exactly one higher
     for nx, ny in get_cardinals(x, y, h, w):
         # print("nx,ny:", nx, ny," = ", grid[nx][ny])
 
+        # Ensure the next step is exactly one higher
         if grid[nx][ny] == grid[x][y] + 1:
             # print(grid[x][y], "<" , grid[nx][ny], "len" ,len(visited))
             count += count_valid_paths(grid, (nx, ny), visited)
@@ -92,31 +93,73 @@ def count_valid_paths(grid, pos, visited=None):
     return count
 
 
+
+def find_all_valid_paths(grid, pos, visited=None):
+    """
+    """
+
+    h, w = len(grid), len(grid[0])
+
+    if visited is None:
+        visited = set()
+
+    x, y = pos
+
+    if x < 0 or x >= h \
+    or y < 0 or y >= w \
+    or (x, y) in visited:
+        return []
+
+    if grid[x][y] == 9:
+        return [[(x, y)]]  # Found a path to 9
+
+    found_paths = []
+
+    # Add the current point (so that its copied for the recursion)
+    # This is removed at the end.
+    visited.add((x, y))
+
+    for nx, ny in get_cardinals(x, y, h, w):
+        # print("nx,ny:", nx, ny," = ", grid[nx][ny])
+
+        # Ensure the next step is exactly one higher
+        if grid[nx][ny] == grid[x][y] + 1:
+            # Get the next cells path options and build up the list of points
+            # Take a copy, rather than the same list to allow distinct paths to be found
+            for p in find_all_valid_paths(grid, (nx, ny), visited.copy()):
+                found_paths.append([(x,y)] + p)
+
+    visited.remove((x, y))
+
+    return found_paths
+
+
 def part1(data):
     """Solve part 1"""
 
-    # h, w = len(data), len(data[0])
-    # goal = 9
-
     trail_heads = filter_zero_height_points_from_grid(data)
-    print("Trail Heads:", len(trail_heads))
-    print(trail_heads)
-
     trail_path_count = []
 
     for trail_head in trail_heads:
-        print("Trail Head:",trail_head)
+        # print("Trail Head:",trail_head)
         trail_path_count.append(count_valid_paths(data, trail_head))
 
-    print(trail_path_count)
+    # print(trail_path_count)
 
     return sum(trail_path_count)
 
 
 def part2(data):
     """Solve part 2"""
+    trail_heads = filter_zero_height_points_from_grid(data)
+    trail_paths = []
 
-    return 1
+    for trail_head in trail_heads:
+        trail_paths.extend(find_all_valid_paths(data, trail_head))
+
+    # print(trail_paths)
+
+    return len(trail_paths)
 
 
 def solve(puzzle_input, run="Solution"):
@@ -133,7 +176,7 @@ def solve(puzzle_input, run="Solution"):
 
     print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
     print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
-    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds\n")
 
     return solution1, solution2, times
 
@@ -143,6 +186,8 @@ if __name__ == "__main__":
 
     tests = solve(test_file, run="Test")
     tests = solve(test_file2, run="Test 2")
+    tests = solve(test_file3a, run="Test 3a")
+    tests = solve(test_file3b, run="Test 3b")
 
     print()
     solutions = solve(soln_file)
