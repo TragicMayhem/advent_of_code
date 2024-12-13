@@ -27,19 +27,19 @@ def get_cardinals(r, c, h, w):
             yield (rr, cc)
 
 
-def explore_region(grid, i, j, letter, visited):
-    if (i, j) in visited:
+def explore_region(grid, x, y, letter, visited):
+    if (x, y) in visited:
         return 0, 0
 
-    visited.add((i, j))
+    visited.add((x, y))
     size = 1
     perimeter = 4
 
     # Check neighbors and adjust perimeter
-    for ni, nj in get_cardinals(i, j, len(grid), len(grid[0])):
+    for nx, ny in get_cardinals(x, y, len(grid), len(grid[0])):
 
-        if grid[ni][nj] == letter:
-            inner_size, inner_perimeter = explore_region(grid, ni, nj, letter, visited)
+        if grid[nx][ny] == letter:
+            inner_size, inner_perimeter = explore_region(grid, nx, ny, letter, visited)
             size += inner_size
             perimeter -=1
             # perimeter += inner_perimeter

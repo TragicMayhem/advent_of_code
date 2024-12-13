@@ -66,9 +66,9 @@ def calculate_digit_sum(number):
 
 
 # Example usage:
-number = "0099811188827773336446555566"
-result = calculate_digit_sum(number)
-print(result)  # Output: 1928
+# number = "0099811188827773336446555566"
+# result = calculate_digit_sum(number)
+# print(result)  # Output: 1928
 
 
 def part1(data):
@@ -135,7 +135,7 @@ def part1(data):
 
         print("\nfinal-pos:", final_pos)
 
-    print(answer)
+    # print(answer)
 
     return sum(answer)
 
@@ -143,7 +143,60 @@ def part1(data):
 def part2(data):
     """Solve part 2"""
 
-    return 1
+    working_filesystem = data.copy()
+    queue = deque(working_filesystem)
+
+    answer = []
+    final_pos = 0
+
+    while queue:
+        print("\nQ Len", len(queue))
+
+        block_pos, block_width, block_id = queue.popleft()
+        print("pos, width, block_id:", block_pos, block_width, block_id, "|")
+
+        # if block_pos is None:
+        #     output = [(final_pos + c) * block_id for c in range(block_width)]
+        #     print(output)
+        #     answer.append(sum(output))
+        #     break
+
+        if block_id != "":
+            block_sum = [(final_pos + c) * block_id for c in range(block_width)]
+            print(block_sum)
+            answer.append(sum(block_sum))
+            final_pos += block_width
+
+        else:
+            # Process a gap
+            print("Gap width", block_width)
+            gap_width = block_width
+            found_block = False
+
+            # Iterate through the remaining blocks in reverse order
+            for i in range(len(queue) - 1, -1, -1):
+                last_pos, last_width, last_id = queue[i]
+                print(last_pos, last_width, last_id)
+
+                if last_width <= gap_width:
+                    # Perfect match, remove the block and fill the gap
+                    print("gap match")
+
+                    # queue.remove((last_pos, last_width, last_id))
+                    block_sum = sum((final_pos + j) * last_id for j in range(last_width))
+
+                    answer.append(block_sum)
+                    final_pos += last_width
+                    found_block = True
+
+                    # need to remove if moved
+                    #  need to tag if already TRIED
+                    # ÷ need add a gap left
+                    break
+
+    # print(answer)
+    print(sum(answer))
+    return -1
 
 
 def solve(puzzle_input, run="Solution"):
@@ -173,4 +226,4 @@ if __name__ == "__main__":
     tests = solve(test_file, run="Test")
 
     print()
-    solutions = solve(soln_file)
+    # solutions = solve(soln_file)
