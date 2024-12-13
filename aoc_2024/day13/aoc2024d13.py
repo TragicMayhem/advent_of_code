@@ -4,15 +4,17 @@ import pathlib
 import time
 import re
 import itertools
-from pulp import LpMaximize, LpProblem, LpVariable, LpStatus, lpSum
-# from z3 import Solver, Int
-# import z3
 
+# from pulp import LpMaximize, LpProblem, LpVariable, LpStatus, lpSum
+
+import z3
+
+# from z3 import Solver, Int, sat
 
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 39290 / 
-test_file = script_path / "test.txt"  # 480 (2 machines) / 
+soln_file = script_path / "input.txt"  # 39290 / 73458657399094
+test_file = script_path / "test.txt"  # 480 (2 machines) /   (possible: 875318608908)
 
 # 1: 19332 too low - using the 100 button press limit :'(
 
@@ -21,12 +23,12 @@ def parse(puzzle_input):
     """Parse input"""
 
     def parse_coordinates(line):
-        _, coords = line.split(': ')
-        x, y = coords.split(', ')
+        _, coords = line.split(": ")
+        x, y = coords.split(", ")
 
         # Use regular expression to extract numbers, handling both "+" and "=" formats
-        x = int(re.search(r'\d+', x).group())
-        y = int(re.search(r'\d+', y).group())
+        x = int(re.search(r"\d+", x).group())
+        y = int(re.search(r"\d+", y).group())
 
         return (x, y)
 
@@ -40,9 +42,9 @@ def parse(puzzle_input):
         tmp = l.split("\n")
 
         instruction = {}
-        instruction['A'] = parse_coordinates(tmp[0])
-        instruction['B'] = parse_coordinates(tmp[1])
-        instruction['PRIZE'] = parse_coordinates(tmp[2])
+        instruction["A"] = parse_coordinates(tmp[0])
+        instruction["B"] = parse_coordinates(tmp[1])
+        instruction["PRIZE"] = parse_coordinates(tmp[2])
 
         machines.append(instruction)
 
@@ -85,7 +87,7 @@ def calculate_combinations(button_a, button_b, prize):
 
     # Find the combination with the lowest total number of button presses
 
-    if combinations == []:
+    if not combinations:
         return None
 
     min_presses = min(combinations, key=lambda x: sum(x))
@@ -95,11 +97,10 @@ def calculate_combinations(button_a, button_b, prize):
     costs.sort()
 
     if len(combinations) > 1:
-        print("*"*10)
+        print("*" * 10)
         print(combinations)
         print(min_presses)
         print(costs)
-
 
     return costs
 
@@ -113,7 +114,7 @@ def part1(machines):
         print("Machine:", i)
         print(m)
 
-        ans = calculate_combinations(m['A'], m['B'], m['PRIZE'])
+        ans = calculate_combinations(m["A"], m["B"], m["PRIZE"])
         print(ans)
 
         if ans is None:
@@ -121,138 +122,124 @@ def part1(machines):
 
         total += ans[0][0]
 
-
     return total
 
 
-def solve_button_presses(button_a, button_b, prize):
-    # Create the LP problem
-    prob = LpProblem("ButtonPressProblem", LpMaximize)
+"""this didnt run or produce results using PULP"""
 
-    # Create the decision variables
-    a = LpVariable("a", lowBound=0, upBound=100, cat='Integer')
-    b = LpVariable("b", lowBound=0, upBound=100, cat='Integer')
+# def solve_button_presses(button_a, button_b, prize):
+#     # Create the LP problem
+#     prob = LpProblem("ButtonPressProblem", LpMaximize)
 
-    # Objective function: Minimize total button presses
-    prob += a + b
+#     # Create the decision variables
+#     a = LpVariable("a", lowBound=0, upBound=100, cat="Integer")
+#     b = LpVariable("b", lowBound=0, upBound=100, cat="Integer")
 
-    # Constraints:
-    prob += a * button_a[0] + b * button_b[0] == prize[0]
-    prob += a * button_a[1] + b * button_b[1] == prize[1]
+#     # Objective function: Minimize total button presses
+#     prob += a + b
 
-    # Solve the problem
-    prob.solve()
+#     # Constraints:
+#     prob += a * button_a[0] + b * button_b[0] == prize[0]
+#     prob += a * button_a[1] + b * button_b[1] == prize[1]
 
-    if LpStatus[prob.status] == 'Optimal':
-        return int(a.varValue), int(b.varValue)
-    else:
-        return None
+#     # Solve the problem
+#     prob.solve()
 
-
-def min_button_presses(target_x, target_y, a_x, a_y, b_x, b_y):
-    print("start")
-    dp = [[float('inf')] * (target_x + 1) for _ in range(target_y + 1)]
-    dp[0][0] = 0
-    print("here")
-    for i in range(target_x + 1):
-        for j in range(target_y + 1):
-            print(i,j)
-            if i - a_x >= 0 and j - a_y >= 0:
-                dp[i][j] = min(dp[i][j], dp[i - a_x][j - a_y] + 1)
-            if i - b_x >= 0 and j - b_y >= 0:
-                dp[i][j] = min(dp[i][j], dp[i - b_x][j - b_y] + 1)
-
-    return dp[target_x][target_y]
-
-
-def min_button_presses2(target_x, target_y, a_x, a_y, b_x, b_y):
-    queue = [(0, 0, 0, 0)]  # (x, y, steps, a_presses, b_presses)
-    visited = set()
-
-    while queue:
-        x, y, steps, a_presses, b_presses = queue.pop(0)
-
-        if (x, y) == (target_x, target_y):
-            return steps, a_presses, b_presses
-
-        if (x, y) not in visited:
-            visited.add((x, y))
-            queue.append((x + a_x, y + a_y, steps + 1, a_presses + 1, b_presses))
-            queue.append((x + b_x, y + b_y, steps + 1, a_presses, b_presses + 1))
-
-    return -1, -1, -1  # If the target is unreachable
-
-# cant get z3 to work on mac
-# def solve_with_z3(target_x, target_y, a_x, a_y, b_x, b_y):
-#     s = z3.Solver()
-
-
-#     # Define variables
-#     a = Int('a')
-#     b = Int('b')
-
-#     # Define constraints
-#     s.add(a * a_x + b * b_x == target_x)
-#     s.add(a * a_y + b * b_y == target_y)
-#     s.add(a >= 0)
-#     s.add(b >= 0)
-
-#     # Optionally, add a constraint on the total number of presses:
-#     # s.add(a + b <= 100)
-
-#     if s.check() == z3.sat:
-#         m = s.model()
-#         return m[a].as_long(), m[b].as_long()
+#     if LpStatus[prob.status] == "Optimal":
+#         return int(a.varValue), int(b.varValue)
 #     else:
-#         return None  # No solution found
+#         return None
+
+"""This crashed trying to use a grid"""
+# def min_button_presses(target_x, target_y, a_x, a_y, b_x, b_y):
+#     print("start")
+#     dp = [[float("inf")] * (target_x + 1) for _ in range(target_y + 1)]
+#     dp[0][0] = 0
+#     print("here")
+#     for i in range(target_x + 1):
+#         for j in range(target_y + 1):
+#             print(i, j)
+#             if i - a_x >= 0 and j - a_y >= 0:
+#                 dp[i][j] = min(dp[i][j], dp[i - a_x][j - a_y] + 1)
+#             if i - b_x >= 0 and j - b_y >= 0:
+#                 dp[i][j] = min(dp[i][j], dp[i - b_x][j - b_y] + 1)
+
+#     return dp[target_x][target_y]
+
+"""This didnt work"""
+# def min_button_presses2(target_x, target_y, a_x, a_y, b_x, b_y):
+#     queue = [(0, 0, 0, 0)]  # (x, y, steps, a_presses, b_presses)
+#     visited = set()
+
+#     while queue:
+#         x, y, steps, a_presses, b_presses = queue.pop(0)
+
+#         if (x, y) == (target_x, target_y):
+#             return steps, a_presses, b_presses
+
+#         if (x, y) not in visited:
+#             visited.add((x, y))
+#             queue.append((x + a_x, y + a_y, steps + 1, a_presses + 1, b_presses))
+#             queue.append((x + b_x, y + b_y, steps + 1, a_presses, b_presses + 1))
+
+#     return -1, -1, -1  # If the target is unreachable
+
+"""Cannot get z3 to work on macbook, dont know how to install or get pip to register"""
+"""With windows followed https://github.com/Z3Prover/z3 instuctions, download and make"""
+
+
+def solve_with_z3(target_x, target_y, a_x, a_y, b_x, b_y):
+    """Solver works.  Internet says Optimise() is a option also, dont know the difference"""
+    s = z3.Solver()
+
+    # Define variables
+    a = z3.Int("a")
+    b = z3.Int("b")
+
+    # Define constraints
+    s.add(a * a_x + b * b_x == target_x)
+    s.add(a * a_y + b * b_y == target_y)
+    s.add(a >= 0)
+    s.add(b >= 0)
+
+    # Optionally, add a constraint on the total number of presses:
+    # s.add(a + b <= 100)
+
+    if s.check() == z3.sat:
+        m = s.model()
+        return m.eval(a).as_long(), m.eval(b).as_long()
+    else:
+        return None  # No solution found
 
 
 def part2(machines):
     """Solve part 2"""
 
-    # adj = 10000000000000
-    # total = 0
+    adj = 10000000000000
 
-    # for i, m in enumerate(machines):
-    #     print("Machine:", i)
+    total = 0
 
-    #     old_x, old_y = m['PRIZE']
-    #     m['PRIZE'] = (old_x+adj, old_y+adj)
-    #     print(m)
+    for i, m in enumerate(machines):
+        print("Machine:", i)
 
-    #     ans = calculate_combinations(m['A'], m['B'], m['PRIZE'])
-    #     print(ans)
+        ans = solve_with_z3(
+            m["PRIZE"][0] + adj,
+            m["PRIZE"][1] + adj,
+            m["A"][0],
+            m["A"][1],
+            m["B"][0],
+            m["B"][1],
+        )
+        print("z3", ans)
 
-    #     if ans is None:
-    #         continue
+        if ans is None:
+            continue
 
-    #     total += ans[0][0]
+        cost = 3 * ans[0] + ans[1]
 
-    sample = {
-        'A': (94,34),
-        'B': (22,67),
-        'PRIZE': (100000008400,100000005400)}
+        total += cost
 
-    # print("variation 1 - pulp - infeasible")
-    # solve_button_presses(sample['A'],sample['B'],sample['PRIZE'])
-
-    # print("variation 2 - grid - fails")
-    # ans = min_button_presses(sample['PRIZE'][0],sample['PRIZE'][1],
-    #                          sample['A'][0],
-    #                          sample['A'][1],
-    #                          sample['B'][0],
-    #                          sample['B'][1])
-    # print(ans)
-
-    # ans = solve_with_z3(sample['PRIZE'][0],sample['PRIZE'][1],
-    #                          sample['A'][0],
-    #                          sample['A'][1],
-    #                          sample['B'][0],
-    #                          sample['B'][1])
-    # print(ans)
-
-    return 1
-
+    return total
 
 
 def solve(puzzle_input, run="Solution"):
@@ -280,4 +267,4 @@ if __name__ == "__main__":
     tests = solve(test_file, run="Test")
 
     print()
-    # solutions = solve(soln_file)
+    solutions = solve(soln_file)
