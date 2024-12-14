@@ -4,13 +4,17 @@ import pathlib
 import time
 
 script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 231019008
-test_file = script_path / "test.txt"  # 0 /
-test_file2 = script_path / "test2.txt"  # 12 /
+soln_file = script_path / "input.txt"  # 231019008 / 8280
+test_file = script_path / "test.txt"  # 0 / -
+test_file2 = script_path / "test2.txt"  # 12 / -
 
 #  220001760 too low
 
-# 231019008
+# {'top_left': 128, 'top_right': 121, 'bottom_left': 132, 'bottom_right': 113}
+# Solution 1: 231019008 in 0.0019s
+
+
+# pt2 is 8280 but cant see in my code
 
 GRID_H = 103
 GRID_W = 101
@@ -28,38 +32,61 @@ class Robot:
         self.vector = vector
         self.grid_width = grid_width
         self.grid_height = grid_height
-        self.position_history = []
-        self.visited_positions = set()
         self.quadrant = None
+        self.current_position = self.initial_position
+        self.current_position_index = 0
+        self.__all_positions = None
 
     def __repr__(self):
         return f"Robot(position={self.initial_position}, velocity={self.vector})"
 
-    def calculate_all_positions(self, num_moves):
-        x, y = self.initial_position
-        dx, dy = self.vector
-        self.visited_positions.add((x, y))
+    def get_initial_position(self):
+        return self.initial_position
 
-        for _ in range(num_moves):
-            x = (x + dx) % self.grid_width
-            y = (y + dy) % self.grid_height
-            if (x, y) in self.visited_positions:
-                # We've encountered a repeating pattern, stop the simulation
-                break
-            self.position_history.append((x, y))
-            self.visited_positions.add((x, y))
+    def get_vector(self):
+        return self.vector
 
-    def calculate_final_position(self, num_moves):
-        final_x = (
-            self.initial_position[0] + num_moves * self.vector[0]
+    def __calculate_all_positions(self):
+        if self.__all_positions is None:
+            visited_positions = set()
+            x, y = self.initial_position
+            dx, dy = self.vector
+            positions = [(x, y)]
+
+            while (x, y) not in visited_positions:
+                visited_positions.add((x, y))
+                x = (x + dx) % self.grid_width
+                y = (y + dy) % self.grid_height
+                positions.append((x, y))
+
+            self.__all_positions = positions
+
+    def move_one(self):
+        self.__calculate_all_positions()  # Ensure positions are calculated
+        self.current_position_index = (self.current_position_index + 1) % len(
+            self.__all_positions
+        )
+        return self.__all_positions[self.current_position_index]
+
+    def get_current_position(self):
+        self.__calculate_all_positions()  # Ensure positions are calculated
+        return self.__all_positions[self.current_position_index]
+
+    def get_all_positions(self):
+        self.__calculate_all_positions()  # Ensure positions are calculated
+        return self.__all_positions
+
+    def calculate_position(self, seconds):
+        new_pos_x = (
+            self.initial_position[0] + seconds * self.vector[0]
         ) % self.grid_width
-        final_y = (
-            self.initial_position[1] + num_moves * self.vector[1]
+        new_pos_y = (
+            self.initial_position[1] + seconds * self.vector[1]
         ) % self.grid_height
-        return (final_x, final_y)
+        return (new_pos_x, new_pos_y)
 
-    def calculate_final_quadrant(self, num_moves):
-        final_x, final_y = self.calculate_final_position(num_moves)
+    def calculate_final_quadrant(self, seconds):
+        final_x, final_y = self.calculate_position(seconds)
         mid_x = self.grid_width // 2
         mid_y = self.grid_height // 2
 
@@ -76,12 +103,6 @@ class Robot:
         if self.quadrant is None:
             self.calculate_final_quadrant(num_moves)
         return self.quadrant
-
-    def get_position_history(self):
-        return self.position_history
-
-    def get_unique_positions(self):
-        return set(self.position_history)
 
 
 def parse(puzzle_input, h=GRID_H, w=GRID_W):
@@ -101,31 +122,6 @@ def parse(puzzle_input, h=GRID_H, w=GRID_W):
     return robots
 
 
-# def count_robots_in_quadrants(final_positions, grid_width, grid_height):
-
-#     quadrant_counts = {
-#         "top_left": 0,
-#         "top_right": 0,
-#         "bottom_left": 0,
-#         "bottom_right": 0,
-#     }
-
-#     mid_x = grid_width // 2
-#     mid_y = grid_height // 2
-
-#     for x, y in final_positions:
-#         if x < mid_x and y < mid_y:
-#             quadrant_counts["top_left"] += 1
-#         elif x > mid_x and y < mid_y:
-#             quadrant_counts["top_right"] += 1
-#         elif x < mid_x and y > mid_y:
-#             quadrant_counts["bottom_left"] += 1
-#         elif x > mid_x and y > mid_y:
-#             quadrant_counts["bottom_right"] += 1
-
-#     return quadrant_counts
-
-
 def count_robots_in_quadrants(robots, num_moves):
     quadrant_counts = {
         "top_left": 0,
@@ -140,31 +136,6 @@ def count_robots_in_quadrants(robots, num_moves):
             quadrant_counts[quadrant] += 1
 
     return quadrant_counts
-
-
-# def simulate_multiple_robots(robots, num_moves):
-#     """Simulates the movement of multiple robots.
-
-#     Args:
-#       robots: A list of tuples, each tuple containing (initial_x, initial_y, vector_x, vector_y) for a robot.
-#       num_moves: The number of moves to simulate.
-
-#     Returns:
-#       A list of lists, where each inner list contains the positions of all robots after a specific move.
-#     """
-
-#     positions_history = []
-#     for _ in range(num_moves):
-#         new_positions = []
-#         for robot in robots:
-#             x, y, dx, dy = robot
-#             x = (x + dx) % 100
-#             y = (y + dy) % 100
-#             new_positions.append((x, y))
-#         positions_history.append(new_positions)
-#         robots = new_positions
-
-#     return positions_history
 
 
 def simulate_multiple_robots(robots, num_moves):
@@ -205,35 +176,25 @@ def calc_multiple_robots_final(robots, num_moves):
     return new_positions
 
 
-def part1(data, h, w, moves=100):
-    """Solve part 1"""
+def rotate_grid(grid):
+    """Rotates a 2D grid 90 degrees clockwise.
 
-    # print(data)
+    Args:
+      grid: A 2D list representing the grid.
 
-    # ans = simulate_multiple_robots(data, moves)
-    # print(ans)
-    # ans2 = calc_multiple_robots_final(data, moves)
-    # print(ans2)
+    Returns:
+      The rotated grid.
+    """
 
-    quads = count_robots_in_quadrants(data, moves)
+    n = len(grid)
+    m = len(grid[0])
+    rotated_grid = [[0] * n for _ in range(m)]
 
-    print(quads)
+    for i in range(n):
+        for j in range(m):
+            rotated_grid[j][n - i - 1] = grid[i][j]
 
-    product = 1
-    for count in quads.values():
-        product *= count
-
-    return product
-
-
-def simulate_and_draw(robots, num_moves, grid_height, grid_width):
-    for i in range(num_moves):
-        for robot in robots:
-            robot.move(1)
-
-        positions = [robot.get_position_history()[-1] for robot in robots]
-        draw_grid(positions, grid_height, grid_width)
-        print()  # Add a newline between iterations
+    return rotated_grid
 
 
 def draw_grid(positions, grid_height, grid_width):
@@ -245,39 +206,86 @@ def draw_grid(positions, grid_height, grid_width):
       grid_width: The width of the grid.
     """
 
-    grid = [["." for _ in range(grid_width)] for _ in range(grid_height)]
+    grid = [[0 for _ in range(grid_width)] for _ in range(grid_height)]
     for x, y in positions:
-        grid[y][x] = "x"
+        grid[y][x] += 1
 
-    for row in grid:
-        print("".join(row))
+        if grid[y][x] > 1:
+            return 0
+
+    # grid_str = ["".join(row) for row in grid]
+    grid_str = ["".join(str(num) for num in row) for row in grid]
+
+    for row_str in grid_str:
+        # if "#####" in row_str:
+        #     print(row_str)
+        print(row_str)
+
+    time.sleep(0.3)
+    print()
 
     return 1
 
 
-def part2(data, h, w, moves=100):
+def part1(data, h, w, seconds=100):
+    """Solve part 1"""
+
+    quads = count_robots_in_quadrants(data, seconds)
+    print(quads)
+
+    product = 1
+    for count in quads.values():
+        product *= count
+
+    return product
+
+
+def part2(robots, h, w, seconds):
     """Solve part 2"""
 
-    # simulate_and_draw(data, moves, h, w)
+    seconds = 10000
+    limit = 5
+    count = 0
+    for sec in range(seconds):
+        grid = [[0 for _ in range(w)] for _ in range(h)]
+
+        for robot in robots:
+            x, y = robot.get_initial_position()
+            dx, dy = robot.get_vector()
+
+            new_pos_x = (x + sec * dx) % w
+            new_pos_y = (y + sec * dy) % h
+            grid[new_pos_y][new_pos_x] += 1
+
+        if not any(any(num > 1 for num in row) for row in grid):
+            grid_strings = ["".join(str(num) for num in row) for row in grid]
+            print(sec)
+            for row_str in grid_strings:
+                print(row_str)
+            print()
+            count += 1
+            if count > limit:
+                break
+            time.sleep(0.3)
 
     return 1
 
 
-def solve(puzzle_input, run="Solution", h=GRID_H, w=GRID_W, moves=100):
+def solve(puzzle_input, run="Solution", h=GRID_H, w=GRID_W, seconds=100):
     """Solve the puzzle for the given input"""
     times = []
 
     data = parse(puzzle_input, h, w)
 
     times.append(time.perf_counter())
-    solution1 = part1(data, h, w, moves)
+    solution1 = part1(data, h, w, seconds)
     times.append(time.perf_counter())
-    solution2 = part2(data, h, w, moves)
+    solution2 = part2(data, h, w, seconds)
     times.append(time.perf_counter())
 
     print(f"{run} 1: {str(solution1)} in {times[1]-times[0]:.4f}s")
     print(f"{run} 2: {str(solution2)} in {times[2]-times[1]:.4f}s")
-    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds")
+    print(f"\nExecution total: {times[-1]-times[0]:.4f} seconds\n")
 
     return solution1, solution2, times
 
@@ -285,8 +293,8 @@ def solve(puzzle_input, run="Solution", h=GRID_H, w=GRID_W, moves=100):
 if __name__ == "__main__":
     print("\nAOC")
 
-    tests = solve(test_file, run="Test", h=7, w=11, moves=5)
-    tests2 = solve(test_file2, run="Test 2", h=7, w=11)
+    # tests = solve(test_file, run="Test", h=7, w=11, seconds=5)
+    # tests2 = solve(test_file2, run="Test 2", h=7, w=11)
 
     print()
-    solutions = solve(soln_file, h=GRID_H, w=GRID_W, moves=100)
+    solutions = solve(soln_file, h=GRID_H, w=GRID_W, seconds=100)
