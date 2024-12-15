@@ -138,6 +138,34 @@ def part1(data):
 def part2(data):
     """Solve part 2"""
 
+    old_walls, old_boxes, robot_position, instructions = data
+
+    # print(robot_position)
+    # print(instructions)
+
+    walls = set()
+    boxes = set()
+
+    print("old_walls", len(old_walls))
+    print(old_walls)
+    for ow in old_walls:
+        walls.add((ow[0], 2 * ow[1]))
+        walls.add((ow[0], 2 * ow[1] + 1))
+
+    print("walls", len(walls))
+    print(walls)
+
+    # This is not that helpful, the boxes do cover these points but not individual box ID
+    print("old_boxes", len(old_boxes))
+
+    for ob in old_boxes:
+        boxes.add((ob[0], 2 * ob[1]))
+        boxes.add((ob[0], 2 * ob[1] + 1))
+
+    print("boxes", len(boxes))
+
+    # Hints - use a dictionary to point the parts of a box to an identifer
+
     return 1
 
 
@@ -167,4 +195,4 @@ if __name__ == "__main__":
     tests = solve(test_file2, run="Test2")
 
     print()
-    solutions = solve(soln_file)
+    # solutions = solve(soln_file)
