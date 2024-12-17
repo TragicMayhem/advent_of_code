@@ -13,9 +13,19 @@ def parse(puzzle_input):
 
     with open(puzzle_input, "r", encoding="UTF-8") as file:
         #  Read each line (split \n) and form a list of strings
-        lst = file.read().split("\n\n")
+        parts = file.read().split("\n\n")
 
-    return lst
+    register_dict = {key.replace('Register ', ''): int(value) for key, value in (line.split(': ') for line in parts[0].splitlines())}
+    
+    # Split on ": " and ignore the first part
+    _, program_str = parts[1].split(': ')
+    program_list = [int(x) for x in program_str.split(',')]
+
+    print(register_dict)
+    print(program_list)
+
+
+    return parts
 
 
 def part1(data):
