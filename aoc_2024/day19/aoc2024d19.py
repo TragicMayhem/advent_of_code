@@ -12,58 +12,58 @@ def parse(puzzle_input):
     """Parse input"""
 
     with open(puzzle_input, "r", encoding="UTF-8") as file:
-        #  Read each line (split \n) and form a list of strings
         parts = file.read().split("\n\n")
         components = parts[0].replace(" ", "").split(",")
         designs = parts[1].split("\n")
 
     return (components, designs)
 
-def can_construct_string(target, word_bank):
+def can_construct_string(design, components):
     """
-    Determines if a target string can be constructed from a word bank.
+    Determines if a design string can be constructed from a word bank.
 
     Args:
-        target: The target string to construct.
-        word_bank: A list of words that can be used to construct the target.
+        design: The design string to construct.
+        components: A list of words that can be used to construct the design.
 
     Returns:
-        True if the target string can be constructed, False otherwise.
+        True if the design string can be constructed, False otherwise.
     """
 
-    table = [False] * (len(target) + 1)
+    table = [False] * (len(design) + 1)
     table[0] = True
 
-    for i in range(len(target) + 1):
+    for i in range(len(design) + 1):
         if table[i]:
-            for word in word_bank:
-                if word == target[i:i+len(word)]:
+            for word in components:
+                if word == design[i:i+len(word)]:
                     table[i+len(word)] = True
 
-    return table[len(target)]
+    return table[len(design)]
 
 
-def can_construct_string_count(target, word_bank):
+def can_construct_string_count(design, components):
     """
-    Determines if a target string can be constructed from a word bank and counts the number of ways.
+    Determines if a design string can be constructed from a word bank and counts the number of ways.
 
     Args:
-        target: The target string to construct.
-        word_bank: A list of words that can be used to construct the target.
+        design: The design string to construct.
+        components: A list of words that can be used to construct the design.
 
     Returns:
-        The number of ways the target string can be constructed.
+        The number of ways the design string can be constructed.
     """
 
-    table = [0] * (len(target) + 1)
+    table = [0] * (len(design) + 1)
     table[0] = 1  # Empty string can be constructed in 1 way
 
-    for i in range(len(target) + 1):
-        for word in word_bank:
-            if word == target[i:i+len(word)]:
+    for i in range(len(design) + 1):
+        for word in components:
+            if word == design[i:i+len(word)]:
                 table[i+len(word)] += table[i]
 
-    return table[len(target)]
+    return table[len(design)]
+
 
 def part1(data):
     """Solve part 1"""
@@ -71,7 +71,6 @@ def part1(data):
     components, designs = data
 
     count = 0
-    count2 = 0
     for d in designs:
         count += can_construct_string(d, components
                                       )
