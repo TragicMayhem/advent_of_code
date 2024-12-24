@@ -94,6 +94,18 @@ def find_largest_combined_group(groups, connection_dict):
     return largest_group
 
 
+def is_fully_connected(group, connection_dict):
+    """
+    Checks if all computers in the group are directly connected to each other.
+    True if all computers in the group are fully connected, False otherwise.
+    """
+    for computer1 in group:
+        for computer2 in group:
+            if computer1 != computer2 and computer2 not in connection_dict[computer1]:
+                return False
+    return True
+
+
 # works for the test data!
 def find_largest_combined_groups(groups, connection_dict):
     """
@@ -128,8 +140,8 @@ def find_largest_combined_groups(groups, connection_dict):
     if all_combined_groups:
         largest_group = max(all_combined_groups, key=len)
         return list(largest_group)
-    else:
-        return []
+
+    return []
 
 
 # def find_largest_combined_groups2(groups, connection_dict):
@@ -170,18 +182,6 @@ def find_largest_combined_groups(groups, connection_dict):
 #     #         largest_group = max(potential_groups, key=len)
 
 #     return largest_group
-
-
-# def is_fully_connected(group, connection_dict):
-#     """
-#     Checks if all computers in the group are directly connected to each other.
-#     True if all computers in the group are fully connected, False otherwise.
-#     """
-#     for computer1 in group:
-#         for computer2 in group:
-#             if computer1 != computer2 and computer2 not in connection_dict[computer1]:
-#                 return False
-#     return True
 
 
 def part1(data):
