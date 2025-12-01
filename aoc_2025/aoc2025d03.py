@@ -1,4 +1,4 @@
-# https://adventofcode.com/2025/day/
+# https://adventofcode.com/2025/day/3
 
 import pathlib
 import time
