@@ -4,11 +4,30 @@ import pathlib
 import time
 from typing import Callable, List, Union
 
-script_path = pathlib.Path(__file__).parent
-soln_file = script_path / "input.txt"  # 1018 /  5815
-test_file = script_path / "test.txt"  # 3 / 6
 
+# --- Configuration ---
+# 📌 SET THE DAY NUMBER HERE
+DAY_NUMBER = 1  # <--- CHANGE THIS VALUE FOR EACH DAY!
+
+# Format the day number to a two-digit string (e.g., 1 -> "01", 12 -> "12")
+DAY_FOLDER_NAME = f"d{DAY_NUMBER:02d}"
+
+# --- Path Finding Logic ---
+
+# Get the path where this script is located (the project root folder)
+script_path = pathlib.Path(__file__).parent
+
+# data_root is the 'data' folder located in the same directory as the script
+data_root = script_path / "data"
+
+# data_day_path is the subfolder inside 'data' (e.g., .../data/d01)
+data_day_path = data_root / DAY_FOLDER_NAME
+
+# Construct the final file paths
+soln_file = data_day_path / "input.txt"  # 1018 /  5815
+test_file = data_day_path / "test.txt"  # 3 / 6
 # too low 1989 3968
+
 # --- Parsing Functions ---
 
 
@@ -127,13 +146,13 @@ def solve(puzzle_input: pathlib.Path, parse_func: Callable, run="Solution"):
 
 
 if __name__ == "__main__":
-    print("\n🎄 Advent of Code 🎄")
+    print(f"\n🎄 Advent of Code Day {DAY_NUMBER} 🎄")
 
     # 📌 CHOOSE YOUR PARSER HERE
-    # Use parse_lines for standard input, or parse_blocks for block-based input
     SELECTED_PARSER = parse_lines
     # SELECTED_PARSER = parse_blocks
 
+    print(f"Loading data from folder: **{DAY_FOLDER_NAME}**")
     print(f"Using parser: **{SELECTED_PARSER.__name__}**\n")
 
     # Run tests first
