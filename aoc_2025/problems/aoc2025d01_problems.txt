@@ -1,4 +1,4 @@
-https://adventofcode.com/2023/day/
+https://adventofcode.com/2025/day/1
 
 --- Day 1: Secret Entrance ---
 The Elves have good news and bad news.

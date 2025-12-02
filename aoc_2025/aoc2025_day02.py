@@ -1,12 +1,13 @@
-# https://adventofcode.com/2025/day/
+# https://adventofcode.com/2025/day/2
 
 import pathlib
+import re
 import time
 from typing import Callable, List, Union
 
 # --- Configuration ---
 # 📌 SET THE DAY NUMBER HERE
-DAY_NUMBER = 1  # <--- CHANGE THIS VALUE FOR EACH DAY!
+DAY_NUMBER = 2  # <--- CHANGE THIS VALUE FOR EACH DAY!
 
 # Format the day number to a two-digit string (e.g., 1 -> "01", 12 -> "12")
 DAY_FOLDER_NAME = f"d{DAY_NUMBER:02d}"
@@ -23,8 +24,8 @@ data_root = script_path / "data"
 data_day_path = data_root / DAY_FOLDER_NAME
 
 # Construct the final file paths
-soln_file = data_day_path / "input.txt"
-test_file = data_day_path / "test.txt"
+soln_file = data_day_path / "input.txt"  # 23560874270 / 44143124633
+test_file = data_day_path / "test.txt"  # 1227775554 / 4174379265
 
 # --- Parsing Functions ---
 
@@ -34,8 +35,10 @@ def parse_lines(puzzle_input: pathlib.Path) -> List[str]:
     Parse input line-by-line.
     """
     content = puzzle_input.read_text(encoding="UTF-8")
-    lst = [line.strip() for line in content.split("\n") if line.strip()]
-
+    lst = [
+        tuple(r.split("-"))
+        for r in [line.strip() for line in content.split(",") if line.strip()]
+    ]
     return lst
 
 
@@ -55,13 +58,55 @@ def parse_blocks(puzzle_input: pathlib.Path) -> List[str]:
 def part1(data: List[Union[str, list]]):
     """Solve part 1"""
 
-    return 1
+    invalid_id = []
+
+    for d in data:
+        # print("\n", d)
+        s, t = d
+        for i in range(int(s), int(t) + 1):
+            current = str(i)
+            m = len(current) // 2
+            if current[:m] == current[m:]:
+                # print(current)
+                invalid_id.append(i)
+
+    total = sum(invalid_id)
+
+    return total
 
 
 def part2(data: List[Union[str, list]]):
     """Solve part 2"""
 
-    return 1
+    invalid_id = []
+
+    for d in data:
+        # print("\n", d)
+        s, t = d
+        for i in range(int(s), int(t) + 1):
+            current = str(i)
+            m = len(current) // 2
+
+            # Regex Breakdown:
+            # 1. '^'        -> Anchors the match to the start of the string.
+            # 2. '(.+?)'    -> Captures the shortest possible pattern P (e.g., '12').
+            # 3. '\1+'      -> Checks if that captured pattern P repeats 1 or more times.
+            # 4. '$'        -> Anchors the match to the end of the string, ensuring the entire number is covered.
+
+            match = re.fullmatch(r"^(.+?)\1+$", current)
+
+            if match:
+                invalid_id.append(i)
+            #     # match.group(1) is the core pattern (e.g., '12')
+            #     # match.group(0) is the full match (e.g., '1212')
+            #     num_repeats = len(current) // len(match.group(1))
+            #     ans = (True, match.group(1), num_repeats)
+            # else:
+            #     ans = (False, None, None)
+
+    total = sum(invalid_id)
+
+    return total
 
 
 def solve(puzzle_input: pathlib.Path, parse_func: Callable, run="Solution"):
