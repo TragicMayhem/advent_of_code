@@ -1,17 +1,14 @@
-# {AOC_URL_PLACEHOLDER} 🏆
+# # https://adventofcode.com/2025/day/4 🏆
 
 import pathlib
 import time
 from typing import Callable, List, Union, Any
-
-# --- Imports from Original Script ---
-{EXTRA_IMPORTS_PLACEHOLDER}
-# ----------------------------------
+from collections import defaultdict
 
 # --- Configuration (These lines are mandatory for the refactor script) ---
-CURRENT_AOC_YEAR = {AOC_YEAR_PLACEHOLDER}
+CURRENT_AOC_YEAR = 2025
 # 📌 SET THE DAY NUMBER HERE
-DAY_NUMBER = {AOC_DAY_PLACEHOLDER}
+DAY_NUMBER = 4
 # ---------------------
 
 # Format the day number to a two-digit string (e.g., 1 -> "01")
@@ -27,37 +24,67 @@ data_day_path = data_root / DAY_FOLDER_NAME
 
 # Construct the final file paths
 soln_file = data_day_path / "input.txt"
-test_file = data_day_path / "test.txt"
+test_file = data_day_path / "test.txt"  # 13 / 1370
 
 
 # --- Parsing Functions ---
+
+
 def parse_lines(puzzle_input: pathlib.Path) -> List[str]:
     """
     Parse input line-by-line.
-    Returns a list where each element is one line (string) from the input file,
-    stripped of surrounding whitespace (including the newline character).
     """
+    grid = defaultdict(str)
     content = puzzle_input.read_text(encoding="UTF-8")
-    # Splits by newline, strips whitespace from each line, and filters out empty lines.
-    lst = [line.strip() for line in puzzle_input.splitlines() if line.strip()]
 
-    return lst
+    data = [
+        tuple(list(r))
+        for r in [line.strip() for line in content.split("\n") if line.strip()]
+    ]
+
+    for r, row in enumerate(data):
+        for c, cell in enumerate(row):
+            if cell == "@":
+                grid[(r, c)] = cell
+
+    size = len(data)
+
+    # print(grid)
+    return (grid, size)
 
 
-def parse_blocks(puzzle_input: pathlib.Path) -> List[str]:
-    """
-    Parse input into blocks of data separated by double newlines ("\n\n").
-    Returns a list of strings, where each string is a block.
-    """
-    content = puzzle_input.read_text(encoding="UTF-8")
-    # Strips overall content and then splits by double newline.
-    lst = content.strip().split("\n\n")
-
-    return lst
+# Any helper functions extracted from older scripts or specific to this day
 
 
-# --- Custom Helper Functions ---
-# Utility functions for common AOC tasks.
+# Assumes square grid: h = w
+def get_coords8d(pos, s):
+    r, c = pos
+    for delta_r, delta_c in (
+        (-1, 0),
+        (1, 0),
+        (0, -1),
+        (0, 1),
+        (-1, -1),
+        (-1, 1),
+        (1, -1),
+        (1, 1),
+    ):
+        rr, cc = (r + delta_r, c + delta_c)
+        if 0 <= rr < s and 0 <= cc < s:
+            yield (rr, cc)
+
+
+def find_rolls_8d(pos, grid, size):
+    check_rolls_8d = list()
+    # How many rolls around this position?
+    for g in list(get_coords8d(pos, size)):
+        if g in grid:
+            check_rolls_8d.append(g)
+
+    if len(check_rolls_8d) < 4:
+        return True
+
+    return False
 
 
 # --- Solving Functions ---
@@ -66,12 +93,46 @@ def parse_blocks(puzzle_input: pathlib.Path) -> List[str]:
 def part1(data: List[Union[str, list]]):
     """Solve part 1"""
 
-    pass
+    rolls, size = data
+    accessible = list()
+
+    for pos in rolls:
+        check_rolls_8d = list()
+
+        # How many rolls around this position?
+        for g in list(get_coords8d(pos, size)):
+            if g in rolls:
+                check_rolls_8d.append(g)
+
+        if len(check_rolls_8d) < 4:
+            accessible.append(pos)
+
+    return len(accessible)
 
 
 def part2(data: List[Union[str, list]]):
     """Solve part 2"""
-    pass
+
+    rolls, size = data
+    processing_rolls = rolls.copy()
+    rolls_removed = 0
+    still_accessible = True
+
+    while still_accessible:
+        still_accessible = False
+        to_remove = []
+        for pos in processing_rolls:
+            if find_rolls_8d(pos, processing_rolls, size):
+                to_remove.append(pos)
+                still_accessible = True
+
+        for pos in to_remove:
+            del processing_rolls[pos]
+            rolls_removed += 1
+
+    # print(f"Rolls removed: {rolls_removed}")
+
+    return rolls_removed
 
 
 def solve(puzzle_input: pathlib.Path, parse_func: Callable, run="Solution"):
@@ -101,11 +162,9 @@ def solve(puzzle_input: pathlib.Path, parse_func: Callable, run="Solution"):
 
 
 if __name__ == "__main__":
-    print(f"\n🎄 Advent of Code {CURRENT_AOC_YEAR} Day {DAY_NUMBER} 🎄")
+    print(f"\n🎄 Advent of Code Day {DAY_NUMBER} 🎄")
 
-    # 📌 SELECT THE DAY-SPECIFIC PARSER
-    # By default, this points to the generic 'parse' function above.
-    # If you define a new custom parser (e.g., 'parse_grid'), change it here.
+    # 📌 CHOOSE YOUR PARSER HERE
     SELECTED_PARSER = parse_lines
     # SELECTED_PARSER = parse_blocks
 
