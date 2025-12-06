@@ -330,3 +330,51 @@ def build_connection_dict(connections):
             connection_dict[target] = []
         connection_dict[target].append(source)
     return connection_dict
+
+
+import operator
+
+
+def generic_calculate(data_list):
+    """
+    Calculates the result of two numbers based on an operator indicator.
+
+    Args:
+        data_list (list): A list in the format [num1, num2, operator_indicator].
+                          Example: ['10', '20', '*']
+
+    Returns:
+        int or float: The result of the operation.
+    """
+    # Define the mapping of string symbols to actual Python functions
+    # operator.add is equivalent to num1 + num2
+    # operator.mul is equivalent to num1 * num2
+    op_map = {"+": operator.add, "*": operator.mul}
+
+    # 1. Extract and convert numbers (assuming they are strings initially)
+    num1 = float(data_list[0])  # Use float to handle both integers and decimals
+    num2 = float(data_list[1])
+
+    # 2. Extract the operator indicator
+    indicator = data_list[2]
+
+    # 3. Retrieve the corresponding function from the map
+    operation_function = op_map.get(indicator)
+
+    if operation_function:
+        # 4. Execute the function with the two numbers
+        result = operation_function(num1, num2)
+        return result
+    else:
+        # Handle cases where the indicator is not recognized
+        raise ValueError(f"Unknown operator indicator: {indicator}")
+
+
+# # --- Examples ---
+# list_add = ["10", "20", "+"]
+# list_mul = ["15", "5", "*"]
+# list_decimal = ["10.5", "2.5", "+"]
+
+# print(f"Calculation for {list_add}: {generic_calculate(list_add)}")
+# print(f"Calculation for {list_mul}: {generic_calculate(list_mul)}")
+# print(f"Calculation for {list_decimal}: {generic_calculate(list_decimal)}")

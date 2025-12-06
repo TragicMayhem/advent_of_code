@@ -4,11 +4,11 @@ import pathlib
 import time
 from typing import Callable, List, Union, Any
 
-# --- Imports from Original Script ---
+
 {EXTRA_IMPORTS_PLACEHOLDER}
 # ----------------------------------
 
-# --- Configuration (These lines are mandatory for the refactor script) ---
+# --- Configuration ---
 CURRENT_AOC_YEAR = {AOC_YEAR_PLACEHOLDER}
 # 📌 SET THE DAY NUMBER HERE
 DAY_NUMBER = {AOC_DAY_PLACEHOLDER}

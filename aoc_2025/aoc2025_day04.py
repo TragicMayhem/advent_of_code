@@ -5,7 +5,6 @@ import time
 from typing import Callable, List, Union, Any
 from collections import defaultdict
 
-# --- Configuration (These lines are mandatory for the refactor script) ---
 CURRENT_AOC_YEAR = 2025
 # 📌 SET THE DAY NUMBER HERE
 DAY_NUMBER = 4

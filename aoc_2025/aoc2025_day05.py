@@ -5,11 +5,6 @@ import time
 from typing import Callable, List, Union, Any
 from operator import itemgetter
 
-# --- Imports from Original Script ---
-
-# ----------------------------------
-
-# --- Configuration (These lines are mandatory for the refactor script) ---
 CURRENT_AOC_YEAR = 2025
 # 📌 SET THE DAY NUMBER HERE
 DAY_NUMBER = 5

@@ -4,29 +4,26 @@ import pathlib
 import time
 from typing import Callable, List, Union
 
-
-# --- Configuration ---
+CURRENT_AOC_YEAR = 2025
 # 📌 SET THE DAY NUMBER HERE
-DAY_NUMBER = 1  # <--- CHANGE THIS VALUE FOR EACH DAY!
+DAY_NUMBER = 4
+# ---------------------
 
-# Format the day number to a two-digit string (e.g., 1 -> "01", 12 -> "12")
+# Format the day number to a two-digit string (e.g., 1 -> "01")
 DAY_FOLDER_NAME = f"d{DAY_NUMBER:02d}"
 
 # --- Path Finding Logic ---
 
-# Get the path where this script is located (the project root folder)
+# Find the project root relative to the script location. This assumes
+# the script is executed from the AOC year folder or a sibling folder.
 script_path = pathlib.Path(__file__).parent
-
-# data_root is the 'data' folder located in the same directory as the script
 data_root = script_path / "data"
-
-# data_day_path is the subfolder inside 'data' (e.g., .../data/d01)
 data_day_path = data_root / DAY_FOLDER_NAME
 
 # Construct the final file paths
 soln_file = data_day_path / "input.txt"  # 1018 /  5815
 test_file = data_day_path / "test.txt"  # 3 / 6
-# too low 1989 3968
+
 
 # --- Parsing Functions ---
 
