@@ -1,3 +1,7 @@
+import math
+import heapq
+
+
 # new
 def get_deltas_8d():
     deltas = [
@@ -378,3 +382,44 @@ def generic_calculate(data_list):
 # print(f"Calculation for {list_add}: {generic_calculate(list_add)}")
 # print(f"Calculation for {list_mul}: {generic_calculate(list_mul)}")
 # print(f"Calculation for {list_decimal}: {generic_calculate(list_decimal)}")
+
+
+def distance_3d(p1, p2):
+    """Calculates the Euclidean distance between two 3D points."""
+    return math.dist(p1, p2)
+
+
+# def build_shortest_path_network(points):
+#     """Builds a shortest path network (like a minimum spanning tree) from a list of 3D points."""
+#     import networkx as nx
+
+#     G = nx.Graph()
+
+#     # Add all points as nodes
+#     for idx, point in enumerate(points):
+#         G.add_node(idx, pos=point)
+
+#     # Add edges with weights based on Euclidean distance
+#     for i in range(len(points)):
+#         for j in range(i + 1, len(points)):
+#             dist = distance_3d(points[i], points[j])
+#             G.add_edge(i, j, weight=dist)
+
+#     # Compute the minimum spanning tree
+#     mst = nx.minimum_spanning_tree(G, weight="weight")
+#     return mst
+
+
+# def build_distance_matrix(points):
+#     """Builds a distance matrix for a list of 3D points."""
+#     n = len(points)
+#     dist_matrix = [[0.0] * n for _ in range(n)]
+
+#     for i in range(n):
+#         for j in range(n):
+#             if i != j:
+#                 dist_matrix[i][j] = distance_3d(points[i], points[j])
+#             else:
+#                 dist_matrix[i][j] = 0.0
+
+#     return dist_matrix
